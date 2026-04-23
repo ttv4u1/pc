@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V30</title>
+    <title>v31</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -16,23 +16,18 @@
         :root {
             --neon-blue: #00f2ff;
             --neon-purple: #bc13fe;
-            --neon-pink: #ff00ff;
-            --card-yellow: #f9e28f; /* Warna kuning punch card klasik */
-            --ink-red: #e60000;
             --bg-dark: #0a0b10;
-            --glass: rgba(255, 255, 255, 0.05);
+            --card-yellow: #f9e28f;
+            --ink-red: #e60000;
         }
 
         body {
             margin: 0;
-            padding: 0;
             font-family: 'Rajdhani', sans-serif;
             background: var(--bg-dark);
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(188, 19, 254, 0.05) 0%, transparent 20%);
             color: white;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* --- LOGIN SCREEN --- */
@@ -47,128 +42,87 @@
 
         .cyber-logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
-            text-transform: uppercase;
-            letter-spacing: 5px;
+            font-size: 2.5rem;
             background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px rgba(0,242,255,0.5));
             margin-bottom: 20px;
         }
 
-        .btn-google {
-            background: white;
-            color: #1a1a1a;
-            padding: 15px 30px;
-            border-radius: 50px;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.3s ease;
-            font-family: 'Orbitron';
-            box-shadow: 0 0 20px rgba(255,255,255,0.2);
-        }
-
-        .btn-google:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 30px var(--neon-blue);
-        }
-
-        /* --- MAIN APP UI --- */
-        #main-app { padding: 30px; display: none; }
-
-        .control-panel {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 25px;
-            border-radius: 20px;
-            max-width: 1000px;
-            margin: 0 auto 40px auto;
+        /* --- LAYOUT UTAMA --- */
+        .app-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            grid-template-columns: 380px 1fr; /* Kiri: Input, Kanan: Preview */
+            height: 100vh;
+            display: none; /* Hide before login */
         }
 
-        .input-group { display: flex; flex-direction: column; gap: 8px; }
-        .input-group label { 
-            font-size: 0.8rem; 
-            text-transform: uppercase; 
-            color: var(--neon-blue); 
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        /* --- SIDEBAR (INPUT) --- */
+        .sidebar {
+            background: rgba(255, 255, 255, 0.03);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--neon-blue);
+            margin-bottom: 5px;
+            text-transform: uppercase;
         }
 
         input, select {
+            width: 100%;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.2);
-            padding: 12px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 6px;
             color: white;
+            box-sizing: border-box;
             font-family: 'Roboto Mono', monospace;
-            transition: 0.3s;
         }
 
-        input:focus {
-            outline: none;
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 10px rgba(0,242,255,0.3);
-            background: rgba(255,255,255,0.1);
-        }
-
-        .button-row {
-            grid-column: 1 / -1;
-            display: flex;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
+        .btn-row { display: flex; gap: 10px; margin-top: 20px; }
         .btn {
             flex: 1;
-            padding: 15px;
+            padding: 12px;
             border: none;
-            border-radius: 10px;
-            font-weight: 700;
+            border-radius: 6px;
             cursor: pointer;
             font-family: 'Orbitron';
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
             transition: 0.3s;
         }
+        .btn-save { background: var(--neon-blue); color: black; }
+        .btn-print { background: var(--neon-purple); color: white; }
+        .btn-logout { background: #ff4b2b; color: white; flex: 0.3; }
 
-        .btn-save { background: linear-gradient(45deg, #00d2ff, #3a7bd5); color: white; }
-        .btn-print { background: linear-gradient(45deg, #bc13fe, #ff00ff); color: white; }
-        .btn-logout { background: #ff4b2b; color: white; flex: 0.2; }
-
-        .btn:hover { opacity: 0.9; transform: scale(1.02); }
-
-        /* --- PRINT AREA (A4 PREVIEW) --- */
-        .print-preview-container {
-            overflow-x: auto;
-            padding: 20px;
+        /* --- PREVIEW AREA --- */
+        .preview-area {
+            background: #1a1a1a;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            overflow-auto: auto;
         }
 
-        /* Kedudukan Center & Middle Alignment untuk Cetakan */
+        /* A4 PAGE SETUP */
         .a4-page {
             width: 210mm;
             height: 297mm;
             background: white;
-            margin: 0 auto;
             display: flex;
-            justify-content: center; /* Center Horizontal */
-            align-items: center;     /* Middle Vertical */
-            gap: 15mm;
+            justify-content: center;
+            align-items: center;
+            gap: 10mm;
+            padding: 0;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
             position: relative;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
 
         /* UKURAN TETAP KAD: 8.5cm x 19.3cm */
@@ -176,58 +130,57 @@
             width: 8.5cm;
             height: 19.3cm;
             background: var(--card-yellow) !important;
-            border: 1.5px solid black;
-            padding: 8mm 4mm;
+            border: 1.2px solid black;
+            padding: 5mm 3mm;
             box-sizing: border-box;
             color: black;
             display: flex;
             flex-direction: column;
-            position: relative;
             -webkit-print-color-adjust: exact;
         }
 
-        .card-header { text-align: center; margin-bottom: 5px; }
         .card-header h2 { 
-            margin: 0; font-size: 16px; font-weight: 900; letter-spacing: 1px;
-            font-family: 'Arial Black', sans-serif;
+            margin: 0; font-size: 14px; text-align: center; font-weight: 900; 
+            font-family: 'Arial Black', sans-serif; border-bottom: 2px solid black;
         }
 
-        .info-table { width: 100%; border-collapse: collapse; margin: 5px 0; }
+        .info-table { width: 100%; border-collapse: collapse; margin-top: 5px; }
         .info-table td { 
-            border: 1px solid black; padding: 3px; font-size: 10px; font-weight: 700; 
-            text-transform: uppercase; line-height: 1;
+            border: 1px solid black; padding: 2px 4px; font-size: 9px; 
+            font-weight: 700; text-transform: uppercase;
         }
 
-        .month-box { 
-            margin: 8px 0; font-weight: 900; font-size: 14px; 
-            border-bottom: 2px dotted black; padding-bottom: 2px;
-        }
+        .month-box { margin: 5px 0; font-weight: 900; font-size: 12px; border-bottom: 1.5px dotted black; }
 
-        /* Jadual Data */
-        .data-table { width: 100%; border-collapse: collapse; border: 1.5px solid black; }
+        .data-table { width: 100%; border-collapse: collapse; border: 1.2px solid black; }
         .data-table th { 
-            border: 1px solid black; font-size: 8px; height: 18px; 
-            background: rgba(0,0,0,0.05); font-weight: 900;
+            border: 1px solid black; font-size: 7px; height: 15px; 
+            background: rgba(0,0,0,0.05);
         }
         .data-table td { 
-            border: 1px solid black; height: 23.5px; text-align: center; 
+            border: 1px solid black; height: 23px; text-align: center; 
             font-size: 11px; font-weight: 900; font-family: 'Courier New', monospace;
         }
 
         .red-ink { color: var(--ink-red) !important; }
-        .weekend-row { background: rgba(0,0,0,0.08); }
+        .weekend-row { background: rgba(0,0,0,0.07); }
 
-        .footer-warning { margin-top: auto; border-top: 1px solid black; padding-top: 5px; }
-        .warning-text { font-size: 9px; font-weight: 900; text-align: center; display: block; line-height: 1.1; }
+        .footer-warning { margin-top: auto; font-size: 8px; text-align: center; font-weight: bold; line-height: 1; }
 
-        .pnmb { position: absolute; bottom: 2px; left: 5px; font-size: 6px; font-weight: bold; }
+        /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .app-container { grid-template-columns: 1fr; }
+            .sidebar { height: auto; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            .a4-page { transform: scale(0.8); transform-origin: top center; }
+            .preview-area { height: 1000px; }
+        }
 
         /* PRINT CONFIG */
         @media print {
-            body { background: none; padding: 0; }
-            #main-app .control-panel, header { display: none !important; }
-            .print-preview-container { padding: 0; }
-            .a4-page { box-shadow: none; margin: 0; border: none; }
+            body { background: white; }
+            .sidebar { display: none !important; }
+            .preview-area { padding: 0; background: none; }
+            .a4-page { box-shadow: none; margin: 0; border: none; transform: scale(1); }
             @page { size: A4; margin: 0; }
         }
     </style>
@@ -237,121 +190,113 @@
     <!-- LOGIN -->
     <div id="login-screen">
         <div class="cyber-logo">PunchCard v30</div>
-        <p style="color: #aaa; margin-bottom: 30px;">Futuristic Timesheet Management System</p>
-        <button class="btn-google" onclick="login()">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20">
-            SIGN IN WITH GOOGLE
+        <button class="btn btn-save" style="max-width: 250px;" onclick="login()">
+            <i class="fab fa-google"></i> LOG MASUK GOOGLE
         </button>
     </div>
 
     <!-- APP -->
-    <div id="main-app">
-        <div class="control-panel">
-            <div class="input-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-calendar-days"></i> Pilih Bulan & Tahun</label>
+    <div id="main-app" class="app-container">
+        
+        <!-- SIDEBAR (LEFT) -->
+        <div class="sidebar">
+            <div class="cyber-logo" style="font-size: 1.2rem;">Konfigurasi</div>
+            
+            <div class="input-group">
+                <label>Bulan & Tahun</label>
                 <input type="month" id="mPicker" onchange="init()">
             </div>
+            
             <div class="input-group">
-                <label><i class="fa-solid fa-hashtag"></i> B No.</label>
-                <input type="text" id="bnoI" value="16" oninput="sync()">
-            </div>
-            <div class="input-group">
-                <label><i class="fa-solid fa-user"></i> Nama Kakitangan</label>
+                <label>Nama Kakitangan</label>
                 <input type="text" id="nameI" value="MOHD FIRDAUS" oninput="sync()">
             </div>
-            <div class="input-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-building"></i> Jabatan / Agensi</label>
-                <input type="text" id="jabI" value="PERKHIDMATAN VETERINAR" oninput="sync()">
-            </div>
-            <div class="input-group" style="grid-column: span 2;">
-                <label><i class="fa-solid fa-sitemap"></i> Bahagian / Seksyen</label>
-                <input type="text" id="bahI" value="PENGUAT KUASA" oninput="sync()">
-            </div>
-            
-            <div style="grid-column: 1/-1; height: 1px; background: rgba(255,255,255,0.1); margin: 10px 0;"></div>
             
             <div class="input-group">
-                <label><i class="fa-solid fa-clock"></i> Tarikh Edit</label>
+                <label>No. Kad (B No.)</label>
+                <input type="text" id="bnoI" value="16" oninput="sync()">
+            </div>
+
+            <div class="input-group">
+                <label>Jabatan</label>
+                <input type="text" id="jabI" value="PERKHIDMATAN VETERINAR" oninput="sync()">
+            </div>
+
+            <div class="input-group">
+                <label>Bahagian</label>
+                <input type="text" id="bahI" value="PENGUAT KUASA" oninput="sync()">
+            </div>
+
+            <hr style="opacity: 0.1; margin: 20px 0;">
+
+            <div class="input-group">
+                <label>Pilih Tarikh untuk Edit</label>
                 <select id="dPicker"></select>
             </div>
-            <div class="input-group"><label>Masuk 1</label><input type="time" id="v1"></div>
-            <div class="input-group"><label>Keluar 1</label><input type="time" id="v2"></div>
-            <div class="input-group"><label>Masuk 2</label><input type="time" id="v3"></div>
-            <div class="input-group"><label>Keluar 2</label><input type="time" id="v4"></div>
-            <div class="input-group"><label>Nota/Cuti</label><input type="text" id="vNote"></div>
-            
-            <div class="button-row">
-                <button class="btn btn-save" onclick="saveData()"><i class="fa-solid fa-floppy-disk"></i> SIMPAN REKOD</button>
-                <button class="btn btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> CETAK A4</button>
-                <button class="btn btn-logout" onclick="logout()"><i class="fa-solid fa-power-off"></i></button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="input-group"><label>Masuk 1</label><input type="time" id="v1"></div>
+                <div class="input-group"><label>Keluar 1</label><input type="time" id="v2"></div>
+                <div class="input-group"><label>Masuk 2</label><input type="time" id="v3"></div>
+                <div class="input-group"><label>Keluar 2</label><input type="time" id="v4"></div>
+            </div>
+            <div class="input-group">
+                <label>Nota / Cuti / Kenyataan</label>
+                <input type="text" id="vNote" placeholder="Contoh: Cuti Sakit">
+            </div>
+
+            <div class="btn-row">
+                <button class="btn btn-save" onclick="saveData()">SIMPAN</button>
+                <button class="btn btn-print" onclick="window.print()">CETAK</button>
+                <button class="btn btn-logout" onclick="logout()"><i class="fa fa-power-off"></i></button>
             </div>
         </div>
 
-        <div class="print-preview-container">
+        <!-- PREVIEW (RIGHT) -->
+        <div class="preview-area">
             <div class="a4-page">
-                <!-- KAD 1 (1-15) -->
+                <!-- KAD 1 -->
                 <div class="punch-card">
                     <div class="card-header"><h2>KAD MENCATAT WAKTU</h2></div>
                     <table class="info-table">
                         <tr>
-                            <td style="width:20%; text-align:center;">B No.<br><span class="d-bno" style="font-size:16px">16</span></td>
+                            <td style="width:20%; text-align:center;">B No.<br><span class="d-bno" style="font-size:14px">16</span></td>
                             <td>NAMA: <span class="d-name">MOHD FIRDAUS</span></td>
                         </tr>
-                        <tr><td colspan="2">KEM./JAB: <span class="d-jab">PERKHIDMATAN VETERINAR</span></td></tr>
-                        <tr><td colspan="2">BAHAGIAN: <span class="d-bah">PENGUAT KUASA</span></td></tr>
+                        <tr><td colspan="2">JAB: <span class="d-jab">PERKHIDMATAN VETERINAR</span></td></tr>
+                        <tr><td colspan="2">BAH: <span class="d-bah">PENGUAT KUASA</span></td></tr>
                     </table>
                     <div class="month-box">BULAN: <span class="mt-label">APRIL 2026</span></div>
                     <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th style="width:10%">TAR</th>
-                                <th style="width:15%">MASUK</th><th style="width:15%">KELUAR</th>
-                                <th style="width:15%">MASUK</th><th style="width:15%">KELUAR</th>
-                                <th>KENYATAAN</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>TAR</th><th>MASUK</th><th>KELUAR</th><th>MASUK</th><th>KELUAR</th><th>NOTA</th></tr></thead>
                         <tbody id="b1"></tbody>
                     </table>
-                    <div class="footer-warning">
-                        <span class="warning-text">AMARAN<br>Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil.</span>
-                    </div>
-                    <div class="pnmb">PNMB-K.L.</div>
+                    <div class="footer-warning">AMARAN: MENGETIK KAD ORANG LAIN ADALAH KESALAHAN TATATERTIB</div>
                 </div>
 
-                <!-- KAD 2 (16-31) -->
+                <!-- KAD 2 -->
                 <div class="punch-card">
                     <div class="card-header"><h2>KAD MENCATAT WAKTU</h2></div>
                     <table class="info-table">
                         <tr>
-                            <td style="width:20%; text-align:center;">B No.<br><span class="d-bno" style="font-size:16px">16</span></td>
+                            <td style="width:20%; text-align:center;">B No.<br><span class="d-bno" style="font-size:14px">16</span></td>
                             <td>NAMA: <span class="d-name">MOHD FIRDAUS</span></td>
                         </tr>
-                        <tr><td colspan="2">KEM./JAB: <span class="d-jab">PERKHIDMATAN VETERINAR</span></td></tr>
-                        <tr><td colspan="2">BAHAGIAN: <span class="d-bah">PENGUAT KUASA</span></td></tr>
+                        <tr><td colspan="2">JAB: <span class="d-jab">PERKHIDMATAN VETERINAR</span></td></tr>
+                        <tr><td colspan="2">BAH: <span class="d-bah">PENGUAT KUASA</span></td></tr>
                     </table>
                     <div class="month-box">BULAN: <span class="mt-label">APRIL 2026</span></div>
                     <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th style="width:10%">TAR</th>
-                                <th style="width:15%">MASUK</th><th style="width:15%">KELUAR</th>
-                                <th style="width:15%">MASUK</th><th style="width:15%">KELUAR</th>
-                                <th>KENYATAAN</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>TAR</th><th>MASUK</th><th>KELUAR</th><th>MASUK</th><th>KELUAR</th><th>NOTA</th></tr></thead>
                         <tbody id="b2"></tbody>
                     </table>
-                    <div class="footer-warning">
-                        <span class="warning-text">AMARAN<br>Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil.</span>
-                    </div>
-                    <div class="pnmb">PNMB-K.L.</div>
+                    <div class="footer-warning">AMARAN: MENGETIK KAD ORANG LAIN ADALAH KESALAHAN TATATERTIB</div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Firebase Konfigurasi (Gunakan milik anda)
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyBEijt2e7QouToEdmr8A0il3sAQcBdS2lw",
             authDomain: "punchcardv26.firebaseapp.com",
@@ -373,7 +318,7 @@
             if (user) {
                 currentUser = user;
                 document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-app').style.display = 'block';
+                document.getElementById('main-app').style.display = 'grid';
                 init();
             } else {
                 document.getElementById('login-screen').style.display = 'flex';
@@ -396,17 +341,17 @@
             for (let i = 1; i <= 31; i++) {
                 let cls = "", ken = "";
                 if (i <= daysInMonth) {
-                    let o = document.createElement('option'); o.value = i; o.innerText = i; dInp.appendChild(o);
+                    let o = document.createElement('option'); o.value = i; o.innerText = `Tarikh: ${i}`; dInp.appendChild(o);
                     const d = new Date(y, m - 1, i);
                     if (d.getDay() === 0) { cls = "weekend-row"; ken = "Ahad"; }
                     else if (d.getDay() === 6) { cls = "weekend-row"; ken = "Sabtu"; }
                 }
                 
                 const row = `<tr id="r-${i}" class="${cls}">
-                    <td style="font-size:10px">${i}</td>
+                    <td style="font-size:9px">${i}</td>
                     <td id="x1-${i}"></td><td id="x2-${i}"></td>
                     <td id="x3-${i}"></td><td id="x4-${i}"></td>
-                    <td id="n-${i}" style="font-size:9px">${ken}</td>
+                    <td id="n-${i}" style="font-size:8px">${ken}</td>
                 </tr>`;
                 if (i <= 15) tb1.innerHTML += row; else tb2.innerHTML += row;
             }
@@ -428,8 +373,9 @@
 
             try {
                 await db.collection("users").doc(currentUser.uid).collection("records").doc(docId).set(data);
-                alert("Data Berjaya Disimpan!");
                 loadFromCloud();
+                // Clear input form
+                ['v1','v2','v3','v4','vNote'].forEach(id => document.getElementById(id).value = "");
             } catch (e) { alert("Ralat: " + e.message); }
         }
 
@@ -440,11 +386,11 @@
                                  .where(firebase.firestore.FieldPath.documentId(), "<=", `${monthYear}-31`)
                                  .get();
 
-            // Clear old data visual
+            // Reset visual
             for(let i=1; i<=31; i++) {
                 ['x1','x2','x3','x4'].forEach(v => {
                     const el = document.getElementById(`${v}-${i}`);
-                    if(el) el.innerText = "";
+                    if(el) { el.innerText = ""; el.classList.remove('red-ink'); }
                 });
             }
 
@@ -452,19 +398,14 @@
                 const day = parseInt(doc.id.split('-').pop());
                 const d = doc.data();
                 
-                const t1 = document.getElementById(`x1-${day}`);
-                const t2 = document.getElementById(`x2-${day}`);
-                const t3 = document.getElementById(`x3-${day}`);
-                const t4 = document.getElementById(`x4-${day}`);
-                const note = document.getElementById(`n-${day}`);
-
-                if(t1) {
-                    t1.innerText = d.v1; 
-                    if(d.v1 > "08:00") t1.classList.add('red-ink'); else t1.classList.remove('red-ink');
-                    t2.innerText = d.v2;
-                    t3.innerText = d.v3;
-                    t4.innerText = d.v4;
-                    if(d.note) note.innerText = d.note;
+                if(document.getElementById(`x1-${day}`)) {
+                    document.getElementById(`x1-${day}`).innerText = d.v1;
+                    if(d.v1 > "08:00") document.getElementById(`x1-${day}`).classList.add('red-ink');
+                    
+                    document.getElementById(`x2-${day}`).innerText = d.v2;
+                    document.getElementById(`x3-${day}`).innerText = d.v3;
+                    document.getElementById(`x4-${day}`).innerText = d.v4;
+                    if(d.note) document.getElementById(`n-${day}`).innerText = d.note;
                 }
             });
         }
