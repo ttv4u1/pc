@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>v23</title>
+    <title>v24 - Punch Card Replica</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -62,47 +62,49 @@
         button:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,210,255,0.4); }
 
         /* --- DESIGN REPLIKA KAD (AM 493-C) --- */
+        /* SAIS DIUBAH KEPADA 8.5cm x 19.3cm */
         .a4-page {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 20px;
             margin: 0 auto;
         }
 
         .punch-card {
             background: var(--card-yellow) !important;
             color: black;
-            width: 9.3cm;
-            min-height: 25.5cm;
-            padding: 10px;
+            width: 8.5cm;
+            height: 19.3cm;
+            padding: 8px;
             border: 1.5px solid #000;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
             position: relative;
+            overflow: hidden;
         }
 
-        .am-code { text-align: right; font-size: 9px; font-weight: 700; margin-bottom: 2px; }
+        .am-code { text-align: right; font-size: 8px; font-weight: 700; margin-bottom: 2px; }
         
-        .card-title { text-align: center; font-weight: 900; font-size: 15px; border-bottom: 2.5px solid black; padding-bottom: 4px; margin-bottom: 10px; }
+        .card-title { text-align: center; font-weight: 900; font-size: 13px; border-bottom: 2px solid black; padding-bottom: 2px; margin-bottom: 5px; }
 
-        .meta-info { display: grid; grid-template-columns: 80px 1fr; font-size: 11px; font-weight: 900; line-height: 1.4; border-bottom: 1.5px solid black; padding-bottom: 5px; }
-        .meta-full { grid-column: span 2; border-top: 1px solid black; padding: 2px 0; }
+        .meta-info { display: grid; grid-template-columns: 70px 1fr; font-size: 9px; font-weight: 900; line-height: 1.2; border-bottom: 1.2px solid black; padding-bottom: 3px; }
+        .meta-full { grid-column: span 2; border-top: 0.5px solid black; padding: 1px 0; }
 
-        .month-year { text-align: center; font-weight: 900; font-size: 18px; margin: 15px 0 2px 0; text-transform: uppercase; }
-        .bulan-dots { font-size: 10px; font-weight: 900; border-bottom: 1.5px dotted black; padding-bottom: 2px; margin-bottom: 10px; }
+        .month-year { text-align: center; font-weight: 900; font-size: 14px; margin: 8px 0 1px 0; text-transform: uppercase; }
+        .bulan-dots { font-size: 9px; font-weight: 900; border-bottom: 1.2px dotted black; padding-bottom: 2px; margin-bottom: 5px; }
 
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; border: 1.5px solid black; }
-        th, td { border: 1px solid black; text-align: center; height: 30px; font-size: 11px; font-weight: 900; padding: 0; }
-        th { font-size: 8px; font-weight: 900; background: rgba(0,0,0,0.02); height: auto; }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; border: 1.2px solid black; }
+        th, td { border: 1px solid black; text-align: center; height: 22px; font-size: 10px; font-weight: 900; padding: 0; }
+        th { font-size: 7px; font-weight: 900; background: rgba(0,0,0,0.02); height: auto; }
 
         .weekend-row { background: rgba(0,0,0,0.07); color: #800; }
 
-        .footer-ref { font-size: 8px; font-weight: 900; text-align: left; margin: 10px 0 2px 0; }
-        .amaran-section { border-top: 2.5px solid black; padding-top: 10px; text-align: center; }
-        .amaran-h { font-weight: 900; font-size: 15px; text-decoration: underline; margin-bottom: 5px; display: block; }
-        .amaran-b { font-size: 11px; font-weight: 900; line-height: 1.2; padding: 0 5px; }
+        .footer-ref { font-size: 7px; font-weight: 900; text-align: left; margin: 5px 0 2px 0; }
+        .amaran-section { border-top: 2px solid black; padding-top: 5px; text-align: center; }
+        .amaran-h { font-weight: 900; font-size: 12px; text-decoration: underline; margin-bottom: 2px; display: block; }
+        .amaran-b { font-size: 9px; font-weight: 900; line-height: 1.1; padding: 0 5px; }
 
         /* --- ANIMASI --- */
         @keyframes pulse { 0% { background: var(--neon-blue); } 100% { background: transparent; } }
@@ -110,11 +112,16 @@
 
         /* --- PRINT A4 --- */
         @media print {
-            @page { size: A4 portrait; margin: 0; }
+            @page { size: A4 portrait; margin: 10mm; }
             body { background: white !important; padding: 0; margin: 0; }
             header, .control-panel { display: none !important; }
-            .a4-page { display: flex !important; flex-direction: row !important; justify-content: center !important; margin: 10mm 0 !important; gap: 5mm !important; }
-            .punch-card { box-shadow: none !important; border: 2px solid black !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .a4-page { display: flex !important; flex-direction: row !important; justify-content: center !important; margin: 0 !important; gap: 10mm !important; }
+            .punch-card { 
+                box-shadow: none !important; 
+                border: 1.5px solid black !important; 
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact; 
+            }
         }
     </style>
 </head>
@@ -162,18 +169,18 @@
                 <div class="meta-full">BAHAGIAN/SEKSYEN: <span class="d-sec">PENGUAT KUASA</span></div>
             </div>
             <div class="month-year" id="mt1">APRIL 2026</div>
-            <div class="bulan-dots">BULAN......................................................................</div>
+            <div class="bulan-dots">BULAN.........................................................</div>
             <table>
                 <thead>
                     <tr>
-                        <th rowspan="2" style="width:25px;">TAR</th>
-                        <th>MASUK</th><th>KELUAR</th><th>MASUK</th><th>KELUAR</th><th rowspan="2">KENYATAAN</th><th rowspan="2" style="width:30px;">T/T KETUA</th>
+                        <th rowspan="2" style="width:22px;">TAR</th>
+                        <th>MASUK</th><th>KELUAR</th><th>MASUK</th><th>KELUAR</th><th rowspan="2">KENYATAAN</th><th rowspan="2" style="width:25px;">T/T</th>
                     </tr>
-                    <tr><td colspan="4" style="height:12px;"></td></tr>
+                    <tr><td colspan="4" style="height:8px;"></td></tr>
                 </thead>
                 <tbody id="b1"></tbody>
             </table>
-            <div class="card-footer">
+            <div class="card-footer" style="margin-top:auto;">
                 <div class="amaran-section">
                     <span class="amaran-h">AMARAN</span>
                     <span class="amaran-b">Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</span>
@@ -192,19 +199,19 @@
                 <div class="meta-full">BAHAGIAN/SEKSYEN: <span class="d-sec">PENGUAT KUASA</span></div>
             </div>
             <div class="month-year" id="mt2">APRIL 2026</div>
-            <div class="bulan-dots">BULAN......................................................................</div>
+            <div class="bulan-dots">BULAN.........................................................</div>
             <table>
                 <thead>
                     <tr>
-                        <th rowspan="2" style="width:25px;">TAR</th>
-                        <th>MASUK</th><th>KELUAR</th><th>MASUK</th><th>KELUAR</th><th rowspan="2">KENYATAAN</th><th rowspan="2" style="width:30px;">T/T KETUA</th>
+                        <th rowspan="2" style="width:22px;">TAR</th>
+                        <th>MASUK</th><th>KELUAR</th><th>MASUK</th><th>KELUAR</th><th rowspan="2">KENYATAAN</th><th rowspan="2" style="width:25px;">T/T</th>
                     </tr>
-                    <tr><td colspan="4" style="height:12px;"></td></tr>
+                    <tr><td colspan="4" style="height:8px;"></td></tr>
                 </thead>
                 <tbody id="b2"></tbody>
             </table>
             <div class="footer-ref">WJF24/0036--PNMB., K.L.</div>
-            <div class="card-footer">
+            <div class="card-footer" style="margin-top:auto;">
                 <div class="amaran-section">
                     <span class="amaran-h">AMARAN</span>
                     <span class="amaran-b">Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</span>
