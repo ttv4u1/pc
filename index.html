@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>v38</title>
+    <title>v39</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -15,10 +15,9 @@
         :root {
             --neon-blue: #00f2ff;
             --bg-dark: #0a0b10;
-            --card-yellow: #eacb67; /* Manila card color */
+            --card-yellow: #eacb67;
             --ink-black: #000;
             --ink-red: #cc0000;
-            /* URL Jata Negara Malaysia */
             --jata-url: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png');
         }
 
@@ -26,12 +25,6 @@
             margin: 0;
             font-family: 'Rajdhani', sans-serif;
             background: var(--bg-dark);
-            /* Background Interface dengan Jata Negara */
-            background-image: linear-gradient(rgba(10, 11, 16, 0.93), rgba(10, 11, 16, 0.93)), var(--jata-url);
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: 40%;
             color: #fff;
             height: 100vh;
             overflow: hidden;
@@ -44,7 +37,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: transparent;
+            background: radial-gradient(circle, #1a1b25 0%, #05060a 100%);
         }
 
         /* --- APP LAYOUT --- */
@@ -56,11 +49,10 @@
         }
 
         .sidebar {
-            background: rgba(17, 18, 26, 0.95);
+            background: #11121a;
             padding: 20px;
             overflow-y: auto;
             border-right: 1px solid #222;
-            backdrop-filter: blur(10px);
         }
 
         .section-card {
@@ -86,36 +78,52 @@
         .btn-save { background: var(--neon-blue); color: #000; }
         .btn-print { background: #bc13fe; color: #fff; }
 
-        /* --- PREVIEW AREA --- */
+        /* --- PREVIEW AREA (Web View Fix) --- */
         .preview-area {
-            background: rgba(22, 23, 29, 0.7);
+            background: #16171d;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Start from top to allow scrolling */
             overflow: auto;
-            padding: 40px;
+            padding: 40px 20px;
         }
 
-        /* --- THE PUNCH CARD (Watermark Jata Negara) --- */
+        .a4-container {
+            display: flex;
+            flex-direction: row; /* Bersebelahan Kiri & Kanan */
+            gap: 15mm;
+            padding: 0;
+            background: transparent;
+            min-width: max-content; /* Elak kad bertindan jika screen kecil */
+        }
+
+        /* --- THE PUNCH CARD --- */
         .punch-card {
             width: 8.5cm;
             height: 19.3cm;
             background-color: var(--card-yellow) !important;
-            /* Watermark Logic */
-            background-image: var(--jata-url) !important;
-            background-repeat: no-repeat !important;
-            background-position: center 65% !important;
-            background-size: 75% !important;
-            background-blend-mode: multiply; /* Supaya warna Jata sebati dengan warna kuning kad */
-            
             border: 1.5px solid #000;
             position: relative;
             box-sizing: border-box;
             color: #000;
             display: flex;
             flex-direction: column;
-            padding: 0;
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            overflow: hidden; /* Supaya watermark tidak terkeluar border */
+        }
+
+        /* Watermark Jata Negara 70% Opacity */
+        .punch-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: var(--jata-url);
+            background-repeat: no-repeat;
+            background-position: center 65%;
+            background-size: 75%;
+            opacity: 0.7; /* Set Opacity 70% */
+            z-index: 0;
+            pointer-events: none; /* Supaya tidak ganggu klik */
         }
 
         .card-inner {
@@ -123,23 +131,20 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            background: rgba(234, 203, 103, 0.4); /* Overlay nipis untuk pastikan teks dibaca */
-            z-index: 1;
+            position: relative;
+            z-index: 1; /* Pastikan teks di atas watermark */
         }
 
-        .header-box { border: 1.2px solid #000; margin-bottom: 4px; background: rgba(255,255,255,0.2); }
+        .header-box { border: 1.2px solid #000; margin-bottom: 4px; background: rgba(255,255,255,0.1); }
         .header-row { display: grid; grid-template-columns: 75px 1fr; border-bottom: 1.2px solid #000; }
         .header-row:last-child { border-bottom: none; }
 
         .label-cell {
             padding: 2px 4px; font-size: 8px; font-weight: 900;
-            border-right: 1.2px solid #000; background: rgba(0,0,0,0.05);
+            border-right: 1.2px solid #000; background: rgba(0,0,0,0.03);
         }
 
-        .value-cell {
-            padding: 2px 6px; font-size: 10px; font-weight: 900; 
-            text-transform: uppercase;
-        }
+        .value-cell { padding: 2px 6px; font-size: 10px; font-weight: 900; text-transform: uppercase; }
 
         .title-main {
             text-align: center; font-family: 'Arial Black', sans-serif; font-size: 13px;
@@ -155,11 +160,8 @@
         }
 
         .data-table td {
-            border: 1.2px solid #000; 
-            text-align: center;
-            font-family: 'Roboto Mono', monospace; 
-            font-size: 11px; 
-            font-weight: 800;
+            border: 1.2px solid #000; text-align: center;
+            font-family: 'Roboto Mono', monospace; font-size: 11px; font-weight: 800;
             height: 27px;
         }
 
@@ -168,11 +170,8 @@
         .col-tt { width: 35px; }
 
         .footer-amaran {
-            margin-top: 4px; 
-            border-top: 1.5px solid #000;
-            text-align: center; 
-            padding-top: 4px;
-            background: rgba(255,255,255,0.2);
+            margin-top: 4px; border-top: 1.5px solid #000;
+            text-align: center; padding-top: 4px;
         }
         .footer-amaran h4 { margin: 0; font-size: 11px; text-decoration: underline; font-family: 'Arial Black'; }
         .footer-amaran p { margin: 2px 0 0; font-size: 8.5px; font-weight: 900; line-height: 1.1; }
@@ -182,35 +181,22 @@
 
         /* --- PRINT CONFIGURATION --- */
         @media print {
-            body { 
-                background: white !important; 
-                -webkit-print-color-adjust: exact !important; 
-                print-color-adjust: exact !important; 
-            }
+            body { background: white !important; overflow: visible; }
             .sidebar, #login-screen { display: none !important; }
             .preview-area { 
-                display: flex !important; 
-                background: white !important; 
-                padding: 0 !important;
-                width: 210mm; height: 297mm;
-                justify-content: center !important;
-                align-items: center !important;
+                display: flex !important; background: white !important; padding: 0 !important;
+                width: 210mm; height: 297mm; justify-content: center !important; align-items: center !important;
             }
             .a4-container {
-                width: 210mm; height: 297mm;
-                display: flex !important;
-                justify-content: center !important;
-                align-items: center !important;
-                gap: 10mm;
-                margin: 0;
+                width: 210mm; height: 297mm; display: flex !important;
+                justify-content: center !important; align-items: center !important;
+                gap: 10mm; margin: 0;
             }
             .punch-card { 
-                box-shadow: none !important; 
-                border: 1.5px solid #000;
-                /* Pastikan Jata Negara keluar dalam cetakan */
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
+                box-shadow: none !important; border: 1.5px solid #000;
+                -webkit-print-color-adjust: exact; print-color-adjust: exact;
             }
+            .punch-card::before { opacity: 0.7 !important; -webkit-print-color-adjust: exact; }
             @page { size: A4 portrait; margin: 0; }
         }
     </style>
@@ -218,13 +204,11 @@
 <body>
 
     <div id="login-screen">
-        <div style="font-family: 'Orbitron'; font-size: 2.8rem; color: var(--neon-blue); margin-bottom: 20px; letter-spacing: 5px; text-shadow: 0 0 20px rgba(0,242,255,0.5);">V37 PRESTIGE</div>
-        <div style="margin-bottom: 30px; font-weight: bold; letter-spacing: 2px; color: #aaa;">SISTEM PENGURUSAN MASA KAKITANGAN</div>
+        <div style="font-family: 'Orbitron'; font-size: 2.8rem; color: var(--neon-blue); margin-bottom: 20px; letter-spacing: 5px;">V37 PRESTIGE</div>
         <button class="btn btn-save" style="width: 280px; letter-spacing: 1px;" onclick="login()">LOG MASUK DENGAN GOOGLE</button>
     </div>
 
     <div id="main-app" class="app-container">
-        <!-- Sidebar and other elements remain the same as your original code -->
         <div class="sidebar">
             <h2 style="font-family: 'Orbitron'; font-size: 1.1rem; color: var(--neon-blue); margin-bottom: 20px;">PUNCH CARD V37</h2>
             
@@ -256,7 +240,7 @@
 
         <div class="preview-area">
             <div class="a4-container">
-                <!-- KAD 1 (TARIKH 1-15) -->
+                <!-- KAD 1 (1-15) -->
                 <div class="punch-card">
                     <div class="card-inner">
                         <div class="title-main">KAD MENCATAT WAKTU</div>
@@ -295,10 +279,9 @@
                     </div>
                 </div>
 
-                <!-- KAD 2 (TARIKH 16-31) -->
+                <!-- KAD 2 (16-31) -->
                 <div class="punch-card">
                     <div class="card-inner">
-                        <!-- Same structure for Kad 2 -->
                         <div class="title-main">KAD MENCATAT WAKTU</div>
                         <div class="header-box">
                             <div class="header-row" style="grid-template-columns: 75px 40px 1fr;">
@@ -339,7 +322,7 @@
     </div>
 
     <script>
-        // JS anda kekal sama (Firebase logic)
+        // FIREBASE & LOGIC KEKAL SAMA SEPERTI ASAL
         const firebaseConfig = {
             apiKey: "AIzaSyBEijt2e7QouToEdmr8A0il3sAQcBdS2lw",
             authDomain: "punchcardv26.firebaseapp.com",
