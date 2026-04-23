@@ -3,408 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem EPW v4.0.0 | Corporate Attendance</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-
+    <title>Sistem Punch Card Korporat - Cetak A4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --gov-blue: #003366; --gov-gold: #D4AF37; --card-yellow: #f8f9a1; }
-        
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(240,248,255,0.98)), 
-                        url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/1200px-Coat_of_arms_of_Malaysia.svg.png');
-            background-attachment: fixed; background-position: center; background-repeat: no-repeat; background-size: 25%; min-height: 100vh;
+        :root {
+            --neon-blue: #00d2ff;
+            --glass-bg: rgba(0, 0, 0, 0.8);
+            --card-yellow: #f4e887; /* Warna kuning seperti dalam gambar */
         }
 
-        /* UI Styling */
-        .glass-ui { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.5); border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 51, 102, 0.08); }
-        .digital-clock { font-family: 'Orbitron', sans-serif; background: linear-gradient(45deg, var(--gov-blue), #007bff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-variant-numeric: tabular-nums; }
+        /* --- STYLES UNTUK SKRIN (UI) --- */
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
+                        url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/1200px-Coat_of_arms_of_Malaysia.svg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+        }
 
-        /* =========================================
-           PRINT SPECIFICATION: 3.5" x 7.5"
-           ========================================= */
-        @page { size: A4 portrait; margin: 0; }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            padding: 15px 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
 
+        .logo-group img { height: 60px; margin-right: 15px; vertical-align: middle; }
+
+        .live-clock {
+            text-align: right;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+        }
+
+        .control-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .input-box { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 200px; }
+        
+        input, button {
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn { cursor: pointer; font-weight: bold; transition: 0.3s; color: white; text-transform: uppercase; }
+        .btn-in { background: #2ecc71; }
+        .btn-out { background: #e74c3c; }
+        .btn-print { background: #3498db; }
+        .btn:hover { transform: scale(1.05); filter: brightness(1.2); }
+
+        /* --- STYLES KAD (PUNCH CARD) --- */
+        .card-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .punch-card {
+            background-color: var(--card-yellow) !important;
+            color: black;
+            width: 420px;
+            padding: 15px;
+            border: 1.5px solid #000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .card-header-main { text-align: center; font-weight: bold; font-size: 1.2rem; border-bottom: 2px solid black; margin-bottom: 10px; }
+        
+        .meta-info { display: grid; grid-template-columns: 1fr 3fr; font-size: 0.85rem; font-weight: bold; line-height: 1.5; }
+        .meta-full { grid-column: span 2; border-top: 1px solid #444; margin-top: 2px; }
+
+        .month-label { text-align: center; font-weight: bold; font-size: 1.1rem; margin: 10px 0; text-transform: uppercase; }
+
+        table { width: 100%; border-collapse: collapse; background: transparent; }
+        th, td { border: 1px solid black; text-align: center; height: 24px; font-size: 0.75rem; }
+        th { font-size: 0.65rem; background: rgba(0,0,0,0.05); }
+
+        .weekend { background-color: rgba(0,0,0,0.05); font-weight: bold; color: #b33939; }
+        
+        .footer-note { margin-top: 15px; text-align: center; font-weight: bold; font-size: 0.75rem; border-top: 2px solid black; padding-top: 10px; }
+
+        /* --- ANIMASI --- */
+        @keyframes pulse {
+            0% { background-color: #00d2ff; }
+            100% { background-color: transparent; }
+        }
+        .punched { animation: pulse 2s ease-out; }
+
+        /* --- PRINT SETTINGS (A4) --- */
         @media print {
-            .no-print { display: none !important; }
-            body { background: white !important; margin: 0 !important; padding: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            
-            .print-wrapper { display: block !important; width: 210mm; margin: 0 auto; }
-
-            /* PAGE 1: DUA KAD PUNCH SEBELAH MENYEBELAH */
-            .print-page-cards {
+            @page {
+                size: A4 portrait;
+                margin: 10mm;
+            }
+            body {
+                background: white !important;
+                padding: 0;
+                margin: 0;
+            }
+            header, .control-panel, .live-clock {
+                display: none !important;
+            }
+            .card-wrapper {
                 display: flex !important;
                 flex-direction: row !important;
                 justify-content: center !important;
-                align-items: flex-start !important;
-                gap: 0.4in;
-                padding-top: 20mm;
-                height: 297mm;
-                page-break-after: always !important;
+                gap: 5mm !important;
             }
-
-            .legacy-card {
-                display: block !important;
-                background-color: var(--card-yellow) !important;
-                width: 3.5in !important;
-                height: 7.5in !important;
-                border: 1.5px solid #000 !important;
-                padding: 10px !important;
-                color: #000 !important;
-                box-sizing: border-box;
-                position: relative;
+            .punch-card {
+                box-shadow: none !important;
+                border: 1px solid black !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                width: 45%; /* Supaya 2 kad muat sebelah menyebelah di A4 */
             }
-
-            .legacy-table { width: 100%; border-collapse: collapse; margin-top: 5px; border: 1.2px solid #000; }
-            .legacy-table th, .legacy-table td { 
-                border: 1.2px solid #000; 
-                text-align: center; 
-                font-size: 7.2pt !important; 
-                padding: 0 !important; 
-                height: 16px !important;
-                font-weight: 900;
-                color: #000 !important;
-            }
-
-            /* PAGE 2+: DETAILED LOGS */
-            .print-page-logs {
-                display: block !important;
-                padding: 20mm;
-                min-height: 297mm;
-                background: white !important;
-            }
-            .log-header { border-bottom: 2px solid #000; font-size: 12pt; font-weight: 900; margin-bottom: 15px; padding-bottom: 5px; }
-            .log-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-            .log-table th, .log-table td { border: 0.5px solid #000; padding: 8px; font-size: 9pt; text-align: left; }
-            .log-table th { background-color: #f3f4f6 !important; -webkit-print-color-adjust: exact; }
+            .punched { animation: none !important; }
         }
 
-        .print-wrapper { display: none; }
+        /* Responsif Mobile */
+        @media (max-width: 900px) {
+            .card-wrapper { flex-direction: column; align-items: center; }
+            header { flex-direction: column; text-align: center; gap: 15px; }
+            .live-clock { text-align: center; }
+        }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
 
-    <div id="loader" class="fixed inset-0 bg-white/80 z-[100] hidden place-items-center">
-        <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-900"></div>
-    </div>
-
-    <!-- WEB HEADER -->
-    <header class="max-w-6xl mx-auto flex justify-between items-center mb-8 no-print">
-        <div class="flex items-center gap-4">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/200px-Coat_of_arms_of_Malaysia.svg.png" class="h-12 drop-shadow-md">
-            <div class="flex gap-2">
-                <div class="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center font-black text-xs text-blue-900">BPK</div>
-                <div class="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center font-black text-xs text-blue-900">JAB</div>
-            </div>
+    <header>
+        <div class="logo-group">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/1200px-Coat_of_arms_of_Malaysia.svg.png" alt="Jata Negara">
+            <!-- Gantikan placeholder dengan logo sebenar anda -->
+            <img src="https://via.placeholder.com/60/003366/ffffff?text=JABATAN" alt="Logo Jabatan">
+            <img src="https://via.placeholder.com/60/003366/ffffff?text=BPK" alt="Logo BPK">
         </div>
-        <div class="text-right">
-            <h1 class="text-xl font-extrabold text-blue-950 tracking-tight">SISTEM E-PERAKAM WAKTU</h1>
-            <p class="text-[9px] font-bold text-blue-600 tracking-widest uppercase italic">Corporate Digital Governance</p>
+        <div class="live-clock">
+            <div id="date-txt">--</div>
+            <div id="time-txt" style="font-size: 2rem; font-weight: bold;">00:00:00 AM</div>
         </div>
     </header>
 
-    <!-- AUTH SECTION -->
-    <section id="authView" class="max-w-md mx-auto glass-ui p-10 text-center mt-20 no-print border-t-8 border-blue-900">
-        <i class="fas fa-shield-halved text-5xl text-blue-900 mb-6"></i>
-        <h2 class="text-2xl font-black text-gray-800">Log Masuk Kakitangan</h2>
-        <p class="text-sm text-gray-500 mb-8 mt-2">Sila log masuk menggunakan akaun Google rasmi anda.</p>
-        <button id="btnLogin" class="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-100 py-4 rounded-2xl hover:border-blue-500 transition-all font-bold text-gray-700 shadow-xl">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/action/google.svg" class="h-6">
-            Log Masuk dengan Google
-        </button>
-    </section>
-
-    <!-- DASHBOARD -->
-    <main id="mainDashboard" class="hidden max-w-6xl mx-auto space-y-6">
-        <!-- TOP INFO -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="glass-ui p-6 text-center border-b-4 border-blue-600">
-                <div id="realTime" class="digital-clock text-4xl font-bold">00:00:00</div>
-                <div id="realAmPm" class="text-blue-900 font-black text-sm tracking-widest mt-1">AM</div>
-                <div id="realDate" class="text-[10px] font-bold text-gray-400 mt-4 uppercase">...</div>
-            </div>
-            
-            <div class="md:col-span-2 glass-ui p-6 flex items-center justify-between border-l-8 border-blue-950">
-                <div class="flex items-center gap-4">
-                    <img id="userAvatar" src="" class="w-16 h-16 rounded-2xl shadow-md border-2 border-white">
-                    <div>
-                        <h3 id="displayName" class="text-lg font-black text-gray-800 uppercase leading-none">---</h3>
-                        <p id="displayEmail" class="text-[10px] font-bold text-blue-600 mt-1">---</p>
-                    </div>
-                </div>
-                <div class="flex gap-2 no-print">
-                    <button onclick="preparePrint()" class="bg-blue-900 text-white px-5 py-2 rounded-xl font-black text-[10px] shadow-lg hover:bg-blue-800 transition">
-                        <i class="fas fa-print mr-2"></i> CETAK KAD A4
-                    </button>
-                    <button id="btnLogout" class="bg-red-50 text-red-500 p-3 rounded-xl hover:bg-red-600 hover:text-white transition-all">
-                        <i class="fas fa-power-off"></i>
-                    </button>
-                </div>
-            </div>
+    <div class="control-panel">
+        <div class="input-box">
+            <label>Pilih Tarikh:</label>
+            <input type="date" id="targetDate" onchange="initTable()">
         </div>
-
-        <!-- ACTIONS -->
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 no-print">
-            <button onclick="recordPunch('MASUK')" class="glass-ui p-6 border-b-4 border-green-500 hover:-translate-y-1 transition-all group text-center">
-                <i class="fas fa-sign-in-alt text-2xl text-green-500 mb-2 group-hover:scale-110 transition-transform"></i>
-                <span class="block font-black text-xs">PUNCH MASUK</span>
-            </button>
-            <button onclick="recordPunch('KELUAR')" class="glass-ui p-6 border-b-4 border-red-500 hover:-translate-y-1 transition-all group text-center">
-                <i class="fas fa-sign-out-alt text-2xl text-red-500 mb-2 group-hover:scale-110 transition-transform"></i>
-                <span class="block font-black text-xs">PUNCH KELUAR</span>
-            </button>
-            <button onclick="openLuarModal()" class="glass-ui p-6 border-b-4 border-yellow-500 hover:-translate-y-1 transition-all group text-center col-span-2 md:col-span-1">
-                <i class="fas fa-map-location-dot text-2xl text-yellow-500 mb-2 group-hover:scale-110 transition-transform"></i>
-                <span class="block font-black text-xs">LUAR KAWASAN</span>
-            </button>
+        <div class="input-box">
+            <label>Nama Pegawai:</label>
+            <input type="text" id="userName" value="MOHD FIRDAUS B. I" oninput="syncInfo()">
         </div>
-
-        <!-- LIVE LOG TABLE -->
-        <div class="glass-ui overflow-hidden shadow-lg border-t-4 border-blue-950">
-            <div class="bg-blue-950 p-4 text-white flex justify-between items-center">
-                <h3 class="font-black text-[10px] tracking-widest uppercase"><i class="fas fa-history mr-2"></i> Log Rekod Semasa</h3>
-                <button onclick="downloadCSV()" class="bg-green-600 px-3 py-1 text-[9px] font-bold rounded hover:bg-green-700">DOWNLOAD CSV</button>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-[11px]">
-                    <thead class="bg-gray-50 font-black text-gray-400 uppercase tracking-widest border-b">
-                        <tr><th class="p-4">Tarikh</th><th class="p-4">Waktu (12H)</th><th class="p-4">Aktiviti</th><th class="p-4">Kenyataan</th></tr>
-                    </thead>
-                    <tbody id="logBody" class="divide-y divide-gray-100"></tbody>
-                </table>
-            </div>
+        <div class="input-box">
+            <label>Bahagian/Seksyen:</label>
+            <input type="text" id="userDept" value="PENGUAT KUASA" oninput="syncInfo()">
         </div>
-    </main>
-
-    <!-- PRINT WRAPPER -->
-    <div id="printArea" class="print-wrapper">
-        <!-- PAGE 1: DUA KAD PUNCH SEPERTI GAMBAR (REAL SIZE) -->
-        <div class="print-page-cards">
-            <!-- Card 1-15 -->
-            <div class="legacy-card">
-                <div style="text-align: right; font-size: 6.5pt; font-weight: bold;">Am 493—C (Pin. 1/88)</div>
-                <div style="text-align: center; font-weight: 900; font-size: 11pt; border-bottom: 1.5px solid #000; padding-bottom: 2px;">KAD MENCATAT WAKTU</div>
-                <div style="font-size: 7.5pt; font-weight: bold; margin-top: 5px; line-height: 1.3;">
-                    B No. <u>16</u> NAMA: <span class="pName"></span><br>
-                    KEM./JAB. <u>PERKHIDMATAN VETERINAR</u><br>
-                    BAHAGIAN/SEKSYEN: <u>PENGUAT KUASA</u>
-                </div>
-                <div style="text-align: center; font-weight: 900; font-size: 9.5pt; margin: 4px 0;">APRIL 2026</div>
-                <table class="legacy-table">
-                    <thead>
-                        <tr><th rowspan="2" width="10%">TAR</th><th colspan="2">MASUK</th><th colspan="2">KELUAR</th><th rowspan="2">KENYATAAN</th></tr>
-                        <tr><th width="12%">1</th><th width="12%">2</th><th width="12%">1</th><th width="12%">2</th></tr>
-                    </thead>
-                    <tbody id="pTable1"></tbody>
-                </table>
-                <div style="text-align: center; margin-top: 5px;">
-                    <h4 style="text-decoration: underline; font-size: 9pt; font-weight: 900;">AMARAN</h4>
-                    <p style="font-size: 7pt; font-style: italic; font-weight: bold;">Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</p>
-                </div>
-            </div>
-
-            <!-- Card 16-31 -->
-            <div class="legacy-card">
-                <div style="text-align: right; font-size: 6.5pt; font-weight: bold;">Am 493—C (Pin. 1/88)</div>
-                <div style="text-align: center; font-weight: 900; font-size: 11pt; border-bottom: 1.5px solid #000; padding-bottom: 2px;">KAD MENCATAT WAKTU</div>
-                <div style="font-size: 7.5pt; font-weight: bold; margin-top: 5px; line-height: 1.3;">
-                    B No. <u>16</u> NAMA: <span class="pName"></span><br>
-                    KEM./JAB. <u>PERKHIDMATAN VETERINAR</u><br>
-                    BAHAGIAN/SEKSYEN: <u>PENGUAT KUASA</u>
-                </div>
-                <div style="text-align: center; font-weight: 900; font-size: 9.5pt; margin: 4px 0;">APRIL 2026</div>
-                <table class="legacy-table">
-                    <thead>
-                        <tr><th rowspan="2" width="10%">TAR</th><th colspan="2">MASUK</th><th colspan="2">KELUAR</th><th rowspan="2">KENYATAAN</th></tr>
-                        <tr><th width="12%">1</th><th width="12%">2</th><th width="12%">1</th><th width="12%">2</th></tr>
-                    </thead>
-                    <tbody id="pTable2"></tbody>
-                </table>
-                <div style="text-align: center; margin-top: 5px;">
-                    <h4 style="text-decoration: underline; font-size: 9pt; font-weight: 900;">AMARAN</h4>
-                    <p style="font-size: 7pt; font-style: italic; font-weight: bold;">Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</p>
-                </div>
-            </div>
+        <div style="display: flex; align-items: flex-end; gap: 10px;">
+            <button class="btn btn-in" onclick="doPunch('in')">MASUK</button>
+            <button class="btn btn-out" onclick="doPunch('out')">KELUAR</button>
+            <button class="btn btn-print" onclick="window.print()">CETAK A4</button>
         </div>
+    </div>
 
-        <!-- PAGE 2+: FULL DETAILED LOGS -->
-        <div class="print-page-logs">
-            <div class="log-header uppercase">Ringkasan Log Pergerakan Terperinci (Audit Trail)</div>
-            <table class="log-table">
+    <div class="card-wrapper" id="printArea">
+        <!-- KAD 1 (1-15) -->
+        <div class="punch-card">
+            <div class="card-header-main">KAD MENCATAT WAKTU</div>
+            <div class="meta-info">
+                <div>B No. 16</div>
+                <div>NAMA: <span class="disp-name">MOHD FIRDAUS B. I</span></div>
+                <div class="meta-full">KEM./JAB.: PERKHIDMATAN VETERINAR</div>
+                <div class="meta-full">BAHAGIAN/SEKSYEN: <span class="disp-dept">PENGUAT KUASA</span></div>
+            </div>
+            <div class="month-label" id="month-name-1">APRIL 2026</div>
+            <table>
                 <thead>
-                    <tr><th>Tarikh</th><th>Waktu (12H)</th><th>Jenis Aktiviti</th><th>Kenyataan / Lokasi</th></tr>
+                    <tr>
+                        <th rowspan="2">TGL</th>
+                        <th colspan="2">MASUK</th>
+                        <th colspan="2">KELUAR</th>
+                        <th rowspan="2">KENYATAAN</th>
+                    </tr>
+                    <tr><th>JAM</th><th>MIN</th><th>JAM</th><th>MIN</th></tr>
                 </thead>
-                <tbody id="pFullLogs"></tbody>
+                <tbody id="body-1"></tbody>
             </table>
+            <div class="footer-note">
+                AMARAN<br>
+                Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.
+            </div>
         </div>
-    </div>
 
-    <!-- MODAL -->
-    <div id="luarModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4 no-print">
-        <div class="bg-white rounded-[32px] w-full max-w-sm p-8 shadow-2xl">
-            <h3 class="font-black mb-4 uppercase text-sm flex items-center gap-2"><i class="fas fa-briefcase text-yellow-500"></i> Tugas Luar Kawasan</h3>
-            <textarea id="fNote" class="w-full border-2 p-4 rounded-2xl h-28 text-xs mb-4 outline-none focus:border-blue-900" placeholder="Butiran lokasi, nama agensi atau tujuan tugas..."></textarea>
-            <div class="flex gap-2">
-                <button onclick="recordPunch('LUAR')" class="flex-1 bg-blue-950 text-white py-4 rounded-2xl font-black text-xs shadow-lg">SIMPAN</button>
-                <button onclick="document.getElementById('luarModal').classList.add('hidden')" class="px-6 bg-gray-100 rounded-2xl font-black text-xs text-gray-500">BATAL</button>
+        <!-- KAD 2 (16-31) -->
+        <div class="punch-card">
+            <div class="card-header-main">KAD MENCATAT WAKTU</div>
+            <div class="meta-info">
+                <div>B No. 16</div>
+                <div>NAMA: <span class="disp-name">MOHD FIRDAUS B. I</span></div>
+            </div>
+            <div class="month-label" id="month-name-2">APRIL 2026</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th rowspan="2">TGL</th>
+                        <th colspan="2">MASUK</th>
+                        <th colspan="2">KELUAR</th>
+                        <th rowspan="2">KENYATAAN</th>
+                    </tr>
+                    <tr><th>JAM</th><th>MIN</th><th>JAM</th><th>MIN</th></tr>
+                </thead>
+                <tbody id="body-2"></tbody>
+            </table>
+            <div class="footer-note">
+                WJF24/0036--PNMB., K.L.<br>
+                AMARAN: Tatatertib akan diambil jika menipu.
             </div>
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, query, where, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        // --- GANTIKAN KONFIGURASI INI ---
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_ID.firebaseapp.com",
-            projectId: "YOUR_ID",
-            storageBucket: "YOUR_ID.appspot.com",
-            messagingSenderId: "SENDER_ID",
-            appId: "APP_ID"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const provider = new GoogleAuthProvider();
-
-        let currentUser = null;
-        let attendanceLogs = [];
-        const loader = document.getElementById('loader');
-
-        // AUTH HANDLERS
-        document.getElementById('btnLogin').onclick = () => {
-            loader.style.display = 'grid';
-            signInWithPopup(auth, provider).catch(e => alert(e.message)).finally(() => loader.style.display = 'none');
-        };
-
-        document.getElementById('btnLogout').onclick = () => signOut(auth);
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                currentUser = user;
-                document.getElementById('authView').classList.add('hidden');
-                document.getElementById('mainDashboard').classList.remove('hidden');
-                document.getElementById('displayName').innerText = user.displayName;
-                document.getElementById('displayEmail').innerText = user.email;
-                document.getElementById('userAvatar').src = user.photoURL;
-                listenToLogs(user.uid);
-            } else {
-                document.getElementById('authView').classList.remove('hidden');
-                document.getElementById('mainDashboard').classList.add('hidden');
-            }
-        });
-
-        // PUNCH LOGIC
-        window.recordPunch = async (type) => {
-            if (!currentUser) return;
-            loader.style.display = 'grid';
-
+    <script>
+        // 1. Live Clock Function
+        function clock() {
             const now = new Date();
-            let note = "Kehadiran Pejabat";
-            if (type === 'LUAR') {
-                note = document.getElementById('fNote').value || "Tugas Luar";
-                document.getElementById('luarModal').classList.add('hidden');
-                type = "LUAR KAWASAN";
-            }
-
-            try {
-                await addDoc(collection(db, "punchlogs"), {
-                    uid: currentUser.uid,
-                    type: type,
-                    note: note,
-                    timestamp: serverTimestamp(),
-                    day: now.getDate(),
-                    month: now.getMonth() + 1,
-                    year: now.getFullYear(),
-                    dateStr: now.toLocaleDateString('en-GB')
-                });
-                alert(`${type} berjaya direkodkan.`);
-            } catch (e) {
-                console.error(e);
-            } finally {
-                loader.style.display = 'none';
-            }
-        };
-
-        // REAL-TIME LISTENER
-        function listenToLogs(uid) {
-            const q = query(collection(db, "punchlogs"), where("uid", "==", uid), orderBy("timestamp", "desc"));
-            onSnapshot(q, (snapshot) => {
-                attendanceLogs = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                    time: doc.data().timestamp ? doc.data().timestamp.toDate().toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit', hour12: true }) : '...'
-                }));
-                renderTable();
-            });
-        }
-
-        function renderTable() {
-            const tbody = document.getElementById('logBody');
-            tbody.innerHTML = '';
-            attendanceLogs.slice(0, 10).forEach(l => {
-                const color = l.type === 'MASUK' ? 'text-green-600' : l.type === 'KELUAR' ? 'text-red-600' : 'text-yellow-600';
-                tbody.innerHTML += `<tr class="border-b"><td class="p-4 font-bold text-gray-700">${l.dateStr}</td><td class="p-4 font-mono font-bold text-blue-900">${l.time}</td><td class="p-4 font-black uppercase text-[10px] ${color}">${l.type}</td><td class="p-4 text-gray-500 italic truncate max-w-xs">${l.note}</td></tr>`;
-            });
-        }
-
-        // PRINT PREPARATION
-        window.preparePrint = () => {
-            document.querySelectorAll('.pName').forEach(el => el.innerText = currentUser.displayName);
-            const t1 = document.getElementById('pTable1'); t1.innerHTML = '';
-            const t2 = document.getElementById('pTable2'); t2.innerHTML = '';
-            const pLogsFull = document.getElementById('pFullLogs'); pLogsFull.innerHTML = '';
-
-            for(let i=1; i<=31; i++) {
-                const dLogs = attendanceLogs.filter(l => l.day === i && l.month === (new Date().getMonth() + 1));
-                const masuks = dLogs.filter(l => l.type === 'MASUK' || l.type === 'LUAR KAWASAN');
-                const keluars = dLogs.filter(l => l.type === 'KELUAR');
-
-                let ken = "";
-                const dateObj = new Date(new Date().getFullYear(), new Date().getMonth(), i);
-                if(dateObj.getDay() === 6) ken = "SABTU";
-                else if(dateObj.getDay() === 0) ken = "AHAD";
-                else if(dLogs.some(l => l.type === 'LUAR KAWASAN')) ken = "LUAR";
-
-                const row = `<tr><td>${i}</td><td>${masuks[0]?masuks[0].time.split(' ')[0]:''}</td><td>${masuks[1]?masuks[1].time.split(' ')[0]:''}</td><td>${keluars[0]?keluars[0].time.split(' ')[0]:''}</td><td>${keluars[1]?keluars[1].time.split(' ')[0]:''}</td><td style="text-align:left; padding-left:3px;">${ken}</td></tr>`;
-                if(i <= 15) t1.innerHTML += row;
-                else t2.innerHTML += row;
-            }
-
-            attendanceLogs.forEach(l => {
-                pLogsFull.innerHTML += `<tr><td>${l.dateStr}</td><td>${l.time}</td><td style="font-weight:900;">${l.type}</td><td style="font-style:italic;">${l.note}</td></tr>`;
-            });
-
-            window.print();
-        };
-
-        window.downloadCSV = () => {
-            let csv = "Tarikh,Waktu,Aktiviti,Kenyataan\n";
-            attendanceLogs.forEach(l => csv += `${l.dateStr},${l.time},${l.type},"${l.note}"\n`);
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = `EPW_Report.csv`; a.click();
-        };
-
-        window.openLuarModal = () => document.getElementById('luarModal').classList.remove('hidden');
-
-        // CLOCK ENGINE
-        setInterval(() => {
-            const now = new Date();
+            const dOptions = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            document.getElementById('date-txt').innerText = now.toLocaleDateString('ms-MY', dOptions);
+            
             let h = now.getHours();
-            const ampm = h >= 12 ? 'PM' : 'AM';
+            let m = String(now.getMinutes()).padStart(2, '0');
+            let s = String(now.getSeconds()).padStart(2, '0');
+            let ampm = h >= 12 ? 'PM' : 'AM';
             h = h % 12 || 12;
-            document.getElementById('realTime').innerText = `${String(h).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
-            document.getElementById('realAmPm').innerText = ampm;
-            document.getElementById('realDate').innerText = now.toLocaleDateString('ms-MY', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase();
-        }, 1000);
+            document.getElementById('time-txt').innerText = `${h}:${m}:${s} ${ampm}`;
+        }
+        setInterval(clock, 1000);
+        clock();
+
+        // 2. Initialize Table based on Realtime Month
+        const dateInput = document.getElementById('targetDate');
+        dateInput.valueAsDate = new Date();
+
+        function initTable() {
+            const selDate = new Date(dateInput.value);
+            const year = selDate.getFullYear();
+            const month = selDate.getMonth();
+            const mNames = ["JANUARI", "FEBRUARI", "MAC", "APRIL", "MEI", "JUN", "JULAI", "OGOS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DISEMBER"];
+            
+            document.getElementById('month-name-1').innerText = `${mNames[month]} ${year}`;
+            document.getElementById('month-name-2').innerText = `${mNames[month]} ${year}`;
+
+            const b1 = document.getElementById('body-1');
+            const b2 = document.getElementById('body-2');
+            b1.innerHTML = ""; b2.innerHTML = "";
+
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            for (let i = 1; i <= 31; i++) {
+                let rowContent = `<td>${i}</td><td id="in-h-${i}"></td><td id="in-m-${i}"></td><td id="out-h-${i}"></td><td id="out-m-${i}"></td>`;
+                let note = "";
+                let cls = "";
+
+                if (i <= daysInMonth) {
+                    const dayObj = new Date(year, month, i);
+                    const dayNum = dayObj.getDay();
+                    if (dayNum === 0) { note = "Ahad"; cls = "weekend"; }
+                    if (dayNum === 6) { note = "Sabtu"; cls = "weekend"; }
+                }
+
+                const tr = `<tr id="row-${i}" class="${cls}">${rowContent}<td>${note}</td></tr>`;
+                if (i <= 15) b1.innerHTML += tr;
+                else b2.innerHTML += tr;
+            }
+        }
+
+        // 3. Sync Name & Dept to Card
+        function syncInfo() {
+            const names = document.querySelectorAll('.disp-name');
+            const depts = document.querySelectorAll('.disp-dept');
+            names.forEach(el => el.innerText = document.getElementById('userName').value);
+            depts.forEach(el => el.innerText = document.getElementById('userDept').value);
+        }
+
+        // 4. Punch Logic
+        function doPunch(type) {
+            const selDate = new Date(dateInput.value);
+            const day = selDate.getDate();
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+
+            if (type === 'in') {
+                document.getElementById(`in-h-${day}`).innerText = h;
+                document.getElementById(`in-m-${day}`).innerText = m;
+                animateCell(day, 'in');
+            } else {
+                document.getElementById(`out-h-${day}`).innerText = h;
+                document.getElementById(`out-m-${day}`).innerText = m;
+                animateCell(day, 'out');
+            }
+        }
+
+        function animateCell(day, type) {
+            const h = document.getElementById(`${type}-h-${day}`);
+            const m = document.getElementById(`${type}-m-${day}`);
+            h.classList.add('punched'); m.classList.add('punched');
+            setTimeout(() => {
+                h.classList.remove('punched'); m.classList.remove('punched');
+            }, 2000);
+        }
+
+        // Start
+        initTable();
+        syncInfo();
     </script>
 </body>
 </html>
