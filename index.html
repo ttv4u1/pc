@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>v34</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>v35</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -14,365 +14,305 @@
     <style>
         :root {
             --neon-blue: #00f2ff;
-            --neon-purple: #bc13fe;
-            --bg-dark: #0a0b10;
-            --card-yellow: #f9eb87;
-            --ink-red: #e60000;
-            --glass: rgba(255, 255, 255, 0.03);
-            --shadow-3d: 0 20px 50px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.3);
+            --bg-dark: #0f111a;
+            --card-yellow: #e8d374; /* Warna manila realistik */
+            --ink-black: #111;
+            --ink-red: #d00;
         }
 
         body {
             margin: 0;
             font-family: 'Rajdhani', sans-serif;
             background: var(--bg-dark);
-            color: #e0e0e0;
+            color: #fff;
             height: 100vh;
             overflow: hidden;
         }
 
-        /* --- LOGIN SCREEN --- */
+        /* --- LOGIN --- */
         #login-screen {
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: radial-gradient(circle at center, #1a1b25 0%, #05060a 100%);
-            z-index: 1000;
-            position: relative;
+            background: radial-gradient(circle, #1a1b25 0%, #05060a 100%);
         }
 
-        .cyber-logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
-            letter-spacing: 5px;
-            background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.5));
-            margin-bottom: 10px;
-        }
-
-        /* --- LAYOUT UTAMA --- */
+        /* --- APP LAYOUT --- */
         .app-container {
             display: grid;
-            grid-template-columns: 380px 1fr;
+            grid-template-columns: 350px 1fr;
             height: 100vh;
-            display: none; /* Hidden until login */
+            display: none;
         }
 
-        /* --- SIDEBAR --- */
         .sidebar {
-            background: #11121a;
-            border-right: 1px solid rgba(0, 242, 255, 0.1);
+            background: #161823;
             padding: 20px;
             overflow-y: auto;
-            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
-            z-index: 10;
+            border-right: 1px solid #333;
         }
 
         .section-card {
-            background: var(--glass);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 15px;
+            background: rgba(255,255,255,0.05);
             padding: 15px;
+            border-radius: 10px;
             margin-bottom: 15px;
         }
 
-        .section-title {
-            font-family: 'Orbitron';
-            font-size: 0.75rem;
-            color: var(--neon-blue);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            letter-spacing: 1px;
-        }
-
-        .input-group { margin-bottom: 10px; }
-        .input-group label {
-            display: block;
-            font-size: 0.65rem;
-            color: #aaa;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-        }
+        .section-title { color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.7rem; margin-bottom: 10px; }
 
         input, select {
-            width: 100%;
-            background: #000;
-            border: 1px solid #333;
-            padding: 10px;
-            border-radius: 8px;
-            color: white;
-            box-sizing: border-box;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.85rem;
+            width: 100%; background: #000; border: 1px solid #444;
+            padding: 8px; color: #fff; border-radius: 5px; margin-bottom: 8px;
+            font-family: 'Roboto Mono'; font-size: 0.8rem;
         }
-
-        input:focus { border-color: var(--neon-blue); outline: none; }
 
         .btn {
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Orbitron';
-            font-size: 0.7rem;
-            font-weight: bold;
-            transition: 0.3s;
-            width: 100%;
+            width: 100%; padding: 12px; border: none; border-radius: 5px;
+            cursor: pointer; font-family: 'Orbitron'; font-weight: bold; margin-bottom: 8px;
         }
+        .btn-save { background: var(--neon-blue); color: #000; }
+        .btn-print { background: #bc13fe; color: #fff; }
 
-        .btn-save { background: var(--neon-blue); color: #000; margin-top: 10px; }
-        .btn-save:hover { box-shadow: 0 0 20px rgba(0,242,255,0.4); transform: translateY(-2px); }
-        .btn-print { background: var(--neon-purple); color: white; margin-top: 10px;}
-        .btn-logout { background: #222; color: #ff4b2b; margin-top: 10px; }
-
-        /* --- PREVIEW AREA (3D RENDER) --- */
+        /* --- PREVIEW AREA --- */
         .preview-area {
-            background: radial-gradient(circle at center, #1e202e 0%, #0a0b10 100%);
+            background: #222;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            perspective: 1500px; /* Essential for 3D */
+            overflow: auto;
+            padding: 20px;
         }
 
-        .a4-page {
-            width: 210mm;
-            height: 297mm;
+        /* --- THE PUNCH CARD (REAL DESIGN) --- */
+        .a4-container {
             display: flex;
-            justify-content: center;
-            align-items: center;
             gap: 20px;
-            transform: rotateX(10deg) rotateY(-5deg) scale(0.85); /* 3D Tilt */
-            transition: 0.5s ease-out;
+            padding: 20px;
+            background: transparent;
         }
 
-        .a4-page:hover {
-            transform: rotateX(0deg) rotateY(0deg) scale(0.9);
-        }
-
-        /* THE PUNCH CARD - PIXAR STYLE */
         .punch-card {
             width: 8.5cm;
-            height: 18.8cm;
-            background: var(--card-yellow);
-            border-radius: 4px;
-            box-shadow: var(--shadow-3d);
-            padding: 5mm 4mm;
-            box-sizing: border-box;
-            color: #111;
+            height: 19.3cm;
+            background-color: var(--card-yellow) !important;
+            border: 1.5px solid #000;
             position: relative;
+            box-sizing: border-box;
+            color: #000;
             display: flex;
             flex-direction: column;
-            border: 1px solid rgba(0,0,0,0.1);
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 20px 20px; /* Subtle paper texture */
+            padding: 2mm;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            /* Watermark Jata Negara */
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Coat_of_arms_of_Malaysia.svg/800px-Coat_of_arms_of_Malaysia.svg.png');
+            background-repeat: no-repeat;
+            background-position: center 60%;
+            background-size: 70%;
+            background-blend-mode: multiply;
         }
 
-        .punch-card::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
-            pointer-events: none;
+        .punch-card * { border-color: #000 !important; }
+
+        .header-box {
+            border: 1.5px solid #000;
+            margin-bottom: 5px;
         }
 
-        .card-header h2 { 
-            margin: 0; font-size: 14px; text-align: center; font-weight: 900; 
-            font-family: 'Arial Black', sans-serif; border-bottom: 2px solid black;
-            padding-bottom: 2px;
+        .header-row {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            border-bottom: 1.5px solid #000;
         }
 
-        .info-table { width: 100%; border-collapse: collapse; margin-top: 5px; }
-        .info-table td { 
-            border: 1px solid black; padding: 3px 5px; font-size: 9px; 
-            font-weight: 800; text-transform: uppercase;
+        .header-row:last-child { border-bottom: none; }
+
+        .label-cell {
+            padding: 3px; font-size: 8px; font-weight: 900;
+            border-right: 1.5px solid #000; display: flex; align-items: center;
         }
 
-        .month-box { 
-            margin: 5px 0; font-weight: 900; font-size: 11px; 
-            border-bottom: 2px solid black; display: flex; justify-content: space-between;
+        .value-cell {
+            padding: 3px; font-size: 10px; font-weight: 900; 
+            text-transform: uppercase; display: flex; align-items: center;
         }
 
-        .data-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        .data-table th { 
-            border: 1px solid black; font-size: 7px; height: 15px; 
-            background: rgba(0,0,0,0.05); font-weight: 900;
+        .title-main {
+            text-align: center; font-family: 'Arial Black'; font-size: 12px;
+            border-bottom: 2px solid #000; padding: 2px 0; margin-bottom: 5px;
         }
-        .data-table td { 
-            border: 1px solid black; height: 26px; text-align: center; 
-            font-size: 11px; font-weight: 900; font-family: 'Roboto Mono', monospace;
+
+        .month-line {
+            font-weight: 900; font-size: 11px; margin-bottom: 5px;
+            border-bottom: 1px dotted #000;
         }
+
+        .data-table {
+            width: 100%; border-collapse: collapse;
+        }
+
+        .data-table th {
+            border: 1px solid #000; font-size: 7px; font-weight: 900;
+            height: 15px; background: rgba(0,0,0,0.05);
+        }
+
+        .data-table td {
+            border: 1px solid #000; height: 24px; text-align: center;
+            font-family: 'Roboto Mono'; font-size: 11px; font-weight: 700;
+        }
+
+        .col-tar { width: 22px; font-size: 9px !important; }
+        .col-ken { width: 60px; font-size: 8px !important; }
+        .col-tt { width: 35px; }
+
+        .footer-amaran {
+            margin-top: auto; border-top: 1.5px solid #000;
+            text-align: center; padding-top: 5px;
+        }
+
+        .footer-amaran h4 { margin: 0; font-size: 11px; text-decoration: underline; }
+        .footer-amaran p { margin: 2px 0 0; font-size: 8px; font-weight: 900; line-height: 1.1; }
 
         .red-ink { color: var(--ink-red) !important; }
-        .weekend-row { background: rgba(0,0,0,0.05); }
-        .tar-col { width: 22px; background: rgba(0,0,0,0.03); font-size: 9px !important; }
+        .weekend { background: rgba(0,0,0,0.07); }
 
-        .footer-warning { 
-            margin-top: auto; font-size: 7px; text-align: center; 
-            font-weight: 900; line-height: 1.1; border-top: 1px solid black; padding-top: 4px;
-        }
-
-        /* --- PRINT CONFIGURATION --- */
+        /* --- PRINT --- */
         @media print {
-            body { background: white !important; overflow: visible; }
-            .sidebar { display: none !important; }
-            .preview-area { 
-                background: none !important; 
-                padding: 0 !important; 
-                display: block !important;
+            body { background: white; overflow: visible; }
+            .sidebar, #login-screen { display: none !important; }
+            .preview-area { display: block; padding: 0; background: white; }
+            .a4-container {
                 width: 210mm; height: 297mm;
-            }
-            .a4-page { 
-                transform: none !important; 
-                box-shadow: none !important;
-                margin: 0 auto !important;
-                width: 210mm; height: 297mm;
-                display: flex !important;
-                justify-content: center !important;
-                align-items: center !important;
-                background: white;
+                display: flex; justify-content: center; align-items: center;
+                gap: 10mm; margin: 0 auto;
             }
             .punch-card { 
-                box-shadow: none !important; 
-                -webkit-print-color-adjust: exact; 
+                box-shadow: none; 
+                -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
-                border: 1.5px solid black;
             }
-            @page { size: A4 portrait; margin: 0; }
+            @page { size: A4; margin: 0; }
         }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <div class="cyber-logo">V33 PRESTIGE</div>
-        <p style="color: #666; margin-bottom: 25px; letter-spacing: 2px;">NEXT-GEN TIME MANAGEMENT</p>
-        <button class="btn btn-save" style="max-width: 280px;" onclick="login()">
-            <i class="fab fa-google"></i> LOG MASUK GOOGLE
-        </button>
+        <div style="font-family: 'Orbitron'; font-size: 2.5rem; color: var(--neon-blue); margin-bottom: 20px;">V34 PRESTIGE</div>
+        <button class="btn btn-save" style="width: 250px" onclick="login()">LOG MASUK GOOGLE</button>
     </div>
 
     <div id="main-app" class="app-container">
-        
         <div class="sidebar">
-            <div class="cyber-logo" style="font-size: 1.2rem; margin-bottom: 20px;">V33 CORE</div>
+            <h2 style="font-family: 'Orbitron'; font-size: 1rem; color: var(--neon-blue);">SISTEM KAD V34</h2>
             
             <div class="section-card">
-                <div class="section-title"><i class="fa fa-user-circle"></i> MAKLUMAT STAF</div>
-                <div class="input-group">
-                    <label>Nama</label>
-                    <input type="text" id="nameI" placeholder="NAMA PENUH" oninput="sync()">
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <div class="input-group">
-                        <label>No. Kad</label>
-                        <input type="text" id="bnoI" value="1" oninput="sync()">
-                    </div>
-                    <div class="input-group">
-                        <label>Bulan</label>
-                        <input type="month" id="mPicker" onchange="init()">
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label>Jabatan</label>
-                    <input type="text" id="jabI" placeholder="JABATAN" oninput="sync()">
-                </div>
+                <div class="section-title">PROFIL KAKITANGAN</div>
+                <input type="text" id="bnoI" placeholder="B No. (Contoh: 16)" oninput="sync()">
+                <input type="text" id="nameI" placeholder="NAMA PENUH" oninput="sync()">
+                <input type="text" id="jabI" placeholder="KEM./JAB." oninput="sync()">
+                <input type="text" id="bahI" placeholder="BAHAGIAN/SEKSYEN" oninput="sync()">
+                <input type="month" id="mPicker" onchange="init()">
             </div>
 
             <div class="section-card">
-                <div class="section-title"><i class="fa fa-clock"></i> DATA HARIAN</div>
-                <div class="input-group">
-                    <label>Tarikh</label>
-                    <select id="dPicker" onchange="loadSingleDay()"></select>
+                <div class="section-title">MASUKKAN DATA HARIAN</div>
+                <select id="dPicker" onchange="loadSingleDay()"></select>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+                    <input type="time" id="v1"> <input type="time" id="v2">
+                    <input type="time" id="v3"> <input type="time" id="v4">
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <div class="input-group"><label>In 1</label><input type="time" id="v1"></div>
-                    <div class="input-group"><label>Out 1</label><input type="time" id="v2"></div>
-                    <div class="input-group"><label>In 2</label><input type="time" id="v3"></div>
-                    <div class="input-group"><label>Out 2</label><input type="time" id="v4"></div>
-                </div>
-                <div class="input-group">
-                    <label>Nota</label>
-                    <input type="text" id="vNote" placeholder="Cuti / Sakit">
-                </div>
-                <button class="btn btn-save" onclick="saveData()">
-                    <i class="fa fa-save"></i> SIMPAN DATA
-                </button>
+                <input type="text" id="vNote" placeholder="KENYATAAN (SABTU/AHAD/CUTI)">
+                <button class="btn btn-save" onclick="saveData()">SIMPAN KE CLOUD</button>
             </div>
 
-            <button class="btn btn-print" onclick="window.print()"><i class="fa fa-print"></i> CETAK KAD (A4)</button>
-            <button class="btn btn-logout" onclick="logout()"><i class="fa fa-power-off"></i> LOG KELUAR</button>
+            <button class="btn btn-print" onclick="window.print()"><i class="fa fa-print"></i> CETAK A4</button>
+            <button class="btn" style="background: #444;" onclick="logout()">LOG KELUAR</button>
         </div>
 
         <div class="preview-area">
-            <div class="a4-page">
+            <div class="a4-container" id="printable">
                 <!-- KAD 1 (1-15) -->
                 <div class="punch-card">
-                    <div class="card-header"><h2>KAD MENCATAT WAKTU</h2></div>
-                    <table class="info-table">
-                        <tr>
-                            <td style="width:25%; text-align:center;">No. Kad<br><span class="d-bno" style="font-size:14px">1</span></td>
-                            <td>NAMA: <span class="d-name">-</span></td>
-                        </tr>
-                        <tr><td colspan="2">JAB: <span class="d-jab">-</span></td></tr>
-                    </table>
-                    <div class="month-box">
-                        <span>BULAN: <span class="mt-label">-</span></span>
+                    <div class="title-main">KAD MENCATAT WAKTU</div>
+                    <div class="header-box">
+                        <div class="header-row" style="grid-template-columns: 60px 20px 1fr;">
+                            <div class="label-cell">B No.</div>
+                            <div class="value-cell d-bno" style="border-right: 1.5px solid #000;">-</div>
+                            <div class="value-cell">NAMA: <span class="d-name" style="margin-left:5px">-</span></div>
+                        </div>
+                        <div class="header-row">
+                            <div class="label-cell">KEM./JAB.</div>
+                            <div class="value-cell d-jab">-</div>
+                        </div>
+                        <div class="header-row">
+                            <div class="label-cell" style="font-size: 7px;">BAHAGIAN/SEKSYEN</div>
+                            <div class="value-cell d-bah">-</div>
+                        </div>
                     </div>
+                    <div class="month-line">BULAN: <span class="mt-label">-</span></div>
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th style="width:12%">TAR</th>
+                                <th class="col-tar">TAR</th>
                                 <th>MASUK</th><th>KELUAR</th>
                                 <th>MASUK</th><th>KELUAR</th>
-                                <th style="width:22%">NOTA</th>
+                                <th class="col-ken">KENYATAAN</th>
+                                <th class="col-tt">T/T<br>KETUA</th>
                             </tr>
                         </thead>
                         <tbody id="b1"></tbody>
                     </table>
-                    <div class="footer-warning">AMARAN: MENGETIK KAD ORANG LAIN ADALAH KESALAHAN TATATERTIB</div>
+                    <div class="footer-amaran">
+                        <h4>AMARAN</h4>
+                        <p>Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</p>
+                    </div>
                 </div>
 
                 <!-- KAD 2 (16-31) -->
                 <div class="punch-card">
-                    <div class="card-header"><h2>KAD MENCATAT WAKTU</h2></div>
-                    <table class="info-table">
-                        <tr>
-                            <td style="width:25%; text-align:center;">No. Kad<br><span class="d-bno" style="font-size:14px">1</span></td>
-                            <td>NAMA: <span class="d-name">-</span></td>
-                        </tr>
-                        <tr><td colspan="2">JAB: <span class="d-jab">-</span></td></tr>
-                    </table>
-                    <div class="month-box">
-                        <span>BULAN: <span class="mt-label">-</span></span>
+                    <div class="title-main">KAD MENCATAT WAKTU</div>
+                    <div class="header-box">
+                        <div class="header-row" style="grid-template-columns: 60px 20px 1fr;">
+                            <div class="label-cell">B No.</div>
+                            <div class="value-cell d-bno" style="border-right: 1.5px solid #000;">-</div>
+                            <div class="value-cell">NAMA: <span class="d-name" style="margin-left:5px">-</span></div>
+                        </div>
+                        <div class="header-row">
+                            <div class="label-cell">KEM./JAB.</div>
+                            <div class="value-cell d-jab">-</div>
+                        </div>
+                        <div class="header-row">
+                            <div class="label-cell" style="font-size: 7px;">BAHAGIAN/SEKSYEN</div>
+                            <div class="value-cell d-bah">-</div>
+                        </div>
                     </div>
+                    <div class="month-line">BULAN: <span class="mt-label">-</span></div>
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th style="width:12%">TAR</th>
+                                <th class="col-tar">TAR</th>
                                 <th>MASUK</th><th>KELUAR</th>
                                 <th>MASUK</th><th>KELUAR</th>
-                                <th style="width:22%">NOTA</th>
+                                <th class="col-ken">KENYATAAN</th>
+                                <th class="col-tt">T/T<br>KETUA</th>
                             </tr>
                         </thead>
                         <tbody id="b2"></tbody>
                     </table>
-                    <div class="footer-warning">AMARAN: MENGETIK KAD ORANG LAIN ADALAH KESALAHAN TATATERTIB</div>
+                    <div class="footer-amaran">
+                        <h4>AMARAN</h4>
+                        <p>Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // CONFIG FIREBASE (Sama seperti sebelumnya)
+        // CONFIG FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyBEijt2e7QouToEdmr8A0il3sAQcBdS2lw",
             authDomain: "punchcardv26.firebaseapp.com",
@@ -406,30 +346,34 @@
         function init() {
             const mInp = document.getElementById('mPicker');
             if(!mInp.value) mInp.value = new Date().toISOString().substr(0, 7);
-            
             const [y, m] = mInp.value.split('-').map(Number);
             const months = ["JANUARI", "FEBRUARI", "MAC", "APRIL", "MEI", "JUN", "JULAI", "OGOS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DISEMBER"];
             document.querySelectorAll('.mt-label').forEach(el => el.innerText = `${months[m-1]} ${y}`);
 
-            const daysInMonth = new Date(y, m, 0).getDate();
             const tb1 = document.getElementById('b1'), tb2 = document.getElementById('b2'), dInp = document.getElementById('dPicker');
             tb1.innerHTML = ""; tb2.innerHTML = ""; dInp.innerHTML = "";
 
+            const daysInMonth = new Date(y, m, 0).getDate();
+
             for (let i = 1; i <= 31; i++) {
-                let cls = "", ken = "";
-                if (i <= daysInMonth) {
-                    let o = document.createElement('option'); o.value = i; o.innerText = `TARIKH: ${i}`; dInp.appendChild(o);
-                    const d = new Date(y, m - 1, i);
-                    if (d.getDay() === 0) { cls = "weekend-row"; ken = "AHAD"; }
-                    else if (d.getDay() === 6) { cls = "weekend-row"; ken = "SABTU"; }
-                }
+                let opt = document.createElement('option'); opt.value = i; opt.innerText = `TARIKH: ${i}`; dInp.appendChild(opt);
                 
-                const row = `<tr id="r-${i}" class="${cls}">
-                    <td class="tar-col">${i}</td>
+                let weekendClass = "";
+                let dayName = "";
+                if(i <= daysInMonth) {
+                    const d = new Date(y, m-1, i);
+                    if(d.getDay() === 0) { weekendClass = "weekend"; dayName = "AHAD"; }
+                    if(d.getDay() === 6) { weekendClass = "weekend"; dayName = "SABTU"; }
+                }
+
+                const row = `<tr id="r-${i}" class="${weekendClass}">
+                    <td class="col-tar">${i}</td>
                     <td id="x1-${i}"></td><td id="x2-${i}"></td>
                     <td id="x3-${i}"></td><td id="x4-${i}"></td>
-                    <td id="n-${i}" style="font-size:8px; font-weight:700">${ken}</td>
+                    <td id="n-${i}" class="col-ken">${dayName}</td>
+                    <td class="col-tt"></td>
                 </tr>`;
+
                 if (i <= 15) tb1.innerHTML += row; else tb2.innerHTML += row;
             }
             loadFromCloud();
@@ -439,46 +383,29 @@
             const day = document.getElementById('dPicker').value;
             const monthYear = document.getElementById('mPicker').value;
             const docId = `${monthYear}-${day.padStart(2, '0')}`;
-
             const data = {
-                v1: document.getElementById('v1').value,
-                v2: document.getElementById('v2').value,
-                v3: document.getElementById('v3').value,
-                v4: document.getElementById('v4').value,
+                v1: document.getElementById('v1').value, v2: document.getElementById('v2').value,
+                v3: document.getElementById('v3').value, v4: document.getElementById('v4').value,
                 note: document.getElementById('vNote').value.toUpperCase()
             };
-
-            try {
-                await db.collection("users").doc(currentUser.uid).collection("records").doc(docId).set(data);
-                loadFromCloud();
-            } catch (e) { alert("Ralat: " + e.message); }
+            await db.collection("users").doc(currentUser.uid).collection("records").doc(docId).set(data);
+            loadFromCloud();
         }
 
         async function loadFromCloud() {
             const monthYear = document.getElementById('mPicker').value;
             const snap = await db.collection("users").doc(currentUser.uid).collection("records")
-                                 .where(firebase.firestore.FieldPath.documentId(), ">=", `${monthYear}-01`)
-                                 .where(firebase.firestore.FieldPath.documentId(), "<=", `${monthYear}-31`)
-                                 .get();
-
-            for(let i=1; i<=31; i++) {
-                ['x1','x2','x3','x4'].forEach(v => {
-                    const el = document.getElementById(`${v}-${i}`);
-                    if(el) { el.innerText = ""; el.classList.remove('red-ink'); }
-                });
-            }
+                .where(firebase.firestore.FieldPath.documentId(), ">=", `${monthYear}-01`)
+                .where(firebase.firestore.FieldPath.documentId(), "<=", `${monthYear}-31`).get();
 
             localData = {};
             snap.forEach(doc => {
                 const day = parseInt(doc.id.split('-').pop());
                 const d = doc.data();
                 localData[day] = d;
-                
                 if(document.getElementById(`x1-${day}`)) {
-                    const v1El = document.getElementById(`x1-${day}`);
-                    v1El.innerText = d.v1;
-                    if(d.v1 > "08:00") v1El.classList.add('red-ink');
-                    
+                    document.getElementById(`x1-${day}`).innerText = d.v1;
+                    if(d.v1 > "08:00") document.getElementById(`x1-${day}`).className = "red-ink";
                     document.getElementById(`x2-${day}`).innerText = d.v2;
                     document.getElementById(`x3-${day}`).innerText = d.v3;
                     document.getElementById(`x4-${day}`).innerText = d.v4;
@@ -490,18 +417,19 @@
 
         function loadSingleDay() {
             const day = document.getElementById('dPicker').value;
-            const data = localData[day] || {v1:'', v2:'', v3:'', v4:'', note:''};
-            document.getElementById('v1').value = data.v1;
-            document.getElementById('v2').value = data.v2;
-            document.getElementById('v3').value = data.v3;
-            document.getElementById('v4').value = data.v4;
-            document.getElementById('vNote').value = data.note;
+            const d = localData[day] || {v1:'', v2:'', v3:'', v4:'', note:''};
+            document.getElementById('v1').value = d.v1;
+            document.getElementById('v2').value = d.v2;
+            document.getElementById('v3').value = d.v3;
+            document.getElementById('v4').value = d.v4;
+            document.getElementById('vNote').value = d.note;
         }
 
         function sync() {
             document.querySelectorAll('.d-bno').forEach(e => e.innerText = document.getElementById('bnoI').value);
-            document.querySelectorAll('.d-name').forEach(e => e.innerText = document.getElementById('nameI').value.toUpperCase());
-            document.querySelectorAll('.d-jab').forEach(e => e.innerText = document.getElementById('jabI').value.toUpperCase());
+            document.querySelectorAll('.d-name').forEach(e => e.innerText = document.getElementById('nameI').value);
+            document.querySelectorAll('.d-jab').forEach(e => e.innerText = document.getElementById('jabI').value);
+            document.querySelectorAll('.d-bah').forEach(e => e.innerText = document.getElementById('bahI').value);
         }
     </script>
 </body>
