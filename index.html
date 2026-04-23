@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>v35</title>
+    <title>v36</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -14,10 +14,10 @@
     <style>
         :root {
             --neon-blue: #00f2ff;
-            --bg-dark: #0f111a;
-            --card-yellow: #e8d374; /* Warna manila realistik */
-            --ink-black: #111;
-            --ink-red: #d00;
+            --bg-dark: #0a0b10;
+            --card-yellow: #eacb67; /* Manila card color */
+            --ink-black: #000;
+            --ink-red: #cc0000;
         }
 
         body {
@@ -48,29 +48,30 @@
         }
 
         .sidebar {
-            background: #161823;
+            background: #11121a;
             padding: 20px;
             overflow-y: auto;
-            border-right: 1px solid #333;
+            border-right: 1px solid #222;
         }
 
         .section-card {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.03);
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .section-title { color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.7rem; margin-bottom: 10px; }
+        .section-title { color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.7rem; margin-bottom: 12px; letter-spacing: 1px; }
 
         input, select {
-            width: 100%; background: #000; border: 1px solid #444;
-            padding: 8px; color: #fff; border-radius: 5px; margin-bottom: 8px;
-            font-family: 'Roboto Mono'; font-size: 0.8rem;
+            width: 100%; background: #000; border: 1px solid #333;
+            padding: 10px; color: #fff; border-radius: 6px; margin-bottom: 8px;
+            font-family: 'Roboto Mono'; font-size: 0.85rem;
         }
 
         .btn {
-            width: 100%; padding: 12px; border: none; border-radius: 5px;
+            width: 100%; padding: 12px; border: none; border-radius: 6px;
             cursor: pointer; font-family: 'Orbitron'; font-weight: bold; margin-bottom: 8px;
         }
         .btn-save { background: var(--neon-blue); color: #000; }
@@ -78,19 +79,19 @@
 
         /* --- PREVIEW AREA --- */
         .preview-area {
-            background: #222;
+            background: #16171d;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: auto;
-            padding: 20px;
+            padding: 40px;
         }
 
-        /* --- THE PUNCH CARD (REAL DESIGN) --- */
+        /* --- THE PUNCH CARD (8.5cm x 19.3cm) --- */
         .a4-container {
             display: flex;
-            gap: 20px;
-            padding: 20px;
+            gap: 15mm;
+            padding: 0;
             background: transparent;
         }
 
@@ -104,207 +105,219 @@
             color: #000;
             display: flex;
             flex-direction: column;
-            padding: 2mm;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            /* Watermark Jata Negara */
+            padding: 0; /* Clear padding to let table hit edges if needed */
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            /* Jata Negara Watermark */
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Coat_of_arms_of_Malaysia.svg/800px-Coat_of_arms_of_Malaysia.svg.png');
             background-repeat: no-repeat;
-            background-position: center 60%;
-            background-size: 70%;
+            background-position: center 65%;
+            background-size: 75%;
             background-blend-mode: multiply;
         }
 
-        .punch-card * { border-color: #000 !important; }
-
-        .header-box {
-            border: 1.5px solid #000;
-            margin-bottom: 5px;
+        .card-inner {
+            padding: 3mm 2.5mm;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
-        .header-row {
-            display: grid;
-            grid-template-columns: 80px 1fr;
-            border-bottom: 1.5px solid #000;
-        }
-
+        .header-box { border: 1.2px solid #000; margin-bottom: 4px; }
+        .header-row { display: grid; grid-template-columns: 75px 1fr; border-bottom: 1.2px solid #000; }
         .header-row:last-child { border-bottom: none; }
 
         .label-cell {
-            padding: 3px; font-size: 8px; font-weight: 900;
-            border-right: 1.5px solid #000; display: flex; align-items: center;
+            padding: 2px 4px; font-size: 8px; font-weight: 900;
+            border-right: 1.2px solid #000; background: rgba(0,0,0,0.03);
         }
 
         .value-cell {
-            padding: 3px; font-size: 10px; font-weight: 900; 
-            text-transform: uppercase; display: flex; align-items: center;
+            padding: 2px 6px; font-size: 10px; font-weight: 900; 
+            text-transform: uppercase;
         }
 
         .title-main {
-            text-align: center; font-family: 'Arial Black'; font-size: 12px;
-            border-bottom: 2px solid #000; padding: 2px 0; margin-bottom: 5px;
+            text-align: center; font-family: 'Arial Black', sans-serif; font-size: 13px;
+            border-bottom: 2px solid #000; padding: 1px 0; margin-bottom: 4px;
         }
 
-        .month-line {
-            font-weight: 900; font-size: 11px; margin-bottom: 5px;
-            border-bottom: 1px dotted #000;
-        }
+        .month-line { font-weight: 900; font-size: 11px; margin-bottom: 4px; border-bottom: 1px dotted #000; }
 
-        .data-table {
-            width: 100%; border-collapse: collapse;
-        }
-
+        .data-table { width: 100%; border-collapse: collapse; border: 1.2px solid #000; flex-grow: 1; }
         .data-table th {
-            border: 1px solid #000; font-size: 7px; font-weight: 900;
-            height: 15px; background: rgba(0,0,0,0.05);
+            border: 1.2px solid #000; font-size: 7px; font-weight: 900;
+            height: 16px; background: rgba(0,0,0,0.08);
         }
 
         .data-table td {
-            border: 1px solid #000; height: 24px; text-align: center;
-            font-family: 'Roboto Mono'; font-size: 11px; font-weight: 700;
+            border: 1.2px solid #000; 
+            text-align: center;
+            font-family: 'Roboto Mono', monospace; 
+            font-size: 11px; 
+            font-weight: 800;
+            height: 27px; /* Adjusted to fill the space perfectly */
         }
 
-        .col-tar { width: 22px; font-size: 9px !important; }
-        .col-ken { width: 60px; font-size: 8px !important; }
+        .col-tar { width: 22px; font-size: 9px !important; background: rgba(0,0,0,0.03); }
+        .col-ken { width: 65px; font-size: 8px !important; }
         .col-tt { width: 35px; }
 
         .footer-amaran {
-            margin-top: auto; border-top: 1.5px solid #000;
-            text-align: center; padding-top: 5px;
+            margin-top: 4px; 
+            border-top: 1.5px solid #000;
+            text-align: center; 
+            padding-top: 4px;
         }
-
-        .footer-amaran h4 { margin: 0; font-size: 11px; text-decoration: underline; }
-        .footer-amaran p { margin: 2px 0 0; font-size: 8px; font-weight: 900; line-height: 1.1; }
+        .footer-amaran h4 { margin: 0; font-size: 11px; text-decoration: underline; font-family: 'Arial Black'; }
+        .footer-amaran p { margin: 2px 0 0; font-size: 8.5px; font-weight: 900; line-height: 1.1; }
 
         .red-ink { color: var(--ink-red) !important; }
-        .weekend { background: rgba(0,0,0,0.07); }
+        .weekend { background: rgba(0,0,0,0.1) !important; }
 
-        /* --- PRINT --- */
+        /* --- PRINT CONFIGURATION --- */
         @media print {
-            body { background: white; overflow: visible; }
+            body { background: white !important; overflow: visible; }
             .sidebar, #login-screen { display: none !important; }
-            .preview-area { display: block; padding: 0; background: white; }
+            .preview-area { 
+                display: flex !important; 
+                background: white !important; 
+                padding: 0 !important;
+                width: 210mm; height: 297mm;
+                justify-content: center !important;
+                align-items: center !important;
+            }
             .a4-container {
                 width: 210mm; height: 297mm;
-                display: flex; justify-content: center; align-items: center;
-                gap: 10mm; margin: 0 auto;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important; /* Middle align */
+                gap: 10mm;
+                margin: 0;
             }
             .punch-card { 
-                box-shadow: none; 
+                box-shadow: none !important; 
+                border: 1.5px solid #000;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
-            @page { size: A4; margin: 0; }
+            @page { size: A4 portrait; margin: 0; }
         }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <div style="font-family: 'Orbitron'; font-size: 2.5rem; color: var(--neon-blue); margin-bottom: 20px;">V34 PRESTIGE</div>
-        <button class="btn btn-save" style="width: 250px" onclick="login()">LOG MASUK GOOGLE</button>
+        <div style="font-family: 'Orbitron'; font-size: 2.8rem; color: var(--neon-blue); margin-bottom: 20px; letter-spacing: 5px;">V35 PRESTIGE</div>
+        <button class="btn btn-save" style="width: 280px; letter-spacing: 1px;" onclick="login()">LOG MASUK DENGAN GOOGLE</button>
     </div>
 
     <div id="main-app" class="app-container">
         <div class="sidebar">
-            <h2 style="font-family: 'Orbitron'; font-size: 1rem; color: var(--neon-blue);">SISTEM KAD V34</h2>
+            <h2 style="font-family: 'Orbitron'; font-size: 1.1rem; color: var(--neon-blue); margin-bottom: 20px;">PUNCH CARD V35</h2>
             
             <div class="section-card">
-                <div class="section-title">PROFIL KAKITANGAN</div>
-                <input type="text" id="bnoI" placeholder="B No. (Contoh: 16)" oninput="sync()">
+                <div class="section-title">MAKLUMAT KAKITANGAN</div>
+                <input type="text" id="bnoI" placeholder="No. Kad (B No.)" oninput="sync()">
                 <input type="text" id="nameI" placeholder="NAMA PENUH" oninput="sync()">
-                <input type="text" id="jabI" placeholder="KEM./JAB." oninput="sync()">
-                <input type="text" id="bahI" placeholder="BAHAGIAN/SEKSYEN" oninput="sync()">
+                <input type="text" id="jabI" placeholder="KEMENTERIAN / JABATAN" oninput="sync()">
+                <input type="text" id="bahI" placeholder="BAHAGIAN / SEKSYEN" oninput="sync()">
                 <input type="month" id="mPicker" onchange="init()">
             </div>
 
             <div class="section-card">
-                <div class="section-title">MASUKKAN DATA HARIAN</div>
+                <div class="section-title">INPUT DATA HARIAN</div>
                 <select id="dPicker" onchange="loadSingleDay()"></select>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
-                    <input type="time" id="v1"> <input type="time" id="v2">
-                    <input type="time" id="v3"> <input type="time" id="v4">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <div><label style="font-size: 10px; color: #888;">MASUK 1</label><input type="time" id="v1"></div>
+                    <div><label style="font-size: 10px; color: #888;">KELUAR 1</label><input type="time" id="v2"></div>
+                    <div><label style="font-size: 10px; color: #888;">MASUK 2</label><input type="time" id="v3"></div>
+                    <div><label style="font-size: 10px; color: #888;">KELUAR 2</label><input type="time" id="v4"></div>
                 </div>
-                <input type="text" id="vNote" placeholder="KENYATAAN (SABTU/AHAD/CUTI)">
-                <button class="btn btn-save" onclick="saveData()">SIMPAN KE CLOUD</button>
+                <input type="text" id="vNote" placeholder="KENYATAAN (Contoh: CUTI SAKIT)">
+                <button class="btn btn-save" onclick="saveData()"><i class="fa fa-cloud-upload"></i> SIMPAN DATA</button>
             </div>
 
-            <button class="btn btn-print" onclick="window.print()"><i class="fa fa-print"></i> CETAK A4</button>
-            <button class="btn" style="background: #444;" onclick="logout()">LOG KELUAR</button>
+            <button class="btn btn-print" onclick="window.print()"><i class="fa fa-print"></i> CETAK KE A4</button>
+            <button class="btn" style="background: #333; color: #fff;" onclick="logout()">LOG KELUAR</button>
         </div>
 
         <div class="preview-area">
-            <div class="a4-container" id="printable">
-                <!-- KAD 1 (1-15) -->
+            <div class="a4-container">
+                <!-- KAD 1 (TARIKH 1-15) -->
                 <div class="punch-card">
-                    <div class="title-main">KAD MENCATAT WAKTU</div>
-                    <div class="header-box">
-                        <div class="header-row" style="grid-template-columns: 60px 20px 1fr;">
-                            <div class="label-cell">B No.</div>
-                            <div class="value-cell d-bno" style="border-right: 1.5px solid #000;">-</div>
-                            <div class="value-cell">NAMA: <span class="d-name" style="margin-left:5px">-</span></div>
+                    <div class="card-inner">
+                        <div class="title-main">KAD MENCATAT WAKTU</div>
+                        <div class="header-box">
+                            <div class="header-row" style="grid-template-columns: 75px 40px 1fr;">
+                                <div class="label-cell">B No.</div>
+                                <div class="value-cell d-bno" style="border-right: 1.2px solid #000; text-align:center;">-</div>
+                                <div class="value-cell">NAMA: <span class="d-name" style="margin-left:8px">-</span></div>
+                            </div>
+                            <div class="header-row">
+                                <div class="label-cell">KEM./JAB.</div>
+                                <div class="value-cell d-jab">-</div>
+                            </div>
+                            <div class="header-row">
+                                <div class="label-cell">BAHAGIAN/SEKSYEN</div>
+                                <div class="value-cell d-bah">-</div>
+                            </div>
                         </div>
-                        <div class="header-row">
-                            <div class="label-cell">KEM./JAB.</div>
-                            <div class="value-cell d-jab">-</div>
+                        <div class="month-line">BULAN: <span class="mt-label">-</span></div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-tar">TAR</th>
+                                    <th>MASUK</th><th>KELUAR</th>
+                                    <th>MASUK</th><th>KELUAR</th>
+                                    <th class="col-ken">KENYATAAN</th>
+                                    <th class="col-tt">T/T<br>KETUA</th>
+                                </tr>
+                            </thead>
+                            <tbody id="b1"></tbody>
+                        </table>
+                        <div class="footer-amaran">
+                            <h4>AMARAN</h4>
+                            <p>Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</p>
                         </div>
-                        <div class="header-row">
-                            <div class="label-cell" style="font-size: 7px;">BAHAGIAN/SEKSYEN</div>
-                            <div class="value-cell d-bah">-</div>
-                        </div>
-                    </div>
-                    <div class="month-line">BULAN: <span class="mt-label">-</span></div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th class="col-tar">TAR</th>
-                                <th>MASUK</th><th>KELUAR</th>
-                                <th>MASUK</th><th>KELUAR</th>
-                                <th class="col-ken">KENYATAAN</th>
-                                <th class="col-tt">T/T<br>KETUA</th>
-                            </tr>
-                        </thead>
-                        <tbody id="b1"></tbody>
-                    </table>
-                    <div class="footer-amaran">
-                        <h4>AMARAN</h4>
-                        <p>Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</p>
                     </div>
                 </div>
 
-                <!-- KAD 2 (16-31) -->
+                <!-- KAD 2 (TARIKH 16-31) -->
                 <div class="punch-card">
-                    <div class="title-main">KAD MENCATAT WAKTU</div>
-                    <div class="header-box">
-                        <div class="header-row" style="grid-template-columns: 60px 20px 1fr;">
-                            <div class="label-cell">B No.</div>
-                            <div class="value-cell d-bno" style="border-right: 1.5px solid #000;">-</div>
-                            <div class="value-cell">NAMA: <span class="d-name" style="margin-left:5px">-</span></div>
+                    <div class="card-inner">
+                        <div class="title-main">KAD MENCATAT WAKTU</div>
+                        <div class="header-box">
+                            <div class="header-row" style="grid-template-columns: 75px 40px 1fr;">
+                                <div class="label-cell">B No.</div>
+                                <div class="value-cell d-bno" style="border-right: 1.2px solid #000; text-align:center;">-</div>
+                                <div class="value-cell">NAMA: <span class="d-name" style="margin-left:8px">-</span></div>
+                            </div>
+                            <div class="header-row">
+                                <div class="label-cell">KEM./JAB.</div>
+                                <div class="value-cell d-jab">-</div>
+                            </div>
+                            <div class="header-row">
+                                <div class="label-cell">BAHAGIAN/SEKSYEN</div>
+                                <div class="value-cell d-bah">-</div>
+                            </div>
                         </div>
-                        <div class="header-row">
-                            <div class="label-cell">KEM./JAB.</div>
-                            <div class="value-cell d-jab">-</div>
+                        <div class="month-line">BULAN: <span class="mt-label">-</span></div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-tar">TAR</th>
+                                    <th>MASUK</th><th>KELUAR</th>
+                                    <th>MASUK</th><th>KELUAR</th>
+                                    <th class="col-ken">KENYATAAN</th>
+                                    <th class="col-tt">T/T<br>KETUA</th>
+                                </tr>
+                            </thead>
+                            <tbody id="b2"></tbody>
+                        </table>
+                        <div class="footer-amaran">
+                            <h4>AMARAN</h4>
+                            <p>Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</p>
                         </div>
-                        <div class="header-row">
-                            <div class="label-cell" style="font-size: 7px;">BAHAGIAN/SEKSYEN</div>
-                            <div class="value-cell d-bah">-</div>
-                        </div>
-                    </div>
-                    <div class="month-line">BULAN: <span class="mt-label">-</span></div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th class="col-tar">TAR</th>
-                                <th>MASUK</th><th>KELUAR</th>
-                                <th>MASUK</th><th>KELUAR</th>
-                                <th class="col-ken">KENYATAAN</th>
-                                <th class="col-tt">T/T<br>KETUA</th>
-                            </tr>
-                        </thead>
-                        <tbody id="b2"></tbody>
-                    </table>
-                    <div class="footer-amaran">
-                        <h4>AMARAN</h4>
-                        <p>Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</p>
                     </div>
                 </div>
             </div>
@@ -366,6 +379,7 @@
                     if(d.getDay() === 6) { weekendClass = "weekend"; dayName = "SABTU"; }
                 }
 
+                // Row height adjusted by CSS (27px) to fill up the table area
                 const row = `<tr id="r-${i}" class="${weekendClass}">
                     <td class="col-tar">${i}</td>
                     <td id="x1-${i}"></td><td id="x2-${i}"></td>
@@ -399,13 +413,22 @@
                 .where(firebase.firestore.FieldPath.documentId(), "<=", `${monthYear}-31`).get();
 
             localData = {};
+            // Reset visual
+            for(let i=1; i<=31; i++){
+                ['x1','x2','x3','x4'].forEach(v => {
+                   let el = document.getElementById(`${v}-${i}`);
+                   if(el) { el.innerText = ""; el.className = ""; }
+                });
+            }
+
             snap.forEach(doc => {
                 const day = parseInt(doc.id.split('-').pop());
                 const d = doc.data();
                 localData[day] = d;
                 if(document.getElementById(`x1-${day}`)) {
-                    document.getElementById(`x1-${day}`).innerText = d.v1;
-                    if(d.v1 > "08:00") document.getElementById(`x1-${day}`).className = "red-ink";
+                    const v1El = document.getElementById(`x1-${day}`);
+                    v1El.innerText = d.v1;
+                    if(d.v1 > "08:00") v1El.className = "red-ink";
                     document.getElementById(`x2-${day}`).innerText = d.v2;
                     document.getElementById(`x3-${day}`).innerText = d.v3;
                     document.getElementById(`x4-${day}`).innerText = d.v4;
