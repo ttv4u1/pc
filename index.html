@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>v33</title>
+    <title>v34</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -15,10 +15,11 @@
         :root {
             --neon-blue: #00f2ff;
             --neon-purple: #bc13fe;
-            --bg-dark: #05060a;
-            --card-yellow: #fdf2a7;
-            --ink-red: #d10000;
-            --glass: rgba(255, 255, 255, 0.05);
+            --bg-dark: #0a0b10;
+            --card-yellow: #f9eb87;
+            --ink-red: #e60000;
+            --glass: rgba(255, 255, 255, 0.03);
+            --shadow-3d: 0 20px 50px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.3);
         }
 
         body {
@@ -26,8 +27,8 @@
             font-family: 'Rajdhani', sans-serif;
             background: var(--bg-dark);
             color: #e0e0e0;
-            min-height: 100vh;
-            overflow-x: hidden;
+            height: 100vh;
+            overflow: hidden;
         }
 
         /* --- LOGIN SCREEN --- */
@@ -38,6 +39,8 @@
             justify-content: center;
             align-items: center;
             background: radial-gradient(circle at center, #1a1b25 0%, #05060a 100%);
+            z-index: 1000;
+            position: relative;
         }
 
         .cyber-logo {
@@ -48,241 +51,265 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.5));
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
 
         /* --- LAYOUT UTAMA --- */
         .app-container {
             display: grid;
-            grid-template-columns: 420px 1fr;
+            grid-template-columns: 380px 1fr;
             height: 100vh;
-            display: none;
+            display: none; /* Hidden until login */
         }
 
-        /* --- SIDEBAR (FORM) --- */
+        /* --- SIDEBAR --- */
         .sidebar {
-            background: var(--glass);
-            border-right: 1px solid rgba(0, 242, 255, 0.2);
-            padding: 25px;
+            background: #11121a;
+            border-right: 1px solid rgba(0, 242, 255, 0.1);
+            padding: 20px;
             overflow-y: auto;
-            backdrop-filter: blur(15px);
             box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+            z-index: 10;
         }
 
         .section-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 15px;
             padding: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .section-title {
             font-family: 'Orbitron';
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--neon-blue);
             margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
+            letter-spacing: 1px;
         }
 
-        .input-group { margin-bottom: 12px; }
+        .input-group { margin-bottom: 10px; }
         .input-group label {
             display: block;
-            font-size: 0.7rem;
-            color: #888;
+            font-size: 0.65rem;
+            color: #aaa;
             margin-bottom: 4px;
             text-transform: uppercase;
         }
 
         input, select {
             width: 100%;
-            background: #12141d;
+            background: #000;
             border: 1px solid #333;
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
             color: white;
             box-sizing: border-box;
             font-family: 'Roboto Mono', monospace;
-            transition: 0.3s;
+            font-size: 0.85rem;
         }
 
-        input:focus { border-color: var(--neon-blue); outline: none; box-shadow: 0 0 10px rgba(0,242,255,0.2); }
+        input:focus { border-color: var(--neon-blue); outline: none; }
 
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
         .btn {
-            padding: 14px;
+            padding: 12px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-family: 'Orbitron';
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: bold;
-            text-transform: uppercase;
             transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            width: 100%;
         }
 
-        .btn-save { background: var(--neon-blue); color: #000; width: 100%; margin-top: 15px; }
-        .btn-save:hover { background: #fff; transform: translateY(-2px); }
-        .btn-print { background: var(--neon-purple); color: white; }
-        .btn-logout { background: #333; color: #ff4b2b; }
+        .btn-save { background: var(--neon-blue); color: #000; margin-top: 10px; }
+        .btn-save:hover { box-shadow: 0 0 20px rgba(0,242,255,0.4); transform: translateY(-2px); }
+        .btn-print { background: var(--neon-purple); color: white; margin-top: 10px;}
+        .btn-logout { background: #222; color: #ff4b2b; margin-top: 10px; }
 
-        /* --- PREVIEW AREA --- */
+        /* --- PREVIEW AREA (3D RENDER) --- */
         .preview-area {
-            background: #0f1016;
-            padding: 40px;
+            background: radial-gradient(circle at center, #1e202e 0%, #0a0b10 100%);
             display: flex;
             justify-content: center;
-            overflow-y: auto;
+            align-items: center;
+            overflow: hidden;
+            perspective: 1500px; /* Essential for 3D */
         }
 
-        /* PUNCH CARD STYLING */
         .a4-page {
             width: 210mm;
             height: 297mm;
-            background: #ddd;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8mm;
-            padding: 0;
-            position: relative;
+            gap: 20px;
+            transform: rotateX(10deg) rotateY(-5deg) scale(0.85); /* 3D Tilt */
+            transition: 0.5s ease-out;
         }
 
+        .a4-page:hover {
+            transform: rotateX(0deg) rotateY(0deg) scale(0.9);
+        }
+
+        /* THE PUNCH CARD - PIXAR STYLE */
         .punch-card {
             width: 8.5cm;
-            height: 19.3cm;
-            background: var(--card-yellow) !important;
-            border: 1.5px solid #000;
-            padding: 4mm 3mm;
+            height: 18.8cm;
+            background: var(--card-yellow);
+            border-radius: 4px;
+            box-shadow: var(--shadow-3d);
+            padding: 5mm 4mm;
             box-sizing: border-box;
-            color: black;
+            color: #111;
+            position: relative;
             display: flex;
             flex-direction: column;
-            -webkit-print-color-adjust: exact;
-            position: relative;
+            border: 1px solid rgba(0,0,0,0.1);
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px; /* Subtle paper texture */
         }
 
-        .punch-card::before {
+        .punch-card::after {
             content: "";
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: repeating-linear-gradient(rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 24px);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
             pointer-events: none;
         }
 
         .card-header h2 { 
-            margin: 0; font-size: 15px; text-align: center; font-weight: 900; 
+            margin: 0; font-size: 14px; text-align: center; font-weight: 900; 
             font-family: 'Arial Black', sans-serif; border-bottom: 2px solid black;
-            padding-bottom: 3px;
+            padding-bottom: 2px;
         }
 
-        .info-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        .info-table { width: 100%; border-collapse: collapse; margin-top: 5px; }
         .info-table td { 
-            border: 1.2px solid black; padding: 4px 6px; font-size: 10px; 
+            border: 1px solid black; padding: 3px 5px; font-size: 9px; 
             font-weight: 800; text-transform: uppercase;
         }
 
         .month-box { 
-            margin: 8px 0; font-weight: 900; font-size: 13px; 
+            margin: 5px 0; font-weight: 900; font-size: 11px; 
             border-bottom: 2px solid black; display: flex; justify-content: space-between;
         }
 
         .data-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
         .data-table th { 
-            border: 1.2px solid black; font-size: 8px; height: 18px; 
-            background: rgba(0,0,0,0.1); font-weight: 900;
+            border: 1px solid black; font-size: 7px; height: 15px; 
+            background: rgba(0,0,0,0.05); font-weight: 900;
         }
         .data-table td { 
-            border: 1.2px solid black; height: 26.5px; text-align: center; 
-            font-size: 12px; font-weight: 900; font-family: 'Roboto Mono', monospace;
+            border: 1px solid black; height: 26px; text-align: center; 
+            font-size: 11px; font-weight: 900; font-family: 'Roboto Mono', monospace;
         }
 
         .red-ink { color: var(--ink-red) !important; }
-        .weekend-row { background: rgba(0,0,0,0.08); }
-        .tar-col { width: 25px; background: rgba(0,0,0,0.05); font-size: 10px !important; }
+        .weekend-row { background: rgba(0,0,0,0.05); }
+        .tar-col { width: 22px; background: rgba(0,0,0,0.03); font-size: 9px !important; }
 
-        .footer-warning { margin-top: auto; font-size: 8px; text-align: center; font-weight: 900; line-height: 1.2; border-top: 1px solid black; padding-top: 5px; }
+        .footer-warning { 
+            margin-top: auto; font-size: 7px; text-align: center; 
+            font-weight: 900; line-height: 1.1; border-top: 1px solid black; padding-top: 4px;
+        }
 
-        /* PRINT CONFIG */
+        /* --- PRINT CONFIGURATION --- */
         @media print {
-            body { background: white; }
+            body { background: white !important; overflow: visible; }
             .sidebar { display: none !important; }
-            .preview-area { padding: 0; background: none; }
-            .a4-page { box-shadow: none; margin: 0; transform: scale(1); }
-            @page { size: A4; margin: 0; }
+            .preview-area { 
+                background: none !important; 
+                padding: 0 !important; 
+                display: block !important;
+                width: 210mm; height: 297mm;
+            }
+            .a4-page { 
+                transform: none !important; 
+                box-shadow: none !important;
+                margin: 0 auto !important;
+                width: 210mm; height: 297mm;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                background: white;
+            }
+            .punch-card { 
+                box-shadow: none !important; 
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact;
+                border: 1.5px solid black;
+            }
+            @page { size: A4 portrait; margin: 0; }
         }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <div class="cyber-logo">V32 PRESTIGE</div>
-        <p style="color: #666; margin-bottom: 20px;">SISTEM PENGURUSAN MASA DIGITAL</p>
-        <button class="btn btn-save" style="max-width: 300px;" onclick="login()">
-            <i class="fab fa-google"></i> LOG MASUK DENGAN GOOGLE
+        <div class="cyber-logo">V33 PRESTIGE</div>
+        <p style="color: #666; margin-bottom: 25px; letter-spacing: 2px;">NEXT-GEN TIME MANAGEMENT</p>
+        <button class="btn btn-save" style="max-width: 280px;" onclick="login()">
+            <i class="fab fa-google"></i> LOG MASUK GOOGLE
         </button>
     </div>
 
     <div id="main-app" class="app-container">
         
         <div class="sidebar">
-            <div class="cyber-logo" style="font-size: 1.4rem; margin-bottom: 20px;">V32 CORE</div>
+            <div class="cyber-logo" style="font-size: 1.2rem; margin-bottom: 20px;">V33 CORE</div>
             
-            <!-- MAKLUMAT ASAS -->
             <div class="section-card">
-                <div class="section-title"><i class="fa fa-user-circle"></i> PROFIL KAKITANGAN</div>
+                <div class="section-title"><i class="fa fa-user-circle"></i> MAKLUMAT STAF</div>
                 <div class="input-group">
-                    <label>Nama Penuh</label>
+                    <label>Nama</label>
                     <input type="text" id="nameI" placeholder="NAMA PENUH" oninput="sync()">
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                     <div class="input-group">
-                        <label>No. Kad (B No.)</label>
+                        <label>No. Kad</label>
                         <input type="text" id="bnoI" value="1" oninput="sync()">
                     </div>
                     <div class="input-group">
-                        <label>Bulan/Tahun</label>
+                        <label>Bulan</label>
                         <input type="month" id="mPicker" onchange="init()">
                     </div>
                 </div>
                 <div class="input-group">
-                    <label>Jabatan / Bahagian</label>
+                    <label>Jabatan</label>
                     <input type="text" id="jabI" placeholder="JABATAN" oninput="sync()">
                 </div>
             </div>
 
-            <!-- INPUT DATA HARIAN -->
             <div class="section-card">
-                <div class="section-title"><i class="fa fa-clock"></i> DATA KEHADIRAN HARIAN</div>
+                <div class="section-title"><i class="fa fa-clock"></i> DATA HARIAN</div>
                 <div class="input-group">
-                    <label>Pilih Tarikh</label>
+                    <label>Tarikh</label>
                     <select id="dPicker" onchange="loadSingleDay()"></select>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <div class="input-group"><label>Masuk 1</label><input type="time" id="v1"></div>
-                    <div class="input-group"><label>Keluar 1</label><input type="time" id="v2"></div>
-                    <div class="input-group"><label>Masuk 2</label><input type="time" id="v3"></div>
-                    <div class="input-group"><label>Keluar 2</label><input type="time" id="v4"></div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <div class="input-group"><label>In 1</label><input type="time" id="v1"></div>
+                    <div class="input-group"><label>Out 1</label><input type="time" id="v2"></div>
+                    <div class="input-group"><label>In 2</label><input type="time" id="v3"></div>
+                    <div class="input-group"><label>Out 2</label><input type="time" id="v4"></div>
                 </div>
                 <div class="input-group">
-                    <label>Kenyataan (Cuti/Sakit/Tugas Luar)</label>
-                    <input type="text" id="vNote" placeholder="Tinggalkan kosong jika hadir">
+                    <label>Nota</label>
+                    <input type="text" id="vNote" placeholder="Cuti / Sakit">
                 </div>
                 <button class="btn btn-save" onclick="saveData()">
-                    <i class="fa fa-cloud-upload-alt"></i> SIMPAN KE AWAN
+                    <i class="fa fa-save"></i> SIMPAN DATA
                 </button>
             </div>
 
-            <div class="btn-grid">
-                <button class="btn btn-print" onclick="window.print()"><i class="fa fa-print"></i> CETAK</button>
-                <button class="btn btn-logout" onclick="logout()"><i class="fa fa-power-off"></i></button>
-            </div>
+            <button class="btn btn-print" onclick="window.print()"><i class="fa fa-print"></i> CETAK KAD (A4)</button>
+            <button class="btn btn-logout" onclick="logout()"><i class="fa fa-power-off"></i> LOG KELUAR</button>
         </div>
 
         <div class="preview-area">
@@ -292,21 +319,21 @@
                     <div class="card-header"><h2>KAD MENCATAT WAKTU</h2></div>
                     <table class="info-table">
                         <tr>
-                            <td style="width:22%; text-align:center;">B No.<br><span class="d-bno" style="font-size:16px">1</span></td>
+                            <td style="width:25%; text-align:center;">No. Kad<br><span class="d-bno" style="font-size:14px">1</span></td>
                             <td>NAMA: <span class="d-name">-</span></td>
                         </tr>
                         <tr><td colspan="2">JAB: <span class="d-jab">-</span></td></tr>
                     </table>
                     <div class="month-box">
-                        <span>BULAN: <span class="mt-label">MAC 2024</span></span>
+                        <span>BULAN: <span class="mt-label">-</span></span>
                     </div>
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th style="width:10%">TAR</th>
+                                <th style="width:12%">TAR</th>
                                 <th>MASUK</th><th>KELUAR</th>
                                 <th>MASUK</th><th>KELUAR</th>
-                                <th style="width:20%">NOTA</th>
+                                <th style="width:22%">NOTA</th>
                             </tr>
                         </thead>
                         <tbody id="b1"></tbody>
@@ -319,21 +346,21 @@
                     <div class="card-header"><h2>KAD MENCATAT WAKTU</h2></div>
                     <table class="info-table">
                         <tr>
-                            <td style="width:22%; text-align:center;">B No.<br><span class="d-bno" style="font-size:16px">1</span></td>
+                            <td style="width:25%; text-align:center;">No. Kad<br><span class="d-bno" style="font-size:14px">1</span></td>
                             <td>NAMA: <span class="d-name">-</span></td>
                         </tr>
                         <tr><td colspan="2">JAB: <span class="d-jab">-</span></td></tr>
                     </table>
                     <div class="month-box">
-                        <span>BULAN: <span class="mt-label">MAC 2024</span></span>
+                        <span>BULAN: <span class="mt-label">-</span></span>
                     </div>
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th style="width:10%">TAR</th>
+                                <th style="width:12%">TAR</th>
                                 <th>MASUK</th><th>KELUAR</th>
                                 <th>MASUK</th><th>KELUAR</th>
-                                <th style="width:20%">NOTA</th>
+                                <th style="width:22%">NOTA</th>
                             </tr>
                         </thead>
                         <tbody id="b2"></tbody>
@@ -345,7 +372,7 @@
     </div>
 
     <script>
-        // CONFIG
+        // CONFIG FIREBASE (Sama seperti sebelumnya)
         const firebaseConfig = {
             apiKey: "AIzaSyBEijt2e7QouToEdmr8A0il3sAQcBdS2lw",
             authDomain: "punchcardv26.firebaseapp.com",
@@ -401,7 +428,7 @@
                     <td class="tar-col">${i}</td>
                     <td id="x1-${i}"></td><td id="x2-${i}"></td>
                     <td id="x3-${i}"></td><td id="x4-${i}"></td>
-                    <td id="n-${i}" style="font-size:9px; font-weight:700">${ken}</td>
+                    <td id="n-${i}" style="font-size:8px; font-weight:700">${ken}</td>
                 </tr>`;
                 if (i <= 15) tb1.innerHTML += row; else tb2.innerHTML += row;
             }
@@ -434,7 +461,6 @@
                                  .where(firebase.firestore.FieldPath.documentId(), "<=", `${monthYear}-31`)
                                  .get();
 
-            // Clear visual first
             for(let i=1; i<=31; i++) {
                 ['x1','x2','x3','x4'].forEach(v => {
                     const el = document.getElementById(`${v}-${i}`);
