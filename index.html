@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>v39</title>
+    <title>v50</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -18,13 +18,20 @@
             --card-yellow: #eacb67;
             --ink-black: #000;
             --ink-red: #cc0000;
-            --jata-url: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png');
+            /* URL Gambar Jata Negara Berkualiti Tinggi */
+            --jata-url: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/800px-Coat_of_arms_of_Malaysia.svg.png');
         }
 
         body {
             margin: 0;
             font-family: 'Rajdhani', sans-serif;
-            background: var(--bg-dark);
+            background-color: var(--bg-dark);
+            /* Latar belakang Jata Negara pada Interface Web */
+            background-image: linear-gradient(rgba(10, 11, 16, 0.85), rgba(10, 11, 16, 0.85)), var(--jata-url);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: 50%;
             color: #fff;
             height: 100vh;
             overflow: hidden;
@@ -37,7 +44,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: radial-gradient(circle, #1a1b25 0%, #05060a 100%);
+            background: transparent;
         }
 
         /* --- APP LAYOUT --- */
@@ -49,10 +56,11 @@
         }
 
         .sidebar {
-            background: #11121a;
+            background: rgba(17, 18, 26, 0.9);
             padding: 20px;
             overflow-y: auto;
             border-right: 1px solid #222;
+            backdrop-filter: blur(10px);
         }
 
         .section-card {
@@ -78,26 +86,25 @@
         .btn-save { background: var(--neon-blue); color: #000; }
         .btn-print { background: #bc13fe; color: #fff; }
 
-        /* --- PREVIEW AREA (Web View Fix) --- */
+        /* --- PREVIEW AREA --- */
         .preview-area {
-            background: #16171d;
+            background: transparent;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Start from top to allow scrolling */
+            align-items: flex-start;
             overflow: auto;
             padding: 40px 20px;
         }
 
         .a4-container {
             display: flex;
-            flex-direction: row; /* Bersebelahan Kiri & Kanan */
+            flex-direction: row;
             gap: 15mm;
             padding: 0;
-            background: transparent;
-            min-width: max-content; /* Elak kad bertindan jika screen kecil */
+            min-width: max-content;
         }
 
-        /* --- THE PUNCH CARD --- */
+        /* --- THE PUNCH CARD (TIADA WATERMARK) --- */
         .punch-card {
             width: 8.5cm;
             height: 19.3cm;
@@ -109,21 +116,6 @@
             display: flex;
             flex-direction: column;
             box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            overflow: hidden; /* Supaya watermark tidak terkeluar border */
-        }
-
-        /* Watermark Jata Negara 70% Opacity */
-        .punch-card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: var(--jata-url);
-            background-repeat: no-repeat;
-            background-position: center 65%;
-            background-size: 75%;
-            opacity: 0.7; /* Set Opacity 70% */
-            z-index: 0;
-            pointer-events: none; /* Supaya tidak ganggu klik */
         }
 
         .card-inner {
@@ -131,11 +123,9 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            position: relative;
-            z-index: 1; /* Pastikan teks di atas watermark */
         }
 
-        .header-box { border: 1.2px solid #000; margin-bottom: 4px; background: rgba(255,255,255,0.1); }
+        .header-box { border: 1.2px solid #000; margin-bottom: 4px; }
         .header-row { display: grid; grid-template-columns: 75px 1fr; border-bottom: 1.2px solid #000; }
         .header-row:last-child { border-bottom: none; }
 
@@ -153,7 +143,7 @@
 
         .month-line { font-weight: 900; font-size: 11px; margin-bottom: 4px; border-bottom: 1px dotted #000; }
 
-        .data-table { width: 100%; border-collapse: collapse; border: 1.2px solid #000; flex-grow: 1; background: transparent; }
+        .data-table { width: 100%; border-collapse: collapse; border: 1.2px solid #000; flex-grow: 1; }
         .data-table th {
             border: 1.2px solid #000; font-size: 7px; font-weight: 900;
             height: 16px; background: rgba(0,0,0,0.08);
@@ -181,10 +171,20 @@
 
         /* --- PRINT CONFIGURATION --- */
         @media print {
-            body { background: white !important; overflow: visible; }
+            body { 
+                background-color: white !important; 
+                /* Latar belakang Jata Negara pada Cetakan */
+                background-image: var(--jata-url) !important;
+                background-repeat: no-repeat !important;
+                background-position: center !important;
+                background-size: 70% !important; /* Saiz besar di tengah kertas A4 */
+                opacity: 1 !important;
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important;
+            }
             .sidebar, #login-screen { display: none !important; }
             .preview-area { 
-                display: flex !important; background: white !important; padding: 0 !important;
+                display: flex !important; background: transparent !important; padding: 0 !important;
                 width: 210mm; height: 297mm; justify-content: center !important; align-items: center !important;
             }
             .a4-container {
@@ -194,9 +194,8 @@
             }
             .punch-card { 
                 box-shadow: none !important; border: 1.5px solid #000;
-                -webkit-print-color-adjust: exact; print-color-adjust: exact;
+                background-color: var(--card-yellow) !important;
             }
-            .punch-card::before { opacity: 0.7 !important; -webkit-print-color-adjust: exact; }
             @page { size: A4 portrait; margin: 0; }
         }
     </style>
@@ -204,7 +203,7 @@
 <body>
 
     <div id="login-screen">
-        <div style="font-family: 'Orbitron'; font-size: 2.8rem; color: var(--neon-blue); margin-bottom: 20px; letter-spacing: 5px;">V37 PRESTIGE</div>
+        <div style="font-family: 'Orbitron'; font-size: 3rem; color: var(--neon-blue); margin-bottom: 20px; letter-spacing: 5px; text-shadow: 0 0 20px rgba(0,242,255,0.5);">V37 PRESTIGE</div>
         <button class="btn btn-save" style="width: 280px; letter-spacing: 1px;" onclick="login()">LOG MASUK DENGAN GOOGLE</button>
     </div>
 
@@ -240,10 +239,11 @@
 
         <div class="preview-area">
             <div class="a4-container">
-                <!-- KAD 1 (1-15) -->
+                <!-- KAD 1 (TARIKH 1-15) -->
                 <div class="punch-card">
                     <div class="card-inner">
                         <div class="title-main">KAD MENCATAT WAKTU</div>
+                        <!-- Kandungan Kad Sama Seperti Sebelum Ini -->
                         <div class="header-box">
                             <div class="header-row" style="grid-template-columns: 75px 40px 1fr;">
                                 <div class="label-cell">B No.</div>
@@ -279,7 +279,7 @@
                     </div>
                 </div>
 
-                <!-- KAD 2 (16-31) -->
+                <!-- KAD 2 (TARIKH 16-31) -->
                 <div class="punch-card">
                     <div class="card-inner">
                         <div class="title-main">KAD MENCATAT WAKTU</div>
@@ -321,8 +321,8 @@
         </div>
     </div>
 
+    <!-- Script dikekalkan (Firebase logic) -->
     <script>
-        // FIREBASE & LOGIC KEKAL SAMA SEPERTI ASAL
         const firebaseConfig = {
             apiKey: "AIzaSyBEijt2e7QouToEdmr8A0il3sAQcBdS2lw",
             authDomain: "punchcardv26.firebaseapp.com",
@@ -331,7 +331,6 @@
             messagingSenderId: "275133505519",
             appId: "1:275133505519:web:9a9a6e30cd8ea738b3a01a"
         };
-
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -359,31 +358,18 @@
             const [y, m] = mInp.value.split('-').map(Number);
             const months = ["JANUARI", "FEBRUARI", "MAC", "APRIL", "MEI", "JUN", "JULAI", "OGOS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DISEMBER"];
             document.querySelectorAll('.mt-label').forEach(el => el.innerText = `${months[m-1]} ${y}`);
-
             const tb1 = document.getElementById('b1'), tb2 = document.getElementById('b2'), dInp = document.getElementById('dPicker');
             tb1.innerHTML = ""; tb2.innerHTML = ""; dInp.innerHTML = "";
-
             const daysInMonth = new Date(y, m, 0).getDate();
-
             for (let i = 1; i <= 31; i++) {
                 let opt = document.createElement('option'); opt.value = i; opt.innerText = `TARIKH: ${i}`; dInp.appendChild(opt);
-                
-                let weekendClass = "";
-                let dayName = "";
+                let weekendClass = ""; let dayName = "";
                 if(i <= daysInMonth) {
                     const d = new Date(y, m-1, i);
                     if(d.getDay() === 0) { weekendClass = "weekend"; dayName = "AHAD"; }
                     if(d.getDay() === 6) { weekendClass = "weekend"; dayName = "SABTU"; }
                 }
-
-                const row = `<tr id="r-${i}" class="${weekendClass}">
-                    <td class="col-tar">${i}</td>
-                    <td id="x1-${i}"></td><td id="x2-${i}"></td>
-                    <td id="x3-${i}"></td><td id="x4-${i}"></td>
-                    <td id="n-${i}" class="col-ken">${dayName}</td>
-                    <td class="col-tt"></td>
-                </tr>`;
-
+                const row = `<tr id="r-${i}" class="${weekendClass}"><td class="col-tar">${i}</td><td id="x1-${i}"></td><td id="x2-${i}"></td><td id="x3-${i}"></td><td id="x4-${i}"></td><td id="n-${i}" class="col-ken">${dayName}</td><td class="col-tt"></td></tr>`;
                 if (i <= 15) tb1.innerHTML += row; else tb2.innerHTML += row;
             }
             loadFromCloud();
@@ -407,7 +393,6 @@
             const snap = await db.collection("users").doc(currentUser.uid).collection("records")
                 .where(firebase.firestore.FieldPath.documentId(), ">=", `${monthYear}-01`)
                 .where(firebase.firestore.FieldPath.documentId(), "<=", `${monthYear}-31`).get();
-
             localData = {};
             for(let i=1; i<=31; i++){
                 ['x1','x2','x3','x4'].forEach(v => {
@@ -415,7 +400,6 @@
                    if(el) { el.innerText = ""; el.className = ""; }
                 });
             }
-
             snap.forEach(doc => {
                 const day = parseInt(doc.id.split('-').pop());
                 const d = doc.data();
