@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Kad Perakam Waktu - Replika Tepat</title>
+    <title>v21</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon-blue: #00d2ff;
-            --card-yellow: #f2e584; /* Warna kuning manila tepat */
+            --card-yellow: #fdf2a4; /* Warna kuning kad manila tepat */
         }
 
-        /* --- UI MODERN (Paparan Skrin Sahaja) --- */
+        /* --- UI MODERN UNTUK PENGGUNA --- */
         body {
             margin: 0;
             padding: 20px;
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(rgba(10, 10, 15, 0.9), rgba(10, 10, 15, 0.9)), 
+            background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)), 
                         url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/1200px-Coat_of_arms_of_Malaysia.svg.png');
             background-size: cover;
             background-attachment: fixed;
@@ -30,174 +30,91 @@
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
             padding: 15px 30px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 30px;
-        }
-
-        .logos img { height: 60px; margin-right: 15px; filter: drop-shadow(0 0 5px var(--neon-blue)); }
-
-        .clock-panel { text-align: right; font-family: 'Orbitron', sans-serif; color: var(--neon-blue); }
-
-        .control-box {
-            background: rgba(255, 255, 255, 0.07);
-            padding: 25px;
             border-radius: 15px;
-            margin-bottom: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+
+        .logos { display: flex; align-items: center; gap: 15px; }
+        .logos img { height: 50px; filter: drop-shadow(0 0 5px var(--neon-blue)); }
+
+        .live-clock { text-align: right; font-family: 'Orbitron', sans-serif; color: var(--neon-blue); }
+
+        .control-panel {
+            background: rgba(255, 255, 255, 0.07);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .control-box input, .control-box select {
-            padding: 10px; border-radius: 5px; border: none; font-size: 0.9rem;
-        }
+        .input-group { display: flex; flex-direction: column; gap: 4px; }
+        label { font-size: 0.7rem; color: var(--neon-blue); font-weight: bold; text-transform: uppercase; }
+        input, select { padding: 8px; border-radius: 5px; border: none; font-size: 0.9rem; font-weight: bold; }
 
-        label { font-size: 0.7rem; color: var(--neon-blue); font-weight: bold; text-transform: uppercase; margin-bottom: 5px; display: block; }
+        .btn-group { grid-column: 1 / -1; display: flex; gap: 10px; margin-top: 10px; }
+        button { flex: 1; padding: 15px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; font-family: 'Orbitron'; transition: 0.3s; text-transform: uppercase; }
+        .btn-save { background: var(--neon-blue); color: #000; }
+        .btn-print { background: #ffffff; color: #000; }
+        button:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,210,255,0.4); }
 
-        .btn-update { background: #00d2ff; color: #000; font-weight: bold; cursor: pointer; border: none; padding: 12px; border-radius: 5px; grid-column: span 2; }
-        .btn-print { background: #fff; color: #000; font-weight: bold; cursor: pointer; border: none; padding: 12px; border-radius: 5px; }
-
-        /* --- KAD REPLIKA (TEPAT SEPERTI GAMBAR) --- */
+        /* --- DESIGN REPLIKA KAD (AM 493-C) --- */
         .a4-page {
             display: flex;
             justify-content: center;
-            gap: 0.8cm;
+            gap: 10px;
             margin: 0 auto;
         }
 
         .punch-card {
             background: var(--card-yellow) !important;
             color: black;
-            width: 9.3cm; /* Lebar tepat untuk muat 2 keping dalam A4 */
-            height: 27cm;
+            width: 9.3cm;
+            min-height: 25.5cm;
             padding: 10px;
-            border: 2px solid #000;
+            border: 1.5px solid #000;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            position: relative;
         }
 
-        .card-header-main {
-            text-align: center;
-            font-weight: 900;
-            font-size: 16px;
-            border-bottom: 2.5px solid black;
-            padding-bottom: 4px;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
+        .am-code { text-align: right; font-size: 9px; font-weight: 700; margin-bottom: 2px; }
+        
+        .card-title { text-align: center; font-weight: 900; font-size: 15px; border-bottom: 2.5px solid black; padding-bottom: 4px; margin-bottom: 10px; }
 
-        .meta-grid {
-            display: grid;
-            grid-template-columns: 85px 1fr;
-            font-size: 11px;
-            font-weight: 900;
-            line-height: 1.6;
-        }
+        .meta-info { display: grid; grid-template-columns: 80px 1fr; font-size: 11px; font-weight: 900; line-height: 1.4; border-bottom: 1.5px solid black; padding-bottom: 5px; }
+        .meta-full { grid-column: span 2; border-top: 1px solid black; padding: 2px 0; }
 
-        .meta-full { grid-column: span 2; border-top: 1.5px solid black; padding: 1px 0; }
+        .month-year { text-align: center; font-weight: 900; font-size: 18px; margin: 15px 0 2px 0; text-transform: uppercase; }
+        .bulan-dots { font-size: 10px; font-weight: 900; border-bottom: 1.5px dotted black; padding-bottom: 2px; margin-bottom: 10px; }
 
-        .month-name {
-            text-align: center;
-            font-weight: 900;
-            font-size: 18px;
-            margin: 15px 0 2px 0;
-            text-transform: uppercase;
-        }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; border: 1.5px solid black; }
+        th, td { border: 1px solid black; text-align: center; height: 30px; font-size: 11px; font-weight: 900; padding: 0; }
+        th { font-size: 8px; font-weight: 900; background: rgba(0,0,0,0.02); height: auto; }
 
-        .bulan-dots {
-            font-size: 10px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            border-bottom: 1.5px dotted black;
-            padding-bottom: 2px;
-        }
+        .weekend-row { background: rgba(0,0,0,0.07); color: #800; }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-            border: 1.5px solid black;
-        }
+        .footer-ref { font-size: 8px; font-weight: 900; text-align: left; margin: 10px 0 2px 0; }
+        .amaran-section { border-top: 2.5px solid black; padding-top: 10px; text-align: center; }
+        .amaran-h { font-weight: 900; font-size: 15px; text-decoration: underline; margin-bottom: 5px; display: block; }
+        .amaran-b { font-size: 11px; font-weight: 900; line-height: 1.2; padding: 0 5px; }
 
-        th, td {
-            border: 1px solid black;
-            text-align: center;
-            height: 29px;
-            font-size: 11px;
-            font-weight: 900;
-            padding: 0;
-        }
+        /* --- ANIMASI --- */
+        @keyframes pulse { 0% { background: var(--neon-blue); } 100% { background: transparent; } }
+        .updated { animation: pulse 1.5s ease; }
 
-        th { font-size: 8px; font-weight: 800; background: rgba(0,0,0,0.03); }
-
-        .weekend-row { background: rgba(0,0,0,0.07); color: #900; }
-
-        .card-footer {
-            margin-top: auto;
-            text-align: center;
-            padding-top: 5px;
-        }
-
-        .ref-code { font-size: 9px; text-align: left; font-weight: bold; margin-bottom: 3px; }
-
-        .amaran-section {
-            border-top: 2.5px solid black;
-            padding-top: 10px;
-        }
-
-        .amaran-title {
-            font-weight: 900;
-            font-size: 16px;
-            text-decoration: underline;
-            margin-bottom: 5px;
-            display: inline-block;
-        }
-
-        .amaran-text {
-            font-size: 11px;
-            font-weight: 900;
-            line-height: 1.2;
-            padding: 0 5px;
-        }
-
-        /* --- ANIMASI INPUT --- */
-        @keyframes pulse {
-            0% { background-color: var(--neon-blue); }
-            100% { background-color: transparent; }
-        }
-        .animate-cell { animation: pulse 1.5s ease; }
-
-        /* --- TETAPAN CETAKAN A4 --- */
+        /* --- PRINT A4 --- */
         @media print {
-            @page {
-                size: A4 portrait;
-                margin: 0;
-            }
-            body {
-                background: white !important;
-                padding: 0;
-                margin: 0;
-            }
-            header, .control-box {
-                display: none !important;
-            }
-            .a4-page {
-                display: flex !important;
-                flex-direction: row !important;
-                justify-content: center !important;
-                margin-top: 10mm !important;
-                gap: 5mm !important;
-            }
-            .punch-card {
-                box-shadow: none !important;
-                border: 2px solid black !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
+            @page { size: A4 portrait; margin: 0; }
+            body { background: white !important; padding: 0; margin: 0; }
+            header, .control-panel { display: none !important; }
+            .a4-page { display: flex !important; flex-direction: row !important; justify-content: center !important; margin: 10mm 0 !important; gap: 5mm !important; }
+            .punch-card { box-shadow: none !important; border: 2px solid black !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
     </style>
 </head>
@@ -206,126 +123,120 @@
     <header>
         <div class="logos">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/1200px-Coat_of_arms_of_Malaysia.svg.png" alt="Jata Negara">
-            <img src="https://via.placeholder.com/60x60/003366/ffffff?text=JABATAN" alt="Logo Jabatan">
-            <img src="https://via.placeholder.com/60x60/003366/ffffff?text=BPK" alt="Logo BPK">
+            <img src="https://via.placeholder.com/60x60/003366/ffffff?text=JABATAN" alt="Jabatan">
+            <img src="https://via.placeholder.com/60x60/003366/ffffff?text=BPK" alt="BPK">
         </div>
-        <div class="clock-panel">
-            <div id="live-date" style="font-size: 0.9rem;">--</div>
-            <div id="live-time" style="font-size: 2.2rem; font-weight: 900;">00:00:00 AM</div>
+        <div class="live-clock">
+            <div id="d-txt" style="font-size: 0.8rem;">--</div>
+            <div id="t-txt" style="font-size: 2rem; font-weight: 900;">00:00:00 AM</div>
         </div>
     </header>
 
-    <div class="control-box">
-        <div>
-            <label>Bulan & Tahun</label>
-            <input type="month" id="selMonth" onchange="initApp()">
-        </div>
-        <div>
-            <label>Tarikh (TGL)</label>
-            <select id="selDay"></select>
-        </div>
-        <div><label>Masuk 1</label><input type="time" id="val1"></div>
-        <div><label>Keluar 1</label><input type="time" id="val2"></div>
-        <div><label>Masuk 2</label><input type="time" id="val3"></div>
-        <div><label>Keluar 2</label><input type="time" id="val4"></div>
-        <div><label>Kenyataan</label><input type="text" id="valNote" placeholder="Cth: Kursus"></div>
+    <div class="control-panel">
+        <div class="input-group"><label>Bulan/Tahun</label><input type="month" id="mPicker" onchange="init()"></div>
+        <div class="input-group"><label>Tarikh (TAR)</label><select id="dPicker"></select></div>
+        <div class="input-group"><label>Masuk 1</label><input type="time" id="v1"></div>
+        <div class="input-group"><label>Keluar 1</label><input type="time" id="v2"></div>
+        <div class="input-group"><label>Masuk 2</label><input type="time" id="v3"></div>
+        <div class="input-group"><label>Keluar 2</label><input type="time" id="v4"></div>
+        <div class="input-group"><label>Kenyataan</label><input type="text" id="vNote" placeholder="Cth: Sabtu"></div>
         
-        <button class="btn-update" onclick="submitData()">SIMPAN DATA KE KAD</button>
-        <button class="btn-print" onclick="window.print()">PRINT REPLIKA A4</button>
-
-        <div style="grid-column: span 2; margin-top:10px;">
-            <label>Nama Pegawai</label>
-            <input type="text" id="nameI" value="MOHD FIRDAUS B. I" oninput="syncText()" style="width: 100%;">
+        <div class="btn-group">
+            <button class="btn-save" onclick="save()">SIMPAN KE KAD</button>
+            <button class="btn-print" onclick="window.print()">PRINT REPLIKA A4</button>
         </div>
+
+        <div class="input-group" style="grid-column: span 2;"><label>B No.</label><input type="text" id="bnoI" value="16" oninput="sync()"></div>
+        <div class="input-group" style="grid-column: span 2;"><label>Nama Pegawai</label><input type="text" id="nameI" value="MOHD FIRDAUS B. MARJAI" oninput="sync()"></div>
     </div>
 
     <div class="a4-page">
-        <!-- KAD 1 (HARI 1 - 15) -->
+        <!-- KAD 1 (1-15) -->
         <div class="punch-card">
-            <div class="card-header-main">KAD MENCATAT WAKTU</div>
-            <div class="meta-grid">
+            <div class="am-code">Am 493—C (Pin. 1/88)</div>
+            <div class="card-title">KAD MENCATAT WAKTU</div>
+            <div class="meta-info">
                 <div>B No. <span class="d-bno">16</span></div>
-                <div>NAMA: <span class="d-name">MOHD FIRDAUS B. I</span></div>
+                <div>NAMA: <span class="d-name">MOHD FIRDAUS B. MARJAI</span></div>
                 <div class="meta-full">KEM./JAB.: <span class="d-jab">PERKHIDMATAN VETERINAR</span></div>
                 <div class="meta-full">BAHAGIAN/SEKSYEN: <span class="d-sec">PENGUAT KUASA</span></div>
             </div>
-            <div class="month-name" id="mt-1">APRIL 2026</div>
+            <div class="month-year" id="mt1">APRIL 2026</div>
             <div class="bulan-dots">BULAN......................................................................</div>
             <table>
                 <thead>
                     <tr>
-                        <th rowspan="2" style="width:25px;"></th>
-                        <th>MASUK</th><th>KELUAR</th><th>MASUK</th><th>KELUAR</th><th rowspan="2">KENYATAAN</th><th rowspan="2" style="width:25px;">T/T</th>
+                        <th rowspan="2" style="width:25px;">TAR</th>
+                        <th>MASUK</th><th>KELUAR</th><th>MASUK</th><th>KELUAR</th><th rowspan="2">KENYATAAN</th><th rowspan="2" style="width:30px;">T/T KETUA</th>
                     </tr>
-                    <tr><td colspan="4"></td></tr>
+                    <tr><td colspan="4" style="height:12px;"></td></tr>
                 </thead>
-                <tbody id="body-1"></tbody>
+                <tbody id="b1"></tbody>
             </table>
             <div class="card-footer">
                 <div class="amaran-section">
-                    <div class="amaran-title">AMARAN</div>
-                    <div class="amaran-text">Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</div>
+                    <span class="amaran-h">AMARAN</span>
+                    <span class="amaran-b">Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</span>
                 </div>
             </div>
         </div>
 
-        <!-- KAD 2 (HARI 16 - 31) -->
+        <!-- KAD 2 (16-31) -->
         <div class="punch-card">
-            <div class="card-header-main">KAD MENCATAT WAKTU</div>
-            <div class="meta-grid">
+            <div class="am-code">&nbsp;</div>
+            <div class="card-title">KAD MENCATAT WAKTU</div>
+            <div class="meta-info">
                 <div>B No. <span class="d-bno">16</span></div>
-                <div>NAMA: <span class="d-name">MOHD FIRDAUS B. I</span></div>
+                <div>NAMA: <span class="d-name">MOHD FIRDAUS B. MARJAI</span></div>
                 <div class="meta-full">KEM./JAB.: <span class="d-jab">PERKHIDMATAN VETERINAR</span></div>
                 <div class="meta-full">BAHAGIAN/SEKSYEN: <span class="d-sec">PENGUAT KUASA</span></div>
             </div>
-            <div class="month-name" id="mt-2">APRIL 2026</div>
+            <div class="month-year" id="mt2">APRIL 2026</div>
             <div class="bulan-dots">BULAN......................................................................</div>
             <table>
                 <thead>
                     <tr>
-                        <th rowspan="2" style="width:25px;"></th>
-                        <th>MASUK</th><th>KELUAR</th><th>MASUK</th><th>KELUAR</th><th rowspan="2">KENYATAAN</th><th rowspan="2" style="width:25px;">T/T</th>
+                        <th rowspan="2" style="width:25px;">TAR</th>
+                        <th>MASUK</th><th>KELUAR</th><th>MASUK</th><th>KELUAR</th><th rowspan="2">KENYATAAN</th><th rowspan="2" style="width:30px;">T/T KETUA</th>
                     </tr>
-                    <tr><td colspan="4"></td></tr>
+                    <tr><td colspan="4" style="height:12px;"></td></tr>
                 </thead>
-                <tbody id="body-2"></tbody>
+                <tbody id="b2"></tbody>
             </table>
-            <div class="card-footer" style="border:none;">
-                <div class="ref-code">WJF24/0036--PNMB., K.L.</div>
+            <div class="footer-ref">WJF24/0036--PNMB., K.L.</div>
+            <div class="card-footer">
                 <div class="amaran-section">
-                    <div class="amaran-title">AMARAN</div>
-                    <div class="amaran-text">Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</div>
+                    <span class="amaran-h">AMARAN</span>
+                    <span class="amaran-b">Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</span>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- JAM REALTIME ---
+        // --- JAM REALTIME 12HR AM/PM ---
         function clock() {
-            const now = new Date();
-            document.getElementById('live-date').innerText = now.toLocaleDateString('ms-MY', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-            let h = now.getHours(), m = String(now.getMinutes()).padStart(2, '0'), s = String(now.getSeconds()).padStart(2, '0');
+            const n = new Date();
+            document.getElementById('d-txt').innerText = n.toLocaleDateString('ms-MY', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            let h = n.getHours(), m = String(n.getMinutes()).padStart(2, '0'), s = String(n.getSeconds()).padStart(2, '0');
             let am = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
-            document.getElementById('live-time').innerText = `${h}:${m}:${s} ${am}`;
+            document.getElementById('t-txt').innerText = `${h}:${m}:${s} ${am}`;
         }
         setInterval(clock, 1000); clock();
 
-        // --- SISTEM KALENDAR & JADUAL ---
-        const mInp = document.getElementById('selMonth');
-        const dInp = document.getElementById('selDay');
+        // --- SISTEM KALENDAR ---
+        const mInp = document.getElementById('mPicker'), dInp = document.getElementById('dPicker');
         mInp.value = "2026-04";
 
-        function initApp() {
+        function init() {
             const [y, m] = mInp.value.split('-').map(Number);
-            const mNames = ["JANUARI", "FEBRUARI", "MAC", "APRIL", "MEI", "JUN", "JULAI", "OGOS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DISEMBER"];
-            const title = `${mNames[m-1]} ${y}`;
-            document.getElementById('mt-1').innerText = title;
-            document.getElementById('mt-2').innerText = title;
+            const names = ["JANUARI", "FEBRUARI", "MAC", "APRIL", "MEI", "JUN", "JULAI", "OGOS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DISEMBER"];
+            const t = `${names[m-1]} ${y}`;
+            document.getElementById('mt1').innerText = t; document.getElementById('mt2').innerText = t;
 
             const days = new Date(y, m, 0).getDate();
-            const b1 = document.getElementById('body-1'), b2 = document.getElementById('body-2');
-            b1.innerHTML = ""; b2.innerHTML = ""; dInp.innerHTML = "";
+            const tb1 = document.getElementById('b1'), tb2 = document.getElementById('b2');
+            tb1.innerHTML = ""; tb2.innerHTML = ""; dInp.innerHTML = "";
 
             for (let i = 1; i <= 31; i++) {
                 if (i <= days) {
@@ -337,29 +248,29 @@
                     if (d.getDay() === 0) { cls = "weekend-row"; ken = "Ahad"; }
                     if (d.getDay() === 6) { cls = "weekend-row"; ken = "Sabtu"; }
                 }
-                const row = `<tr id="tr-${i}" class="${cls}"><td>${i}</td><td id="v1-${i}"></td><td id="v2-${i}"></td><td id="v3-${i}"></td><td id="v4-${i}"></td><td id="n-${i}">${ken}</td><td></td></tr>`;
-                if (i <= 15) b1.innerHTML += row; else b2.innerHTML += row;
+                const row = `<tr id="r-${i}" class="${cls}"><td>${i}</td><td id="x1-${i}"></td><td id="x2-${i}"></td><td id="x3-${i}"></td><td id="x4-${i}"></td><td id="n-${i}">${ken}</td><td></td></tr>`;
+                if (i <= 15) tb1.innerHTML += row; else tb2.innerHTML += row;
             }
         }
 
-        function submitData() {
-            const day = dInp.value;
-            const vals = [document.getElementById('val1').value, document.getElementById('val2').value, document.getElementById('val3').value, document.getElementById('val4').value, document.getElementById('valNote').value];
-            const ids = [`v1-${day}`, `v2-${day}`, `v3-${day}`, `v4-${day}`, `n-${day}`];
+        function save() {
+            const d = dInp.value;
+            const vals = [document.getElementById('v1').value, document.getElementById('v2').value, document.getElementById('v3').value, document.getElementById('v4').value, document.getElementById('vNote').value];
+            const ids = [`x1-${d}`, `x2-${d}`, `x3-${d}`, `x4-${d}`, `n-${d}`];
             ids.forEach((id, idx) => {
                 if (vals[idx]) {
                     const el = document.getElementById(id); el.innerText = vals[idx];
-                    el.classList.add('animate-cell'); setTimeout(() => el.classList.remove('animate-cell'), 1500);
+                    el.classList.add('updated'); setTimeout(() => el.classList.remove('updated'), 1500);
                 }
             });
         }
 
-        function syncText() {
-            const n = document.getElementById('nameI').value;
-            document.querySelectorAll('.d-name').forEach(el => el.innerText = n);
+        function sync() {
+            document.querySelectorAll('.d-bno').forEach(el => el.innerText = document.getElementById('bnoI').value);
+            document.querySelectorAll('.d-name').forEach(el => el.innerText = document.getElementById('nameI').value);
         }
 
-        initApp(); syncText();
+        init(); sync();
     </script>
 </body>
 </html>
