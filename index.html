@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem EPW v3.7.0 | Physical Size Print</title>
+    <title>Sistem EPW v3.8.0 | Fixed Physical Print</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -16,14 +16,14 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: linear-gradient(135deg, rgba(255,255,255,0.97), rgba(235,245,255,0.98)), 
                         url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/1200px-Coat_of_arms_of_Malaysia.svg.png');
-            background-attachment: fixed; background-position: center; background-repeat: no-repeat; background-size: 25%; min-height: 100vh;
+            background-attachment: fixed; background-position: center; background-repeat: no-repeat; background-size: 20%; min-height: 100vh;
         }
 
         .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.5); border-radius: 12px; }
         .digital-clock { font-family: 'Orbitron', sans-serif; font-variant-numeric: tabular-nums; background: linear-gradient(45deg, var(--gov-blue), #007bff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         /* =========================================
-           PRINT LOGIC: PHYSICAL SIZE PRECISION
+           PRINT LOGIC: FIXED PHYSICAL SIZING
            ========================================= */
         @page {
             size: A4 portrait;
@@ -32,24 +32,31 @@
 
         @media print {
             .no-print { display: none !important; }
-            body { background: white !important; margin: 0 !important; padding: 0 !important; }
+            body { background: white !important; margin: 0 !important; padding: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             
+            .print-wrapper {
+                display: block !important;
+                width: 210mm;
+            }
+
             /* PAGE 1: PUNCH CARDS */
             .print-page-1 {
                 display: flex !important;
-                justify-content: center;
-                align-items: flex-start;
-                gap: 0.5in;
-                padding-top: 1in;
-                height: 100vh;
-                page-break-after: always;
+                flex-direction: row !important;
+                justify-content: center !important;
+                align-items: flex-start !important;
+                gap: 0.4in;
+                padding-top: 15mm;
+                height: 297mm;
+                page-break-after: always !important;
             }
 
             .punch-card-legacy {
                 display: block !important;
                 background-color: var(--card-yellow) !important;
-                -webkit-print-color-adjust: exact;
-                /* SAIZ REALISTIK 3.5" x 7.5" */
+                background-color: #fdfdbb !important; /* Force color */
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
                 width: 3.5in !important;
                 height: 7.5in !important;
                 border: 1.5px solid #000 !important;
@@ -58,7 +65,7 @@
                 box-sizing: border-box;
             }
 
-            .legacy-table { width: 100%; border-collapse: collapse; margin-top: 2px; }
+            .legacy-table { width: 100%; border-collapse: collapse; margin-top: 2px; border: 1px solid #000; }
             .legacy-table th, .legacy-table td { 
                 border: 1px solid #000; 
                 text-align: center; 
@@ -66,65 +73,69 @@
                 padding: 0 !important; 
                 height: 15.5px !important;
                 font-weight: bold;
+                color: #000 !important;
             }
 
             /* PAGE 2: LOGS */
             .print-page-2 {
                 display: block !important;
-                padding: 15mm;
-                min-height: 100vh;
+                padding: 20mm;
+                min-height: 297mm;
+                background: white !important;
             }
 
             .print-header-small {
-                font-size: 10pt;
+                font-size: 11pt;
                 font-weight: 900;
                 border-bottom: 2px solid #000;
                 margin-bottom: 10px;
                 text-transform: uppercase;
+                color: #000;
             }
 
-            .print-log-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+            .print-log-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
             .print-log-table th, .print-log-table td {
-                font-size: 8.5pt !important;
-                border: 0.5px solid #ccc;
-                padding: 6px;
+                font-size: 9pt !important;
+                border: 0.5px solid #000;
+                padding: 8px;
                 text-align: left;
+                color: #000;
             }
-            .print-log-table th { background-color: #f2f2f2 !important; -webkit-print-color-adjust: exact; }
+            .print-log-table th { background-color: #f0f0f0 !important; -webkit-print-color-adjust: exact !important; }
         }
 
         .print-wrapper { display: none; }
     </style>
 </head>
-<body class="p-2 md:p-6">
+<body class="p-2 md:p-4">
 
     <!-- VERSION TAG -->
     <div class="fixed bottom-2 left-4 text-[8px] font-black text-gray-400 no-print uppercase z-50">
-        EPW v3.7.0 • <span class="text-blue-600">3.5"x7.5" Physical Size</span>
+        EPW v3.8.0 • <span class="text-blue-600">Print Fix Ready</span>
     </div>
 
-    <!-- COMPACT UI HEADER -->
-    <header class="max-w-5xl mx-auto flex justify-between items-center mb-4 no-print py-1 border-b">
+    <!-- COMPACT HEADER -->
+    <header class="max-w-4xl mx-auto flex justify-between items-center mb-4 no-print py-1 border-b">
         <div class="flex items-center gap-2">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/200px-Coat_of_arms_of_Malaysia.svg.png" class="h-8">
-            <span class="text-[10px] font-black text-blue-900 uppercase">EPW Malaysia</span>
+            <span class="text-[9px] font-black text-blue-900 uppercase">EPW v3.8.0</span>
         </div>
         <div class="text-right">
-            <h1 class="text-sm font-black text-blue-950 leading-none">E-PERAKAM WAKTU</h1>
-            <p class="text-[7px] font-bold text-blue-600 tracking-widest uppercase">Digital Governance v3.7.0</p>
+            <h1 class="text-sm font-black text-blue-950">E-PERAKAM WAKTU</h1>
+            <p class="text-[7px] font-bold text-blue-600 tracking-tighter uppercase italic">Sila Aktifkan "Background Graphics" Semasa Print</p>
         </div>
     </header>
 
     <!-- LOGIN PANEL -->
-    <section id="loginSection" class="max-w-xs mx-auto glass p-6 text-center mt-20 shadow-lg no-print border-t-4 border-blue-900">
-        <div class="space-y-2">
-            <button onclick="login('staff')" class="w-full bg-white border p-3 rounded-lg text-[10px] font-black hover:border-blue-500 transition-all">LOG MASUK STAFF</button>
-            <button onclick="login('admin')" class="w-full bg-blue-950 text-white p-3 rounded-lg text-[10px] font-black hover:bg-blue-900">LOG MASUK ADMIN</button>
+    <section id="loginSection" class="max-w-xs mx-auto glass p-6 text-center mt-20 shadow-lg no-print">
+        <div class="space-y-3">
+            <button onclick="login('staff')" class="w-full bg-white border p-3 rounded-lg text-[10px] font-black hover:border-blue-950 transition-all">LOG MASUK STAFF</button>
+            <button onclick="login('admin')" class="w-full bg-blue-950 text-white p-3 rounded-lg text-[10px] font-black">LOG MASUK ADMIN</button>
         </div>
     </section>
 
     <!-- DASHBOARD -->
-    <main id="mainDashboard" class="hidden max-w-5xl mx-auto space-y-4">
+    <main id="mainDashboard" class="hidden max-w-4xl mx-auto space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
             <div class="glass p-3 text-center flex flex-col justify-center">
                 <div id="realTime" class="digital-clock text-2xl font-bold">00:00:00</div>
@@ -132,15 +143,15 @@
             </div>
             
             <div class="md:col-span-3 glass p-3 flex items-center justify-between border-l-4 border-blue-900">
-                <div class="flex items-center gap-3">
-                    <div id="userAvatar" class="w-10 h-10 bg-blue-900 text-white flex items-center justify-center rounded-lg font-black text-md">AD</div>
-                    <div class="leading-tight">
-                        <h3 id="displayName" class="text-sm font-black text-gray-800 uppercase">---</h3>
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <div class="w-10 h-10 bg-blue-900 text-white flex items-center justify-center rounded-lg font-black text-md flex-shrink-0">AD</div>
+                    <div class="truncate">
+                        <h3 id="displayName" class="text-xs font-black text-gray-800 uppercase truncate">---</h3>
                         <p id="displayRole" class="text-[8px] font-bold text-blue-600 uppercase">---</p>
                     </div>
                 </div>
-                <div class="flex gap-2 no-print">
-                    <button onclick="prepareAndPrint()" class="bg-blue-900 text-white px-4 py-2 rounded-lg font-black text-[9px] hover:bg-blue-800 transition shadow-md">CETAK A4</button>
+                <div class="flex gap-2 no-print flex-shrink-0">
+                    <button onclick="prepareAndPrint()" class="bg-blue-900 text-white px-3 py-2 rounded-lg font-black text-[9px] hover:bg-blue-800 transition">CETAK KAD</button>
                     <button onclick="logout()" class="text-red-500 p-2"><i class="fas fa-power-off"></i></button>
                 </div>
             </div>
@@ -148,18 +159,12 @@
 
         <!-- ACTIONS -->
         <div class="grid grid-cols-3 gap-2 no-print">
-            <button onclick="punch('MASUK')" class="glass p-3 border-b-2 border-green-500 text-center">
-                <span class="block font-black text-[9px]">MASUK</span>
-            </button>
-            <button onclick="punch('KELUAR')" class="glass p-3 border-b-2 border-red-500 text-center">
-                <span class="block font-black text-[9px]">KELUAR</span>
-            </button>
-            <button onclick="openLuarModal()" class="glass p-3 border-b-2 border-yellow-500 text-center">
-                <span class="block font-black text-[9px]">TUGAS LUAR</span>
-            </button>
+            <button onclick="punch('MASUK')" class="glass p-3 border-b-2 border-green-500 text-center font-black text-[9px]">MASUK</button>
+            <button onclick="punch('KELUAR')" class="glass p-3 border-b-2 border-red-500 text-center font-black text-[9px]">KELUAR</button>
+            <button onclick="openLuarModal()" class="glass p-3 border-b-2 border-yellow-500 text-center font-black text-[9px]">TUGAS LUAR</button>
         </div>
 
-        <!-- REKOD LOG SCREEN (COMPACT) -->
+        <!-- REKOD LOG SCREEN -->
         <div class="glass overflow-hidden shadow-sm">
             <div class="bg-blue-950 p-2 text-white text-[8px] font-black uppercase">Rekod Log Hari Ini</div>
             <table class="w-full text-left text-[9px]">
@@ -172,18 +177,18 @@
          PRINT WRAPPER (A4 PRECISION)
          ========================================= -->
     <div id="printSection" class="print-wrapper">
-        <!-- PAGE 1: DUA PUNCH CARD -->
+        <!-- PAGE 1: DUA PUNCH CARD (3.5x7.5 inci) -->
         <div class="print-page-1">
             <!-- Card 1-15 -->
             <div class="punch-card-legacy">
                 <div style="text-align: right; font-size: 6pt; font-weight: bold;">Am 493—C (Pin. 1/88)</div>
-                <div style="text-align: center; font-weight: 900; font-size: 10pt;">KAD MENCATAT WAKTU</div>
-                <div style="font-size: 7pt; font-weight: bold; margin-top: 2px;">
+                <div style="text-align: center; font-weight: 900; font-size: 10pt; text-decoration: underline;">KAD MENCATAT WAKTU</div>
+                <div style="font-size: 7.5pt; font-weight: bold; margin-top: 5px; line-height: 1.2;">
                     B No. <u>16</u> NAMA: <span class="pName"></span><br>
-                    JAB: <u>PERKHIDMATAN VETERINAR</u><br>
-                    BAH: <u>PENGUAT KUASA</u>
+                    KEM./JAB: <u>PERKHIDMATAN VETERINAR</u><br>
+                    BAHAGIAN/SEKSYEN: <u>PENGUAT KUASA</u>
                 </div>
-                <div style="text-align: center; font-weight: 900; font-size: 8pt; margin: 3px 0;">APRIL 2026</div>
+                <div style="text-align: center; font-weight: 900; font-size: 8.5pt; margin: 5px 0;">APRIL 2026</div>
                 <table class="legacy-table">
                     <thead>
                         <tr><th rowspan="2" width="10%">TAR</th><th colspan="2">MASUK</th><th colspan="2">KELUAR</th><th rowspan="2">KENYATAAN</th></tr>
@@ -196,13 +201,13 @@
             <!-- Card 16-31 -->
             <div class="punch-card-legacy">
                 <div style="text-align: right; font-size: 6pt; font-weight: bold;">Am 493—C (Pin. 1/88)</div>
-                <div style="text-align: center; font-weight: 900; font-size: 10pt;">KAD MENCATAT WAKTU</div>
-                <div style="font-size: 7pt; font-weight: bold; margin-top: 2px;">
+                <div style="text-align: center; font-weight: 900; font-size: 10pt; text-decoration: underline;">KAD MENCATAT WAKTU</div>
+                <div style="font-size: 7.5pt; font-weight: bold; margin-top: 5px; line-height: 1.2;">
                     B No. <u>16</u> NAMA: <span class="pName"></span><br>
-                    JAB: <u>PERKHIDMATAN VETERINAR</u><br>
-                    BAH: <u>PENGUAT KUASA</u>
+                    KEM./JAB: <u>PERKHIDMATAN VETERINAR</u><br>
+                    BAHAGIAN/SEKSYEN: <u>PENGUAT KUASA</u>
                 </div>
-                <div style="text-align: center; font-weight: 900; font-size: 8pt; margin: 3px 0;">APRIL 2026</div>
+                <div style="text-align: center; font-weight: 900; font-size: 8.5pt; margin: 5px 0;">APRIL 2026</div>
                 <table class="legacy-table">
                     <thead>
                         <tr><th rowspan="2" width="10%">TAR</th><th colspan="2">MASUK</th><th colspan="2">KELUAR</th><th rowspan="2">KENYATAAN</th></tr>
@@ -213,33 +218,33 @@
             </div>
         </div>
 
-        <!-- PAGE 2: LOG DETAILS -->
+        <!-- PAGE 2: DETAILED LOGS -->
         <div class="print-page-2">
-            <div class="print-header-small">REKOD LOG HARI INI</div>
+            <div class="print-header-small">REKOD LOG HARI INI (LOG HARIAN)</div>
             <table class="print-log-table">
                 <thead>
-                    <tr><th>TARIKH</th><th>WAKTU</th><th>STATUS</th><th>KENYATAAN</th></tr>
+                    <tr><th>TARIKH</th><th>WAKTU</th><th>STATUS AKTIVITI</th><th>KENYATAAN / LOKASI</th></tr>
                 </thead>
-                <tbody id="pLogBodyToday"></tbody>
+                <tbody id="pLogToday"></tbody>
             </table>
 
-            <div class="print-header-small">RINGKASAN LOG PERGERAKAN TERPERINCI</div>
+            <div class="print-header-small">RINGKASAN LOG PERGERAKAN TERPERINCI (AUDIT TRAIL)</div>
             <table class="print-log-table">
                 <thead>
-                    <tr><th>TARIKH</th><th>WAKTU</th><th>STATUS</th><th>KENYATAAN / LOKASI</th></tr>
+                    <tr><th>TARIKH</th><th>WAKTU</th><th>AKTIVITI</th><th>KENYATAAN TERPERINCI</th></tr>
                 </thead>
-                <tbody id="pLogBodyFull"></tbody>
+                <tbody id="pLogFull"></tbody>
             </table>
         </div>
     </div>
 
     <!-- MODAL -->
-    <div id="luarModal" class="fixed inset-0 bg-black/80 backdrop-blur hidden z-[100] flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl w-full max-w-sm p-6 shadow-2xl no-print">
-            <h3 class="font-black mb-4 uppercase text-xs">Rekod Tugas Luar</h3>
-            <textarea id="fNote" class="w-full border p-3 rounded-lg h-24 text-xs mb-4" placeholder="Butiran lokasi & tujuan..."></textarea>
+    <div id="luarModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-xl w-full max-w-sm p-6 shadow-2xl">
+            <h3 class="font-black mb-4 uppercase text-xs">Rekod Pergerakan Luar</h3>
+            <textarea id="fNote" class="w-full border-2 p-3 rounded-lg h-24 text-xs mb-4 outline-none focus:border-blue-900" placeholder="Butiran lokasi & tujuan tugas..."></textarea>
             <div class="flex gap-2">
-                <button onclick="punch('LUAR')" class="flex-1 bg-blue-900 text-white py-3 rounded-lg font-black text-[10px]">SIMPAN</button>
+                <button onclick="punch('LUAR')" class="flex-1 bg-blue-950 text-white py-3 rounded-lg font-black text-[10px]">SIMPAN</button>
                 <button onclick="document.getElementById('luarModal').classList.add('hidden')" class="px-6 bg-gray-100 rounded-lg font-black text-[10px]">BATAL</button>
             </div>
         </div>
@@ -247,7 +252,7 @@
 
     <script>
         let currentUser = null;
-        let logs = JSON.parse(localStorage.getItem('epw_v370_logs')) || [];
+        let logs = JSON.parse(localStorage.getItem('epw_v380_logs')) || [];
 
         function initClock() {
             setInterval(() => {
@@ -287,10 +292,11 @@
                 time: `${now.getHours() % 12 || 12}:${String(now.getMinutes()).padStart(2, '0')} ${now.getHours() >= 12 ? 'PM' : 'AM'}`,
                 type: type,
                 note: note,
-                isMasuk: type === 'MASUK' || type === 'LUAR KAWASAN'
+                isMasuk: type === 'MASUK' || type === 'LUAR KAWASAN',
+                ts: Date.now()
             };
             logs.unshift(log);
-            localStorage.setItem('epw_v370_logs', JSON.stringify(logs));
+            localStorage.setItem('epw_v380_logs', JSON.stringify(logs));
             renderLogs();
         }
 
@@ -305,11 +311,12 @@
             document.querySelectorAll('.pName').forEach(el => el.innerText = currentUser.name);
             const t1 = document.getElementById('pTable1'); t1.innerHTML = '';
             const t2 = document.getElementById('pTable2'); t2.innerHTML = '';
-            const pToday = document.getElementById('pLogBodyToday'); pToday.innerHTML = '';
-            const pFull = document.getElementById('pLogBodyFull'); pFull.innerHTML = '';
+            const pToday = document.getElementById('pLogToday'); pToday.innerHTML = '';
+            const pFull = document.getElementById('pLogFull'); pFull.innerHTML = '';
 
             const todayStr = new Date().toLocaleDateString('en-GB');
 
+            // Render Punch Cards
             for(let i=1; i<=31; i++) {
                 const dayLogs = logs.filter(l => l.day === i);
                 const masuks = dayLogs.filter(l => l.isMasuk);
@@ -325,6 +332,7 @@
                 else t2.innerHTML += row;
             }
 
+            // Render Page 2 Logs
             logs.forEach(l => {
                 const row = `<tr><td>${l.dateStr}</td><td>${l.time}</td><td style="font-weight:900;">${l.type}</td><td>${l.note}</td></tr>`;
                 pFull.innerHTML += row;
