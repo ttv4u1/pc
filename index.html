@@ -3,306 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem EPW v3.3.0 | Kad Perakam Waktu Realistik</title>
+    <title>Sistem EPW v3.4.0 | A4 Optimized Print</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <style>
-        :root { --gov-blue: #003366; --gov-gold: #D4AF37; --card-yellow: #f8f9a1; }
+        :root { --gov-blue: #003366; --gov-gold: #D4AF37; --card-yellow: #fdfdbb; }
         
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(235,245,255,0.97)), 
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(235,245,255,0.97)), 
                         url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/1200px-Coat_of_arms_of_Malaysia.svg.png');
-            background-attachment: fixed; background-position: center; background-repeat: no-repeat; background-size: 30%; min-height: 100vh;
+            background-attachment: fixed; background-position: center; background-repeat: no-repeat; background-size: 35%; min-height: 100vh;
         }
 
         .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.5); border-radius: 24px; }
-        .digital-clock { font-family: 'Orbitron', sans-serif; background: linear-gradient(45deg, var(--gov-blue), #007bff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .digital-clock { font-family: 'Orbitron', sans-serif; font-variant-numeric: tabular-nums; background: linear-gradient(45deg, var(--gov-blue), #007bff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* PRINT STYLE - REPLICATING THE IMAGE */
+        /* =========================================
+           PRINT LOGIC: A4 SIDE-BY-SIDE
+           ========================================= */
+        @page {
+            size: A4 landscape; /* Memaksa mod Landscape untuk muat 2 kad */
+            margin: 5mm;
+        }
+
         @media print {
             .no-print { display: none !important; }
-            body { background: white !important; margin: 0; padding: 0; }
+            body { background: white !important; padding: 0 !important; margin: 0 !important; }
             
+            /* Container cetakan dipaksa flex row */
             .print-container {
                 display: flex !important;
-                justify-content: space-between;
-                gap: 10px;
-                padding: 10mm;
-                width: 297mm; /* Landscape A4 */
+                flex-direction: row !important;
+                justify-content: center !important;
+                gap: 5mm !important;
+                width: 100% !important;
+                padding: 10px !important;
             }
 
             .punch-card-legacy {
                 display: block !important;
                 background-color: var(--card-yellow) !important;
                 -webkit-print-color-adjust: exact;
-                width: 135mm;
-                border: 1.5px solid #000;
-                padding: 5px;
-                font-family: Arial, sans-serif;
-                color: #000;
+                width: 138mm !important; /* Lebar tepat untuk A4 Landscape */
+                border: 1.5px solid #000 !important;
+                padding: 10px !important;
+                color: #000 !important;
             }
 
-            .legacy-table { width: 100%; border-collapse: collapse; border: 1px solid #000; }
-            .legacy-table th, .legacy-table td { border: 1px solid #000; text-align: center; font-size: 9pt; padding: 2px; height: 18px; }
-            .header-info { border-bottom: 1px solid #000; margin-bottom: 5px; padding-bottom: 5px; }
-            .header-info div { display: flex; font-size: 9pt; font-weight: bold; margin-bottom: 2px; }
-            .header-info span { border-bottom: 1px solid #000; flex-grow: 1; margin-left: 5px; padding-left: 5px; }
-            .amaran { text-align: center; margin-top: 10px; }
-            .amaran h4 { text-decoration: underline; margin-bottom: 5px; font-size: 10pt; }
-            .amaran p { font-size: 8pt; font-style: italic; }
+            .legacy-table { width: 100%; border-collapse: collapse; border: 1.2px solid #000; }
+            .legacy-table th, .legacy-table td { 
+                border: 1.2px solid #000; 
+                text-align: center; 
+                font-size: 8pt !important; 
+                padding: 1px !important; 
+                height: 18px !important;
+                font-weight: bold;
+            }
+            .header-info div { font-size: 8pt !important; font-weight: bold; margin-bottom: 2px; }
+            .header-info span { border-bottom: 1px solid #000; padding: 0 5px; }
+            .amaran { text-align: center; margin-top: 8px; border-top: 1px solid #000; padding-top: 5px; }
+            .amaran h4 { text-decoration: underline; font-size: 9pt; margin-bottom: 2px; font-weight: 900; }
+            .amaran p { font-size: 7.5pt; font-style: italic; line-height: 1.1; }
         }
 
-        .print-container { display: none; }
+        .print-container { display: none; } /* Sorok masa mode screen */
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <!-- VERSION TAG -->
-    <div class="fixed bottom-4 left-6 text-[9px] font-black text-gray-400 no-print uppercase tracking-[0.2em] z-50">
-        EPW v3.3.0 • <span class="text-green-600">Print Template Active</span>
+    <div class="fixed bottom-4 left-6 text-[9px] font-black text-gray-400 no-print uppercase tracking-widest z-50">
+        EPW v3.4.0 • <span class="text-blue-600">A4 Precision Print Active</span>
     </div>
 
     <!-- UI HEADER -->
     <header class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center mb-8 gap-4 no-print">
         <div class="flex items-center gap-4">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/200px-Coat_of_arms_of_Malaysia.svg.png" class="h-14">
-            <div class="flex gap-2">
-                <div class="w-10 h-10 bg-white rounded shadow-sm flex items-center justify-center font-black text-[9px]">JAB</div>
-                <div class="w-10 h-10 bg-white rounded shadow-sm flex items-center justify-center font-black text-[9px]">BPK</div>
-            </div>
+            <img src="https://via.placeholder.com/50x50?text=JAB" class="h-12 rounded">
+            <img src="https://via.placeholder.com/50x50?text=BPK" class="h-12 rounded">
         </div>
         <div class="text-center md:text-right">
-            <h1 class="text-xl lg:text-2xl font-black text-blue-950 leading-none">E-PERAKAM WAKTU</h1>
-            <p class="text-[9px] font-bold text-blue-600 tracking-[0.3em] uppercase mt-1">Sistem Punch Card Kerajaan</p>
+            <h1 class="text-xl lg:text-2xl font-black text-blue-950">E-PERAKAM WAKTU</h1>
+            <p class="text-[9px] font-bold text-blue-600 tracking-[0.2em] uppercase mt-1">Simulasi Perkhidmatan Awam</p>
         </div>
     </header>
 
-    <!-- LOGIN PANEL -->
-    <section id="loginSection" class="max-w-sm mx-auto glass p-8 text-center mt-20 shadow-xl no-print border-t-4 border-blue-900">
-        <div class="mb-6">
-            <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <i class="fas fa-lock text-3xl text-blue-900"></i>
-            </div>
-            <h2 class="text-xl font-black text-gray-800 uppercase tracking-tight">Log Masuk</h2>
-        </div>
-        <div class="grid gap-3">
-            <button onclick="login('staff')" class="flex items-center justify-center gap-3 bg-white border border-gray-200 p-4 rounded-xl font-bold text-gray-700 hover:border-blue-500 transition-all text-sm shadow-sm">
-                <i class="fas fa-user text-blue-500"></i> KAKITANGAN
-            </button>
-            <button onclick="login('admin')" class="flex items-center justify-center gap-3 bg-blue-950 text-white p-4 rounded-xl font-bold hover:bg-blue-900 transition-all text-sm shadow-lg">
-                <i class="fas fa-user-shield text-amber-400"></i> SUPER ADMIN
-            </button>
+    <!-- LOGIN -->
+    <section id="loginSection" class="max-w-sm mx-auto glass p-10 text-center mt-20 shadow-xl no-print border-t-8 border-blue-900">
+        <div class="mb-8"><i class="fas fa-id-card text-5xl text-blue-900"></i></div>
+        <div class="grid gap-4">
+            <button onclick="login('staff')" class="bg-white border p-4 rounded-2xl font-bold text-gray-700 hover:border-blue-500 shadow-sm transition-all">LOG MASUK STAFF</button>
+            <button onclick="login('admin')" class="bg-blue-950 text-white p-4 rounded-2xl font-bold hover:bg-blue-900 shadow-lg transition-all">LOG MASUK ADMIN</button>
         </div>
     </section>
 
     <!-- DASHBOARD -->
-    <main id="mainDashboard" class="hidden max-w-6xl mx-auto space-y-6 fade-in">
-        
-        <!-- INFO PANEL -->
+    <main id="mainDashboard" class="hidden max-w-6xl mx-auto space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="glass p-6 text-center border-b-4 border-blue-600">
+            <div class="glass p-6 text-center border-b-4 border-blue-600 flex flex-col justify-center">
                 <div id="realTime" class="digital-clock text-4xl font-bold">00:00:00</div>
-                <div id="realAmPm" class="text-blue-900 font-black text-xs tracking-widest mt-1">AM</div>
-                <div id="realDate" class="text-[10px] font-bold text-gray-400 mt-4 uppercase">...</div>
+                <div id="realAmPm" class="text-blue-900 font-black text-xs">AM</div>
+                <div id="realDate" class="text-[9px] font-bold text-gray-400 mt-4 uppercase">...</div>
             </div>
             
-            <div class="md:col-span-2 glass p-6 flex flex-col sm:flex-row items-center justify-between border-l-8 border-blue-950">
+            <div class="md:col-span-2 glass p-6 flex items-center justify-between border-l-8 border-blue-950">
                 <div class="flex items-center gap-4">
-                    <img id="userAvatar" src="" class="w-14 h-14 rounded-2xl shadow-md border-2 border-white">
+                    <div id="userInitials" class="w-14 h-14 bg-blue-900 text-white flex items-center justify-center rounded-2xl font-black text-xl">AD</div>
                     <div>
-                        <h3 id="displayName" class="text-lg font-black text-gray-800 uppercase truncate">---</h3>
-                        <p id="displayRole" class="text-[10px] font-bold text-blue-600 tracking-widest uppercase">---</p>
+                        <h3 id="displayName" class="text-lg font-black text-gray-800 uppercase">---</h3>
+                        <p id="displayRole" class="text-[10px] font-bold text-blue-600 uppercase">---</p>
                     </div>
                 </div>
                 <div class="flex gap-2 no-print">
-                    <button id="adminBtn" onclick="toggleAdminPanel()" class="hidden bg-amber-500 text-white px-4 py-2 rounded-lg font-black text-[9px]">ADMIN</button>
-                    <button onclick="logout()" class="bg-red-50 text-red-500 p-3 rounded-xl hover:bg-red-600 hover:text-white transition-all"><i class="fas fa-power-off"></i></button>
+                    <button onclick="printCard()" class="bg-blue-900 text-white px-5 py-2 rounded-xl font-black text-[10px] hover:bg-blue-800 transition shadow-lg">CETAK KAD A4</button>
+                    <button onclick="logout()" class="bg-red-50 text-red-500 p-3 rounded-xl hover:bg-red-500 hover:text-white transition-all"><i class="fas fa-power-off"></i></button>
                 </div>
             </div>
         </div>
 
-        <!-- ACTIONS -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 no-print">
-            <button onclick="punch('MASUK')" class="glass p-6 border-b-4 border-green-500 flex flex-col items-center hover:-translate-y-1 transition-all">
-                <i class="fas fa-clock text-2xl text-green-500 mb-2"></i>
-                <span class="font-black text-xs text-gray-700">PUNCH MASUK</span>
+        <!-- DASHBOARD ACTIONS -->
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 no-print">
+            <button onclick="punch('MASUK')" class="glass p-6 border-b-4 border-green-500 hover:scale-105 transition-all">
+                <i class="fas fa-clock text-green-500 text-2xl mb-2"></i>
+                <span class="block font-black text-xs">PUNCH MASUK</span>
             </button>
-            <button onclick="punch('KELUAR')" class="glass p-6 border-b-4 border-red-500 flex flex-col items-center hover:-translate-y-1 transition-all">
-                <i class="fas fa-sign-out-alt text-2xl text-red-500 mb-2"></i>
-                <span class="font-black text-xs text-gray-700">PUNCH KELUAR</span>
+            <button onclick="punch('KELUAR')" class="glass p-6 border-b-4 border-red-500 hover:scale-105 transition-all">
+                <i class="fas fa-sign-out-alt text-red-500 text-2xl mb-2"></i>
+                <span class="block font-black text-xs">PUNCH KELUAR</span>
             </button>
-            <button onclick="openLuarModal()" class="glass p-6 border-b-4 border-yellow-500 flex flex-col items-center hover:-translate-y-1 transition-all">
-                <i class="fas fa-map-location-dot text-2xl text-yellow-500 mb-2"></i>
-                <span class="font-black text-xs text-gray-700">LUAR KAWASAN</span>
-            </button>
-            <button onclick="printCard()" class="glass p-6 border-b-4 border-blue-500 flex flex-col items-center hover:-translate-y-1 transition-all">
-                <i class="fas fa-print text-2xl text-blue-500 mb-2"></i>
-                <span class="font-black text-xs text-gray-700">CETAK KAD</span>
+            <button onclick="openLuarModal()" class="glass p-6 border-b-4 border-yellow-500 hover:scale-105 transition-all">
+                <i class="fas fa-map-location-dot text-yellow-500 text-2xl mb-2"></i>
+                <span class="block font-black text-xs">LUAR KAWASAN</span>
             </button>
         </div>
 
-        <!-- DASHBOARD TABLE -->
-        <div class="glass overflow-hidden shadow-lg">
+        <!-- REKOD LOG -->
+        <div class="glass overflow-hidden">
             <div class="bg-blue-950 p-4 text-white flex justify-between items-center">
-                <h3 class="font-black text-[10px] tracking-widest uppercase">Log Rekod Semasa</h3>
-                <button onclick="exportCSV()" class="bg-green-600 px-3 py-1 text-[9px] font-bold rounded">CSV</button>
+                <h3 class="font-black text-[10px] uppercase tracking-widest">Log Kehadiran Semasa</h3>
+                <button onclick="exportCSV()" class="text-[9px] font-bold bg-green-600 px-3 py-1 rounded">EXPORT CSV</button>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-[11px]">
-                    <thead class="bg-gray-50 font-black text-gray-400 uppercase tracking-widest border-b">
-                        <tr>
-                            <th class="p-4">Tarikh</th>
-                            <th class="p-4">Masa</th>
-                            <th class="p-4">Aktiviti</th>
-                            <th class="p-4">Kenyataan</th>
-                        </tr>
-                    </thead>
-                    <tbody id="logBody" class="divide-y divide-gray-100"></tbody>
-                </table>
-            </div>
+            <table class="w-full text-left text-[11px]">
+                <thead class="bg-gray-50 font-black text-gray-400 uppercase border-b">
+                    <tr><th class="p-4">Tarikh</th><th class="p-4">Masa</th><th class="p-4">Aktiviti</th><th class="p-4">Kenyataan</th></tr>
+                </thead>
+                <tbody id="logBody" class="divide-y divide-gray-100"></tbody>
+            </table>
         </div>
     </main>
 
-    <!-- THE PUNCH CARD PRINT TEMPLATE (AM 493-C) -->
+    <!-- PRINTABLE SECTION (HIDDEN ON SCREEN) -->
     <div id="printSection" class="print-container">
-        <!-- Card Left: 1-15 -->
+        <!-- SIDE 1: TARIKH 1-15 -->
         <div class="punch-card-legacy">
             <div style="text-align: right; font-size: 8pt; font-weight: bold;">Am 493—C (Pin. 1/88)</div>
-            <div style="text-align: center; font-weight: 900; font-size: 11pt; margin-bottom: 5px;">KAD MENCATAT WAKTU</div>
-            
+            <div style="text-align: center; font-weight: 900; font-size: 12pt; margin: 5px 0;">KAD MENCATAT WAKTU</div>
             <div class="header-info">
-                <div>B No. <span id="pBno1">16</span> NAMA: <span id="pNama1">MOHD FIRDAUS B. MARJAI</span></div>
-                <div>KEM./JAB. <span id="pJab1">PERKHIDMATAN VETERINAR</span></div>
-                <div>BAHAGIAN/SEKSYEN: <span id="pBah1">PENGUAT KUASA</span></div>
+                <div>B No. <u>16</u> NAMA: <span id="pName1"></span></div>
+                <div>KEM./JAB. <u>PERKHIDMATAN VETERINAR</u></div>
+                <div>BAHAGIAN/SEKSYEN: <u>PENGUAT KUASA</u></div>
             </div>
-
-            <div style="text-align: center; font-weight: bold; font-size: 10pt; margin-bottom: 5px;">APRIL 2026</div>
+            <div style="text-align: center; font-weight: 900; font-size: 10pt; margin: 5px 0;">APRIL 2026</div>
             <table class="legacy-table">
                 <thead>
-                    <tr>
-                        <th rowspan="2" width="10%">TAR</th>
-                        <th colspan="2">MASUK</th>
-                        <th colspan="2">KELUAR</th>
-                        <th rowspan="2" width="30%">KENYATAAN</th>
-                        <th rowspan="2" width="10%">T/T KETUA</th>
-                    </tr>
-                    <tr>
-                        <th width="12%">1</th>
-                        <th width="12%">2</th>
-                        <th width="12%">1</th>
-                        <th width="12%">2</th>
-                    </tr>
+                    <tr><th rowspan="2">TAR</th><th colspan="2">MASUK</th><th colspan="2">KELUAR</th><th rowspan="2">KENYATAAN</th><th rowspan="2">T/T</th></tr>
+                    <tr><th width="12%">1</th><th width="12%">2</th><th width="12%">1</th><th width="12%">2</th></tr>
                 </thead>
-                <tbody id="printTable1">
-                    <!-- Rows 1-15 will be injected here -->
-                </tbody>
+                <tbody id="pTable1"></tbody>
             </table>
-
             <div class="amaran">
-                <div style="font-size: 7pt; font-weight: bold; margin-bottom: 5px;">WJF24/0036--PNMB., K.L.</div>
                 <h4>AMARAN</h4>
                 <p>Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</p>
             </div>
         </div>
 
-        <!-- Card Right: 16-31 -->
+        <!-- SIDE 2: TARIKH 16-31 -->
         <div class="punch-card-legacy">
             <div style="text-align: right; font-size: 8pt; font-weight: bold;">Am 493—C (Pin. 1/88)</div>
-            <div style="text-align: center; font-weight: 900; font-size: 11pt; margin-bottom: 5px;">KAD MENCATAT WAKTU</div>
-            
+            <div style="text-align: center; font-weight: 900; font-size: 12pt; margin: 5px 0;">KAD MENCATAT WAKTU</div>
             <div class="header-info">
-                <div>B No. <span id="pBno2">16</span> NAMA: <span id="pNama2">MOHD FIRDAUS B. MARJAI</span></div>
-                <div>KEM./JAB. <span id="pJab2">PERKHIDMATAN VETERINAR</span></div>
-                <div>BAHAGIAN/SEKSYEN: <span id="pBah2">PENGUAT KUASA</span></div>
+                <div>B No. <u>16</u> NAMA: <span id="pName2"></span></div>
+                <div>KEM./JAB. <u>PERKHIDMATAN VETERINAR</u></div>
+                <div>BAHAGIAN/SEKSYEN: <u>PENGUAT KUASA</u></div>
             </div>
-
-            <div style="text-align: center; font-weight: bold; font-size: 10pt; margin-bottom: 5px;">APRIL 2026</div>
+            <div style="text-align: center; font-weight: 900; font-size: 10pt; margin: 5px 0;">APRIL 2026</div>
             <table class="legacy-table">
                 <thead>
-                    <tr>
-                        <th rowspan="2" width="10%">TAR</th>
-                        <th colspan="2">MASUK</th>
-                        <th colspan="2">KELUAR</th>
-                        <th rowspan="2" width="30%">KENYATAAN</th>
-                        <th rowspan="2" width="10%">T/T KETUA</th>
-                    </tr>
-                    <tr>
-                        <th width="12%">1</th>
-                        <th width="12%">2</th>
-                        <th width="12%">1</th>
-                        <th width="12%">2</th>
-                    </tr>
+                    <tr><th rowspan="2">TAR</th><th colspan="2">MASUK</th><th colspan="2">KELUAR</th><th rowspan="2">KENYATAAN</th><th rowspan="2">T/T</th></tr>
+                    <tr><th width="12%">1</th><th width="12%">2</th><th width="12%">1</th><th width="12%">2</th></tr>
                 </thead>
-                <tbody id="printTable2">
-                    <!-- Rows 16-31 will be injected here -->
-                </tbody>
+                <tbody id="pTable2"></tbody>
             </table>
-
             <div class="amaran">
-                <div style="font-size: 7pt; font-weight: bold; margin-bottom: 5px;">WJF24/0036--PNMB., K.L.</div>
                 <h4>AMARAN</h4>
                 <p>Sesiapa yang didapati mengetik kad orang lain, tindakan tatatertib akan diambil ke atasnya.</p>
             </div>
         </div>
     </div>
 
-    <!-- MODAL LUAR KAWASAN -->
-    <div id="luarModal" class="fixed inset-0 bg-blue-950/90 backdrop-blur-md hidden z-[100] flex items-center justify-center p-4">
-        <div class="bg-white rounded-[32px] w-full max-w-sm p-8 shadow-2xl">
-            <h3 class="text-lg font-black text-gray-800 mb-6 flex items-center gap-2"><i class="fas fa-briefcase text-yellow-500"></i> Rekod Tugas Luar</h3>
-            <div class="space-y-4">
-                <select id="fieldTugas" class="w-full bg-gray-50 border p-4 rounded-xl font-bold text-xs">
-                    <option>🚓 OPERASI PENGUATKUASAAN</option>
-                    <option>🤝 MESYUARAT AGENSI</option>
-                    <option>🐄 LAWATAN TAPAK</option>
-                </select>
-                <textarea id="fieldNote" class="w-full bg-gray-50 border p-4 rounded-xl h-24 text-xs" placeholder="Nota lokasi..."></textarea>
-                <div class="flex gap-2">
-                    <button onclick="punch('LUAR')" class="flex-1 bg-blue-950 text-white font-black py-4 rounded-xl">SIMPAN</button>
-                    <button onclick="document.getElementById('luarModal').classList.add('hidden')" class="px-6 bg-gray-100 font-black py-4 rounded-xl">BATAL</button>
-                </div>
+    <!-- MODAL -->
+    <div id="luarModal" class="fixed inset-0 bg-black/80 backdrop-blur hidden z-[100] flex items-center justify-center p-4">
+        <div class="bg-white rounded-[32px] w-full max-w-sm p-8">
+            <h3 class="font-black mb-4 uppercase">Rekod Tugas Luar</h3>
+            <select id="fTugas" class="w-full border p-4 rounded-xl mb-4 text-xs font-bold">
+                <option>🚓 OPERASI PENGUATKUASAAN</option>
+                <option>🤝 MESYUARAT AGENSI</option>
+            </select>
+            <textarea id="fNote" class="w-full border p-4 rounded-xl h-24 mb-4 text-xs" placeholder="Nota lokasi..."></textarea>
+            <div class="flex gap-2">
+                <button onclick="punch('LUAR')" class="flex-1 bg-blue-900 text-white py-4 rounded-xl font-black">SIMPAN</button>
+                <button onclick="document.getElementById('luarModal').classList.add('hidden')" class="px-6 bg-gray-100 rounded-xl font-black">BATAL</button>
             </div>
         </div>
     </div>
 
     <script>
         let currentUser = null;
-        let allLogs = JSON.parse(localStorage.getItem('epw_v330_logs')) || [];
+        let logs = JSON.parse(localStorage.getItem('epw_v340_logs')) || [];
 
-        // CLOCK ENGINE
-        function initClock() {
-            const update = () => {
+        function initTime() {
+            setInterval(() => {
                 const now = new Date();
                 let h = now.getHours();
-                const m = String(now.getMinutes()).padStart(2, '0');
-                const s = String(now.getSeconds()).padStart(2, '0');
                 const ampm = h >= 12 ? 'PM' : 'AM';
                 h = h % 12 || 12;
-                document.getElementById('realTime').innerText = `${String(h).padStart(2, '0')}:${m}:${s}`;
+                document.getElementById('realTime').innerText = `${String(h).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
                 document.getElementById('realAmPm').innerText = ampm;
                 document.getElementById('realDate').innerText = now.toLocaleDateString('ms-MY', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase();
-            };
-            setInterval(update, 1000); update();
+            }, 1000);
         }
 
         function login(role) {
-            currentUser = {
-                uid: role === 'admin' ? 'A01' : 'U16',
-                name: role === 'admin' ? 'PENTADBIR SISTEM' : 'MOHD FIRDAUS B. MARJAI',
-                role: role,
-                dept: 'PERKHIDMATAN VETERINAR',
-                unit: 'PENGUAT KUASA',
-                avatar: `https://ui-avatars.com/api/?name=${role === 'admin' ? 'Admin' : 'Firdaus'}&background=003366&color=fff`
-            };
+            currentUser = { name: role === 'admin' ? 'PENTADBIR SISTEM' : 'MOHD FIRDAUS B. MARJAI', role: role };
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('mainDashboard').classList.remove('hidden');
             document.getElementById('displayName').innerText = currentUser.name;
-            document.getElementById('displayRole').innerText = `${currentUser.unit} | B No. 16`;
-            document.getElementById('userAvatar').src = currentUser.avatar;
+            document.getElementById('displayRole').innerText = role === 'admin' ? 'Super Administrator' : 'PENGUAT KUASA BPK';
             renderLogs();
         }
 
@@ -312,84 +252,62 @@
             const now = new Date();
             let note = "PEJABAT";
             if(type === 'LUAR') {
-                note = `[${document.getElementById('fieldTugas').value}] ${document.getElementById('fieldNote').value}`;
+                note = `[${document.getElementById('fTugas').value}] ${document.getElementById('fNote').value}`;
                 document.getElementById('luarModal').classList.add('hidden');
                 type = "LUAR KAWASAN";
             }
-            
-            const timeStr = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
             const log = {
-                uid: currentUser.uid,
                 day: now.getDate(),
                 month: now.getMonth() + 1,
-                year: now.getFullYear(),
-                time: timeStr,
+                time: `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`,
                 type: type,
                 note: note,
                 isMasuk: type === 'MASUK' || type === 'LUAR KAWASAN'
             };
-
-            allLogs.unshift(log);
-            localStorage.setItem('epw_v330_logs', JSON.stringify(allLogs));
+            logs.unshift(log);
+            localStorage.setItem('epw_v340_logs', JSON.stringify(logs));
             renderLogs();
         }
 
         function renderLogs() {
-            const tbody = document.getElementById('logBody');
-            tbody.innerHTML = '';
-            allLogs.filter(l => l.uid === currentUser.uid).forEach(l => {
-                tbody.innerHTML += `
-                    <tr class="border-b">
-                        <td class="p-4 font-bold">${l.day}/${l.month}</td>
-                        <td class="p-4 font-mono font-bold text-blue-900">${l.time}</td>
-                        <td class="p-4 font-black ${l.isMasuk ? 'text-green-600':'text-red-600'}">${l.type}</td>
-                        <td class="p-4 text-gray-500 italic">${l.note}</td>
-                    </tr>
-                `;
+            const b = document.getElementById('logBody'); b.innerHTML = '';
+            logs.forEach(l => {
+                b.innerHTML += `<tr class="border-b"><td class="p-4 font-bold">${l.day}/${l.month}</td><td class="p-4 font-mono font-bold text-blue-900">${l.time}</td><td class="p-4 font-black ${l.isMasuk ? 'text-green-600':'text-red-600'}">${l.type}</td><td class="p-4 text-gray-500 italic truncate">${l.note}</td></tr>`;
             });
         }
 
-        // GENERATE PRINTABLE CARDS
         function printCard() {
-            const card1Body = document.getElementById('printTable1');
-            const card2Body = document.getElementById('printTable2');
-            card1Body.innerHTML = ''; card2Body.innerHTML = '';
+            const t1 = document.getElementById('pTable1'); t1.innerHTML = '';
+            const t2 = document.getElementById('pTable2'); t2.innerHTML = '';
+            document.getElementById('pName1').innerText = currentUser.name;
+            document.getElementById('pName2').innerText = currentUser.name;
 
-            const currentMonthLogs = allLogs.filter(l => l.uid === currentUser.uid && l.month === (new Date().getMonth() + 1));
-
-            for (let i = 1; i <= 31; i++) {
-                const dayLogs = currentMonthLogs.filter(l => l.day === i);
-                const masukLogs = dayLogs.filter(l => l.isMasuk);
-                const keluarLogs = dayLogs.filter(l => !l.isMasuk);
-
+            for(let i=1; i<=31; i++) {
+                const dLogs = logs.filter(l => l.day === i);
+                const m = dLogs.filter(l => l.isMasuk);
+                const k = dLogs.filter(l => !l.isMasuk);
                 let ken = "";
-                // Detect weekends
-                const d = new Date(2026, 3, i); // April 2026
-                if(d.getDay() === 6) ken = "Sabtu";
-                if(d.getDay() === 0) ken = "Ahad";
-                if(dayLogs.some(l => l.type === 'LUAR KAWASAN')) ken = dayLogs.find(l => l.type === 'LUAR KAWASAN').note;
+                const dateObj = new Date(2026, 3, i);
+                if(dateObj.getDay() === 6) ken = "Sabtu";
+                else if(dateObj.getDay() === 0) ken = "Ahad";
+                else if(dLogs.some(l => l.type === 'LUAR KAWASAN')) ken = dLogs.find(l => l.type === 'LUAR KAWASAN').note;
 
-                const row = `
-                    <tr>
-                        <td>${i}</td>
-                        <td class="font-bold">${masukLogs[0] ? masukLogs[0].time : ''}</td>
-                        <td class="font-bold">${masukLogs[1] ? masukLogs[1].time : ''}</td>
-                        <td class="font-bold">${keluarLogs[0] ? keluarLogs[0].time : ''}</td>
-                        <td class="font-bold">${keluarLogs[1] ? keluarLogs[1].time : ''}</td>
-                        <td style="text-align: left; padding-left: 5px; font-weight: bold;">${ken}</td>
-                        <td></td>
-                    </tr>
-                `;
-
-                if (i <= 15) card1Body.innerHTML += row;
-                else card2Body.innerHTML += row;
+                const row = `<tr><td>${i}</td><td>${m[0]?m[0].time:''}</td><td>${m[1]?m[1].time:''}</td><td>${k[0]?k[0].time:''}</td><td>${k[1]?k[1].time:''}</td><td style="text-align:left; padding-left:4px;">${ken}</td><td></td></tr>`;
+                if(i <= 15) t1.innerHTML += row;
+                else t2.innerHTML += row;
             }
-
             window.print();
         }
 
         function openLuarModal() { document.getElementById('luarModal').classList.remove('hidden'); }
-        initClock();
+        function exportCSV() {
+            let c = "Tarikh,Masa,Aktiviti,Nota\n";
+            logs.forEach(l => c += `${l.day}/${l.month},${l.time},${l.type},"${l.note}"\n`);
+            const b = new Blob([c], {type:'text/csv'});
+            const u = window.URL.createObjectURL(b);
+            const a = document.createElement('a'); a.href=u; a.download=`EPW_Report.csv`; a.click();
+        }
+        initTime();
     </script>
 </body>
 </html>
