@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>v23 - PCS PRESTIGE</title>
+    <title>v32 - PCS PRESTIGE</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -178,11 +178,11 @@
         .red-ink { color: var(--ink-red) !important; }
         .weekend { background: rgba(0,0,0,0.1) !important; }
 
-        /* --- PRINT CONFIGURATION --- */
+        /* --- PRINT CONFIGURATION (UPDATED) --- */
         @media print {
             @page {
-                size: A4 portrait;
-                margin: 0;
+                size: A4 landscape;
+                margin: 0; /* Menghilangkan header/footer termasuk URL pelayar */
             }
             body { 
                 background: #fff !important; 
@@ -194,23 +194,23 @@
             .preview-area { 
                 padding: 0 !important; 
                 margin: 0 !important;
-                width: 210mm;
-                height: 297mm;
+                width: 297mm;
+                height: 210mm;
                 display: flex !important;
                 justify-content: center;
                 align-items: center;
                 background-image: var(--jata-url) !important;
                 background-repeat: no-repeat !important;
                 background-position: center !important;
-                background-size: 60% !important;
+                background-size: 40% !important;
                 -webkit-print-color-adjust: exact !important;
             }
             .a4-container {
-                width: 210mm;
+                width: 297mm;
                 display: flex !important;
                 flex-direction: row !important;
                 justify-content: center !important;
-                gap: 8mm !important;
+                gap: 15mm !important;
                 padding: 0 !important;
                 background: none !important;
             }
@@ -227,7 +227,7 @@
 
     <!-- SCREEN: LOGIN -->
     <div id="login-screen">
-        <div style="font-family: 'Orbitron'; font-size: clamp(1.5rem, 8vw, 3rem); color: var(--neon-blue); margin-bottom: 20px; letter-spacing: 5px; text-shadow: 0 0 20px rgba(0,242,255,0.5);">v23 PRESTIGE</div>
+        <div style="font-family: 'Orbitron'; font-size: clamp(1.5rem, 8vw, 3rem); color: var(--neon-blue); margin-bottom: 20px; letter-spacing: 5px; text-shadow: 0 0 20px rgba(0,242,255,0.5);">v32 PRESTIGE</div>
         <button class="btn btn-save" style="width: 280px; letter-spacing: 1px;" onclick="login()">LOG MASUK DENGAN GOOGLE</button>
     </div>
 
@@ -236,7 +236,7 @@
         
         <!-- SIDEBAR -->
         <div class="sidebar">
-            <h2 style="font-family: 'Orbitron'; font-size: 1.1rem; color: var(--neon-blue); margin-bottom: 20px; border-left: 4px solid var(--neon-blue); padding-left: 10px;">PUNCH CARD v23</h2>
+            <h2 style="font-family: 'Orbitron'; font-size: 1.1rem; color: var(--neon-blue); margin-bottom: 20px; border-left: 4px solid var(--neon-blue); padding-left: 10px;">PUNCH CARD v32</h2>
             
             <div class="section-card">
                 <div class="section-title">MAKLUMAT KAKITANGAN</div>
@@ -439,7 +439,6 @@
                 .where(firebase.firestore.FieldPath.documentId(), "<=", `${monthYear}-31`).get();
             
             localData = {};
-            // Reset table visual
             for(let i=1; i<=31; i++){
                 ['x1','x2','x3','x4'].forEach(v => {
                     let el = document.getElementById(`${v}-${i}`);
