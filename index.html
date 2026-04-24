@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>v21 - PCS</title>
+    <title>v22 - PCS</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -32,7 +32,7 @@
             background-size: 50%;
             color: #fff;
             min-height: 100vh;
-            overflow-x: hidden; /* Benarkan skrol menegak */
+            overflow-x: hidden;
         }
 
         /* --- LOGIN --- */
@@ -49,23 +49,30 @@
 
         /* --- APP LAYOUT --- */
         .app-container {
-            display: none; /* Akan ditukar ke grid melalui JS */
+            display: none; 
             grid-template-columns: 350px 1fr;
             min-height: 100vh;
         }
 
-        /* Responsif untuk Skrin Kecil (Tablet/Mobile) */
+        /* PERBAIKAN RESPONSIVE: Pengisian Data Penuh Satu Page */
         @media (max-width: 1024px) {
             .app-container {
-                grid-template-columns: 1fr; /* Jadi satu kolum */
+                grid-template-columns: 1fr; /* Sidebar jadi penuh lebar */
             }
             .sidebar {
                 border-right: none !important;
-                border-bottom: 1px solid #222;
+                border-bottom: 2px solid var(--neon-blue);
                 max-height: none !important;
+                width: 100% !important;
+                box-sizing: border-box;
+                padding: 30px 20px !important;
+            }
+            .preview-area {
+                padding: 20px 5px !important;
+                overflow-x: auto; /* Benarkan scroll melintang untuk kad A4 */
             }
             body {
-                overflow-y: auto; /* Aktifkan skrol */
+                overflow-y: auto;
             }
         }
 
@@ -109,8 +116,8 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            overflow-x: auto; /* Penting untuk mobile */
             padding: 40px 10px;
+            overflow-x: auto;
         }
 
         .a4-container {
@@ -121,7 +128,7 @@
             min-width: max-content;
         }
 
-        /* Susun kad ke bawah jika skrin sangat kecil */
+        /* Susun kad ke bawah jika skrin kecil di dalam preview */
         @media (max-width: 800px) {
             .a4-container {
                 flex-direction: column;
@@ -230,14 +237,14 @@
 <body>
 
     <div id="login-screen">
-        <div style="font-family: 'Orbitron'; font-size: clamp(1.5rem, 8vw, 3rem); color: var(--neon-blue); margin-bottom: 20px; letter-spacing: 5px; text-shadow: 0 0 20px rgba(0,242,255,0.5);">v21 PRESTIGE</div>
+        <div style="font-family: 'Orbitron'; font-size: clamp(1.5rem, 8vw, 3rem); color: var(--neon-blue); margin-bottom: 20px; letter-spacing: 5px; text-shadow: 0 0 20px rgba(0,242,255,0.5);">v22 PRESTIGE</div>
         <button class="btn btn-save" style="width: 280px; letter-spacing: 1px;" onclick="login()">LOG MASUK DENGAN GOOGLE</button>
     </div>
 
     <div id="main-app" class="app-container">
-        <!-- SIDEBAR -->
+        <!-- SIDEBAR (PENGISIAN DATA) -->
         <div class="sidebar">
-            <h2 style="font-family: 'Orbitron'; font-size: 1.1rem; color: var(--neon-blue); margin-bottom: 20px;">PUNCH CARD v21</h2>
+            <h2 style="font-family: 'Orbitron'; font-size: 1.1rem; color: var(--neon-blue); margin-bottom: 20px;">PUNCH CARD v22</h2>
             
             <div class="section-card">
                 <div class="section-title">MAKLUMAT KAKITANGAN</div>
